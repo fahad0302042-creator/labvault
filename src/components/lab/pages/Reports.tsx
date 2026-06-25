@@ -42,6 +42,7 @@ export function Reports() {
   const apparatusRows = useMemo(() => buildRows(apparatus, logs, since, "apparatus"), [apparatus, logs, since]);
 
   const rows = tab === "chemicals" ? chemicalRows : apparatusRows;
+  const maxUsed = useMemo(() => Math.max(...rows.map((r) => r.used), 1), [rows]);
   const totals = useMemo(() => {
     return rows.reduce(
       (acc, r) => ({
@@ -57,13 +58,13 @@ export function Reports() {
     <div className="px-4 pt-6 pb-4">
       <header className="mb-4 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Reports</h1>
+          <h1 className="text-2xl font-bold text-graphite">Reports</h1>
           <p className="text-sm text-slate-500">
             {period === "weekly" ? "Last 7 days" : "Last 30 days"} · {rows.length} item
             {rows.length === 1 ? "" : "s"}
           </p>
         </div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 text-white shadow-md">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-600 to-graphite text-white shadow-md">
           <FileBarChart2 className="h-5 w-5" />
         </div>
       </header>
@@ -81,7 +82,7 @@ export function Reports() {
             {period === p && (
               <motion.span
                 layoutId="report-period-pill"
-                className="absolute inset-0 rounded-lg bg-slate-900 shadow-sm"
+                className="absolute inset-0 rounded-lg bg-graphite shadow-sm"
                 transition={{ type: "spring", stiffness: 320, damping: 30 }}
               />
             )}
@@ -103,7 +104,7 @@ export function Reports() {
             {tab === t && (
               <motion.span
                 layoutId="report-tab-pill"
-                className="absolute inset-0 rounded-lg bg-slate-900 shadow-sm"
+                className="absolute inset-0 rounded-lg bg-graphite shadow-sm"
                 transition={{ type: "spring", stiffness: 320, damping: 30 }}
               />
             )}
@@ -137,7 +138,7 @@ export function Reports() {
       {/* Print button (mobile) */}
       <button
         onClick={() => window.print()}
-        className="no-print mb-4 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 py-3 text-sm font-semibold text-white shadow-lg transition-colors hover:bg-slate-800"
+        className="no-print mb-4 flex w-full items-center justify-center gap-2 rounded-xl bg-graphite py-3 text-sm font-semibold text-white shadow-lg transition-colors hover:bg-graphite/90"
       >
         <Printer className="h-4 w-4" />
         Export as PDF
@@ -176,37 +177,55 @@ export function Reports() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: Math.min(i * 0.03, 0.3) }}
-                className="grid grid-cols-12 items-center gap-2 border-b border-slate-100/70 px-4 py-3 last:border-0"
+                className="border-b border-slate-100/70 px-4 py-3 last:border-0"
               >
-                <div className="col-span-5 min-w-0">
-                  <p className="truncate text-sm font-semibold text-slate-900">
-                    {r.name}
-                  </p>
-                  {r.sub && (
-                    <p className="truncate text-xs text-slate-500">{r.sub}</p>
-                  )}
-                </div>
-                <div className="col-span-2 text-right text-sm font-bold tabular-nums text-emerald-600">
-                  +{r.stockIn}
-                  <span className="ml-0.5 text-[10px] font-normal text-slate-400">
-                    {r.unit}
-                  </span>
-                </div>
-                <div className="col-span-2 text-right text-sm font-bold tabular-nums text-amber-600">
-                  −{r.used}
-                  <span className="ml-0.5 text-[10px] font-normal text-slate-400">
-                    {r.unit}
-                  </span>
-                </div>
-                <div className="col-span-3 flex flex-col items-end gap-1">
-                  <span className="text-sm font-bold tabular-nums text-slate-900">
-                    {r.remaining}
+                <div className="grid grid-cols-12 items-center gap-2">
+                  <div className="col-span-5 min-w-0">
+                    <p className="truncate text-sm font-semibold text-graphite">
+                      {r.name}
+                    </p>
+                    {r.sub && (
+                      <p className="truncate text-xs text-slate-500">{r.sub}</p>
+                    )}
+                  </div>
+                  <div className="col-span-2 text-right text-sm font-bold tabular-nums text-emerald-600">
+                    +{r.stockIn}
                     <span className="ml-0.5 text-[10px] font-normal text-slate-400">
                       {r.unit}
                     </span>
-                  </span>
-                  <HealthBadge health={r.health} />
+                  </div>
+                  <div className="col-span-2 text-right text-sm font-bold tabular-nums text-amber-600">
+                    −{r.used}
+                    <span className="ml-0.5 text-[10px] font-normal text-slate-400">
+                      {r.unit}
+                    </span>
+                  </div>
+                  <div className="col-span-3 flex flex-col items-end gap-1">
+                    <span className="font-mono text-sm font-bold tabular-nums text-graphite">
+                      {r.remaining}
+                      <span className="ml-0.5 text-[10px] font-normal text-slate-400">
+                        {r.unit}
+                      </span>
+                    </span>
+                    <HealthBadge health={r.health} />
+                  </div>
                 </div>
+                {/* Mini bar showing relative usage scale */}
+                {r.used > 0 && (
+                  <div className="mt-2 flex items-center gap-2">
+                    <div className="h-1 flex-1 overflow-hidden rounded-full bg-slate-100">
+                      <motion.div
+                        className="h-full rounded-full bg-amber-400"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${(r.used / maxUsed) * 100}%` }}
+                        transition={{ duration: 0.5, delay: i * 0.03 }}
+                      />
+                    </div>
+                    <span className="font-mono text-[9px] tabular-nums text-slate-400">
+                      {Math.round((r.used / maxUsed) * 100)}%
+                    </span>
+                  </div>
+                )}
               </motion.div>
             ))
           )}
@@ -264,7 +283,7 @@ function SummaryCard({
   const toneClasses = {
     green: "from-emerald-400 to-emerald-500",
     amber: "from-amber-400 to-orange-500",
-    teal: "from-slate-700 to-slate-900",
+    teal: "from-slate-600 to-graphite",
   }[tone];
 
   return (
@@ -274,7 +293,7 @@ function SummaryCard({
       >
         {icon}
       </div>
-      <p className="text-lg font-bold tabular-nums text-slate-900">{value}</p>
+      <p className="text-lg font-bold tabular-nums text-graphite">{value}</p>
       <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
         {label}
       </p>

@@ -6,25 +6,30 @@ import {
   Beaker,
   AlertTriangle,
   TrendingDown,
-  Plus,
   ScanLine,
   ChevronRight,
   ArrowDownLeft,
   ArrowUpRight,
   AlertCircle,
+  Search,
 } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useChemicals } from "@/hooks/lab/useChemicals";
 import { useApparatus } from "@/hooks/lab/useApparatus";
 import { useLogs } from "@/hooks/lab/useLogs";
 import { GlassCard } from "@/components/lab/shared/GlassCard";
 import { Badge } from "@/components/lab/shared/Badge";
+import { Sparkline } from "@/components/lab/shared/Sparkline";
+import { ConsumptionChart } from "@/components/lab/shared/ConsumptionChart";
+import { GlobalSearch } from "./GlobalSearch";
 import {
   formatHeaderDate,
   formatRelative,
   greeting,
   type LogAction,
+  type Chemical,
+  type Apparatus,
 } from "@/lib/lab/types";
 import type { TabKey } from "@/components/lab/layout/BottomNav";
 
@@ -46,6 +51,40 @@ const ACTION_META: Record<
   deleted:   { label: "Removed",   tone: "slate" },
 };
 
+/** Build 7-day daily buckets from logs */
+function use7DayData(logs: ReturnType<typeof useLogs>["logs"]) {
+  return useMemo(() => {
+    const days: { date: string; consumed: number; restocked: number; created: number }[] = [];
+    const now = new Date();
+    for (let i = 6; i >= 0; i--) {
+      const day = new Date(now);
+      day.setDate(now.getDate() - i);
+      day.setHours(0, 0, 0, 0);
+      const nextDay = new Date(day);
+      nextDay.setDate(day.getDate() + 1);
+      const dayStart = day.getTime();
+      const dayEnd = nextDay.getTime();
+
+      const dayLogs = logs.filter((l) => {
+        const t = +new Date(l.logged_at);
+        return t >= dayStart && t < dayEnd;
+      });
+
+      days.push({
+        date: day.toLocaleDateString(undefined, { weekday: "narrow" }),
+        consumed: dayLogs
+          .filter((l) => l.action === "consumed" || l.action === "broken")
+          .reduce((s, l) => s + l.quantity, 0),
+        restocked: dayLogs
+          .filter((l) => l.action === "restocked")
+          .reduce((s, l) => s + l.quantity, 0),
+        created: dayLogs.filter((l) => l.action === "created").length,
+      });
+    }
+    return days;
+  }, [logs]);
+}
+
 function KpiCard({
   index,
   icon,
@@ -53,6 +92,8 @@ function KpiCard({
   value,
   sub,
   tone,
+  sparkData,
+  sparkColor,
   onClick,
 }: {
   index: number;
@@ -61,13 +102,15 @@ function KpiCard({
   value: React.ReactNode;
   sub?: string;
   tone: "teal" | "amber" | "red" | "violet";
+  sparkData: number[];
+  sparkColor: string;
   onClick?: () => void;
 }) {
   const toneClasses = {
-    teal: "from-slate-700 to-slate-900 shadow-[0_8px_20px_-6px_rgba(29,29,31,0.35)]",
+    teal: "from-slate-600 to-graphite shadow-[0_8px_20px_-6px_rgba(42,37,32,0.35)]",
     amber: "from-amber-400 to-orange-500 shadow-[0_8px_20px_-6px_rgba(245,158,11,0.4)]",
     red: "from-rose-400 to-red-500 shadow-[0_8px_20px_-6px_rgba(220,38,38,0.4)]",
-    violet: "from-slate-700 to-slate-900 shadow-[0_8px_20px_-6px_rgba(29,29,31,0.35)]",
+    violet: "from-slate-600 to-graphite shadow-[0_8px_20px_-6px_rgba(42,37,32,0.35)]",
   }[tone];
 
   return (
@@ -83,12 +126,12 @@ function KpiCard({
         >
           {icon}
         </div>
-        {onClick && (
-          <ChevronRight className="h-4 w-4 text-slate-300" />
-        )}
+        <div style={{ color: sparkColor }} className="opacity-80">
+          <Sparkline data={sparkData} width={50} height={20} />
+        </div>
       </div>
       <div className="mt-3">
-        <div className="text-2xl font-bold tabular-nums text-slate-900">
+        <div className="text-2xl font-bold tabular-nums text-graphite">
           {value}
         </div>
         <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -105,6 +148,9 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
   const { chemicals } = useChemicals();
   const { apparatus } = useApparatus();
   const { logs } = useLogs();
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  const dailyData = use7DayData(logs);
 
   const stats = useMemo(() => {
     const lowStock = chemicals.filter(
@@ -127,34 +173,75 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
     };
   }, [chemicals, apparatus, logs]);
 
+  // Sparkline data arrays
+  const chemicalSpark = useMemo(() => {
+    // Cumulative chemicals count over 7 days (approximate from created_at)
+    const now = Date.now();
+    return dailyData.map((_, i) => {
+      const dayEnd = now - (6 - i) * 24 * 60 * 60 * 1000;
+      return chemicals.filter((c) => +new Date(c.created_at) <= dayEnd).length;
+    });
+  }, [chemicals, dailyData]);
+
+  const apparatusSpark = useMemo(() => {
+    const now = Date.now();
+    return dailyData.map((_, i) => {
+      const dayEnd = now - (6 - i) * 24 * 60 * 60 * 1000;
+      return apparatus.filter((a) => +new Date(a.created_at) <= dayEnd).length;
+    });
+  }, [apparatus, dailyData]);
+
+  const lowStockSpark = useMemo(
+    () => dailyData.map((d) => d.consumed + d.created),
+    [dailyData],
+  );
+
+  const consumptionSpark = useMemo(
+    () => dailyData.map((d) => d.consumed),
+    [dailyData],
+  );
+
   const recentLogs = logs.slice(0, 5);
 
   return (
-    <div className="space-y-5 px-4 pt-6 pb-4">
-      {/* Header */}
+    <div className="space-y-5 px-4 pt-6 pb-4 sm:px-6">
+      {/* Header with global search */}
       <motion.header
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="flex items-start justify-between"
+        className="flex items-start justify-between gap-3"
       >
-        <div>
+        <div className="min-w-0 flex-1">
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
             {formatHeaderDate()}
           </p>
-          <h1 className="mt-1 text-2xl font-bold text-slate-900">
+          <h1 className="mt-1 text-2xl font-bold text-graphite">
             {greeting()}, {user?.name?.split(" ")[0] ?? "Researcher"}
           </h1>
         </div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-sm font-bold text-slate-900 shadow-sm ring-1 ring-white/80 backdrop-blur">
-          {user?.name?.charAt(0) ?? "R"}
-        </div>
+        <button
+          onClick={() => setSearchOpen(true)}
+          aria-label="Search"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/70 text-graphite shadow-sm ring-1 ring-white/80 backdrop-blur transition-colors hover:bg-white"
+        >
+          <Search className="h-4 w-4" />
+        </button>
       </motion.header>
+
+      {/* Global search trigger bar (tap to open) */}
+      <button
+        onClick={() => setSearchOpen(true)}
+        className="flex w-full items-center gap-2.5 rounded-xl border border-white/80 bg-white/60 py-3 px-4 text-sm text-slate-400 shadow-sm backdrop-blur transition-colors hover:bg-white/80"
+      >
+        <Search className="h-4 w-4" />
+        Search chemicals & apparatus…
+      </button>
 
       {/* KPI grid */}
       <section
         aria-label="Key metrics"
-        className="grid grid-cols-2 gap-3"
+        className="grid grid-cols-2 gap-3 sm:grid-cols-4"
       >
         <KpiCard
           index={0}
@@ -163,6 +250,8 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
           label="Chemicals"
           value={stats.totalChemicals}
           sub="In inventory"
+          sparkData={chemicalSpark}
+          sparkColor="#2A2520"
           onClick={() => onNavigate("chemicals")}
         />
         <KpiCard
@@ -172,6 +261,8 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
           label="Apparatus"
           value={stats.totalApparatus}
           sub="Tracked items"
+          sparkData={apparatusSpark}
+          sparkColor="#2A2520"
           onClick={() => onNavigate("apparatus")}
         />
         <KpiCard
@@ -181,6 +272,8 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
           label="Low Stock"
           value={stats.lowStock}
           sub="Below 20% remaining"
+          sparkData={lowStockSpark}
+          sparkColor="#F59E0B"
           onClick={() => onNavigate("chemicals")}
         />
         <KpiCard
@@ -190,8 +283,17 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
           label="This Week"
           value={stats.weeklyConsumption}
           sub="Units consumed/broken"
+          sparkData={consumptionSpark}
+          sparkColor="#DC2626"
           onClick={() => onNavigate("reports")}
         />
+      </section>
+
+      {/* 7-Day consumption chart */}
+      <section aria-label="Weekly activity chart">
+        <GlassCard className="p-4 sm:p-5" index={4}>
+          <ConsumptionChart data={dailyData} />
+        </GlassCard>
       </section>
 
       {/* Quick actions */}
@@ -221,20 +323,20 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
           </h2>
           <button
             onClick={() => onNavigate("reports")}
-            className="text-xs font-semibold text-slate-900 hover:text-slate-700"
+            className="text-xs font-semibold text-graphite hover:text-slate-700"
           >
             View all
           </button>
         </div>
 
         {recentLogs.length === 0 ? (
-          <GlassCard className="p-6 text-center" index={4}>
+          <GlassCard className="p-6 text-center" index={5}>
             <p className="text-sm text-slate-500">
               No activity yet. Add or consume something to see it here.
             </p>
           </GlassCard>
         ) : (
-          <GlassCard className="divide-y divide-slate-200/60" index={4}>
+          <GlassCard className="divide-y divide-slate-200/60" index={5}>
             {recentLogs.map((log, i) => {
               const meta = ACTION_META[log.action];
               const isUp = log.action === "restocked" || log.action === "created";
@@ -262,7 +364,7 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold text-slate-900">
+                    <p className="truncate text-sm font-semibold text-graphite">
                       {log.item_name}
                     </p>
                     <p className="text-xs text-slate-500">
@@ -272,7 +374,7 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
                   <div className="flex flex-col items-end gap-1">
                     <Badge tone={meta.tone}>{meta.label}</Badge>
                     {log.quantity > 0 && (
-                      <span className="text-xs tabular-nums text-slate-500">
+                      <span className="font-mono text-xs tabular-nums text-slate-500">
                         {log.quantity}
                         {log.unit ? ` ${log.unit}` : ""}
                       </span>
@@ -314,6 +416,22 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
           </GlassCard>
         </motion.section>
       )}
+
+      {/* Global search overlay */}
+      <GlobalSearch
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        chemicals={chemicals}
+        apparatus={apparatus}
+        onSelectChemical={() => {
+          setSearchOpen(false);
+          onNavigate("chemicals");
+        }}
+        onSelectApparatus={() => {
+          setSearchOpen(false);
+          onNavigate("apparatus");
+        }}
+      />
     </div>
   );
 }

@@ -267,7 +267,7 @@ export function ChemicalDetail({
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
               Current stock
             </p>
-            <p className="mt-0.5 text-2xl font-bold tabular-nums text-slate-900">
+            <p className="mt-0.5 text-2xl font-bold tabular-nums text-graphite">
               {chemical.quantity}{" "}
               <span className="text-base font-normal text-slate-500">
                 {chemical.unit}
@@ -293,7 +293,7 @@ export function ChemicalDetail({
                 step={1}
                 value={amount}
                 onChange={(e) => setAmount(Math.max(0, Number(e.target.value)))}
-                className="flex-1 rounded-xl border border-slate-200 bg-white/80 py-3 text-center text-lg font-bold tabular-nums text-slate-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="flex-1 rounded-xl border border-slate-200 bg-white/80 py-3 text-center text-lg font-bold tabular-nums text-graphite outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
               />
               <button
                 type="button"
@@ -420,7 +420,7 @@ export function ChemicalDetail({
             </button>
             <button
               type="submit"
-              className="flex-1 rounded-xl bg-slate-900 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/30 hover:bg-slate-800"
+              className="flex-1 rounded-xl bg-graphite py-3 text-sm font-semibold text-white shadow-lg shadow-graphite/30 hover:bg-graphite/90"
             >
               Save changes
             </button>
@@ -433,7 +433,7 @@ export function ChemicalDetail({
         <div className="flex flex-col items-center gap-4 py-2">
           <QRGenerator value={chemical.qr_code} size={200} />
           <div className="text-center">
-            <p className="text-sm font-bold text-slate-900">{chemical.name}</p>
+            <p className="text-sm font-bold text-graphite">{chemical.name}</p>
             {chemical.formula && (
               <p className="text-xs text-slate-500">{chemical.formula}</p>
             )}
@@ -443,7 +443,7 @@ export function ChemicalDetail({
           </div>
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-slate-900/30 hover:bg-slate-800"
+            className="flex items-center gap-2 rounded-xl bg-graphite px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-graphite/30 hover:bg-graphite/90"
           >
             Print label
           </button>

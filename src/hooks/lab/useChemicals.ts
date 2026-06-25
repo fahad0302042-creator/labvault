@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 import {
   deleteChemical,
   getChemicals,
@@ -21,6 +22,7 @@ export type ChemicalUpdate = Partial<NewChemical>;
  * CRUD hook for chemicals.
  * Each mutating op also writes a consumption_log entry so the activity
  * feed and reports reflect reality.
+ * Consume + restock show an undo toast for 5 seconds.
  */
 export function useChemicals() {
   const { user } = useAuth();
@@ -34,7 +36,6 @@ export function useChemicals() {
 
   useEffect(() => {
     refresh();
-    // Listen for cross-tab changes
     const handler = () => refresh();
     window.addEventListener("storage", handler);
     return () => window.removeEventListener("storage", handler);
@@ -101,35 +102,77 @@ export function useChemicals() {
     [chemicals, log, refresh],
   );
 
-  /** Consume `amount` units; clamps at 0. */
+  /** Consume `amount` units; clamps at 0. Shows undo toast for 5s. */
   const consume = useCallback(
     (id: string, amount: number, note?: string): void => {
       const current = chemicals.find((c) => c.id === id);
       if (!current) return;
-      const next = {
+      const prevQty = current.quantity;
+      const next: Chemical = {
         ...current,
         quantity: Math.max(0, current.quantity - amount),
       };
       saveChemical(next);
-      log(next, "consumed", amount, note);
+      const logEntry = log(next, "consumed", amount, note);
       refresh();
+
+      // Undo toast
+      toast(`Consumed ${amount} ${current.unit} of ${current.name}`, {
+        action: {
+          label: "Undo",
+          onClick: () => {
+            // Restore previous quantity + remove the log entry
+            const restored: Chemical = { ...current, quantity: prevQty };
+            saveChemical(restored);
+            // Remove the log entry by filtering it out
+            const allLogs = JSON.parse(localStorage.getItem("labvault.logs") || "[]");
+            const filtered = allLogs.filter((l: ConsumptionLog) => l.id !== logEntry.id);
+            localStorage.setItem("labvault.logs", JSON.stringify(filtered));
+            refresh();
+            toast("Consumption undone");
+          },
+        },
+        duration: 5000,
+      });
     },
     [chemicals, log, refresh],
   );
 
-  /** Restock `amount` units (does not change initialQuantity). */
+  /** Restock `amount` units. Shows undo toast for 5s. */
   const restock = useCallback(
     (id: string, amount: number, note?: string): void => {
       const current = chemicals.find((c) => c.id === id);
       if (!current) return;
-      const next = {
+      const prevQty = current.quantity;
+      const prevInitial = current.initialQuantity;
+      const next: Chemical = {
         ...current,
         quantity: current.quantity + amount,
         initialQuantity: Math.max(current.initialQuantity, current.quantity + amount),
       };
       saveChemical(next);
-      log(next, "restocked", amount, note);
+      const logEntry = log(next, "restocked", amount, note);
       refresh();
+
+      toast(`Restocked ${amount} ${current.unit} of ${current.name}`, {
+        action: {
+          label: "Undo",
+          onClick: () => {
+            const restored: Chemical = {
+              ...current,
+              quantity: prevQty,
+              initialQuantity: prevInitial,
+            };
+            saveChemical(restored);
+            const allLogs = JSON.parse(localStorage.getItem("labvault.logs") || "[]");
+            const filtered = allLogs.filter((l: ConsumptionLog) => l.id !== logEntry.id);
+            localStorage.setItem("labvault.logs", JSON.stringify(filtered));
+            refresh();
+            toast("Restock undone");
+          },
+        },
+        duration: 5000,
+      });
     },
     [chemicals, log, refresh],
   );

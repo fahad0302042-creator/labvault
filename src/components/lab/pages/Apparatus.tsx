@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Search, Beaker } from "lucide-react";
+import { Search, Beaker, Plus } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useApparatus } from "@/hooks/lab/useApparatus";
 import { GlassCard } from "@/components/lab/shared/GlassCard";
@@ -66,13 +66,22 @@ export function ApparatusPage({
     <div className="px-4 pt-6 pb-4">
       <header className="mb-4 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Apparatus</h1>
+          <h1 className="text-2xl font-bold text-graphite">Apparatus</h1>
           <p className="text-sm text-slate-500">
             {apparatus.length} item{apparatus.length === 1 ? "" : "s"} tracked
           </p>
         </div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 text-white shadow-md">
-          <Beaker className="h-5 w-5" />
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-600 to-graphite text-white shadow-md sm:hidden">
+            <Beaker className="h-5 w-5" />
+          </div>
+          <button
+            onClick={() => setAddOpen(true)}
+            className="hidden items-center gap-2 rounded-xl bg-graphite px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-colors hover:bg-graphite/90 sm:flex"
+          >
+            <Plus className="h-4 w-4" />
+            Add Apparatus
+          </button>
         </div>
       </header>
 
@@ -82,7 +91,7 @@ export function ApparatusPage({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by name or category…"
-          className="w-full rounded-xl border border-white/80 bg-white/70 py-3 pl-10 pr-3 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm outline-none backdrop-blur focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+          className="w-full rounded-xl border border-white/80 bg-white/70 py-3 pl-10 pr-3 text-sm text-graphite placeholder:text-slate-400 shadow-sm outline-none backdrop-blur focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
         />
       </div>
 
@@ -94,7 +103,7 @@ export function ApparatusPage({
             onClick={() => setFilter(f as ApparatusCategory | "all")}
             className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold capitalize transition-colors ${
               filter === f
-                ? "bg-slate-900 text-white shadow-sm"
+                ? "bg-graphite text-white shadow-sm"
                 : "bg-white/70 text-slate-600 ring-1 ring-inset ring-white/80 backdrop-blur hover:bg-white"
             }`}
           >
@@ -114,7 +123,7 @@ export function ApparatusPage({
           }
         />
       ) : (
-        <ul className="space-y-3">
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <AnimatePresence initial={false}>
             {filtered.map((a, i) => {
               const pct =
@@ -141,7 +150,7 @@ export function ApparatusPage({
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0 flex-1">
-                        <h3 className="truncate text-base font-bold text-slate-900">
+                        <h3 className="truncate text-base font-bold text-graphite">
                           {a.name}
                         </h3>
                         <p className="text-xs text-slate-500">
@@ -155,7 +164,7 @@ export function ApparatusPage({
                         max={a.initialQuantity}
                         className="flex-1"
                       />
-                      <span className="text-sm font-bold tabular-nums text-slate-900">
+                      <span className="text-sm font-bold tabular-nums text-graphite">
                         {a.quantity}
                         <span className="ml-1 text-xs font-normal text-slate-400">
                           / {a.initialQuantity}

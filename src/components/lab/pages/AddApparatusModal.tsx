@@ -72,7 +72,7 @@ export function AddApparatusModal({
           <button
             type="submit"
             form="add-apparatus-form"
-            className="flex-1 rounded-xl bg-slate-900 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/30 hover:bg-slate-800"
+            className="flex-1 rounded-xl bg-graphite py-3 text-sm font-semibold text-white shadow-lg shadow-graphite/30 hover:bg-graphite/90"
           >
             Add to inventory
           </button>
@@ -84,7 +84,7 @@ export function AddApparatusModal({
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
             <Beaker className="h-5 w-5" />
           </div>
-          <div className="flex-1 text-sm text-slate-900">
+          <div className="flex-1 text-sm text-graphite">
             <p className="font-semibold">New apparatus entry</p>
             <p className="text-xs text-slate-700">
               Glassware, balances, heaters — anything reusable.

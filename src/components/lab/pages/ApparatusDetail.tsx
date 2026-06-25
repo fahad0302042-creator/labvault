@@ -174,7 +174,7 @@ export function ApparatusDetail({
           <button
             type="submit"
             form="edit-apparatus-form"
-            className="flex-1 rounded-xl bg-slate-900 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/30 hover:bg-slate-800"
+            className="flex-1 rounded-xl bg-graphite py-3 text-sm font-semibold text-white shadow-lg shadow-graphite/30 hover:bg-graphite/90"
           >
             Save changes
           </button>
@@ -379,7 +379,7 @@ export function ApparatusDetail({
                 min={1}
                 value={amount}
                 onChange={(e) => setAmount(Math.max(1, Number(e.target.value)))}
-                className="flex-1 rounded-xl border border-slate-200 bg-white/80 py-3 text-center text-lg font-bold tabular-nums text-slate-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="flex-1 rounded-xl border border-slate-200 bg-white/80 py-3 text-center text-lg font-bold tabular-nums text-graphite outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
               />
               <button
                 type="button"
@@ -478,7 +478,7 @@ export function ApparatusDetail({
         <div className="flex flex-col items-center gap-4 py-2">
           <QRGenerator value={apparatus.qr_code} size={200} />
           <div className="text-center">
-            <p className="text-sm font-bold text-slate-900">{apparatus.name}</p>
+            <p className="text-sm font-bold text-graphite">{apparatus.name}</p>
             <p className="text-xs capitalize text-slate-500">{apparatus.category}</p>
             <p className="mt-1 break-all font-mono text-[10px] text-slate-400">
               {apparatus.qr_code}
@@ -486,7 +486,7 @@ export function ApparatusDetail({
           </div>
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-slate-900/30 hover:bg-slate-800"
+            className="flex items-center gap-2 rounded-xl bg-graphite px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-graphite/30 hover:bg-graphite/90"
           >
             Print label
           </button>

@@ -46,10 +46,10 @@ export function Login() {
         >
           {/* Brand */}
           <div className="mb-8 flex flex-col items-center text-center">
-            <div className="relative mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-slate-800 to-slate-950 shadow-[0_8px_24px_-6px_rgba(29,29,31,0.45)]">
+            <div className="relative mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-graphite to-graphite/90 shadow-[0_8px_24px_-6px_rgba(42,37,32,0.45)]">
               <FlaskConical className="h-8 w-8 text-white" strokeWidth={2.2} />
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-2xl font-bold tracking-tight text-graphite">
               LabVault
             </h1>
             <p className="mt-1 text-sm text-slate-500">
@@ -76,7 +76,7 @@ export function Login() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 bg-white/80 py-3 pl-10 pr-3 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm outline-none transition-all focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                    className="w-full rounded-xl border border-slate-200 bg-white/80 py-3 pl-10 pr-3 text-sm text-graphite placeholder:text-slate-400 shadow-sm outline-none transition-all focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
                     placeholder="you@lab.com"
                   />
                 </div>
@@ -98,7 +98,7 @@ export function Login() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 bg-white/80 py-3 pl-10 pr-3 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm outline-none transition-all focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                    className="w-full rounded-xl border border-slate-200 bg-white/80 py-3 pl-10 pr-3 text-sm text-graphite placeholder:text-slate-400 shadow-sm outline-none transition-all focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
                     placeholder="••••••••"
                   />
                 </div>
@@ -117,7 +117,7 @@ export function Login() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 py-3.5 text-sm font-semibold text-white shadow-[0_8px_20px_-4px_rgba(29,29,31,0.4)] transition-all hover:bg-slate-800 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
+                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-graphite py-3.5 text-sm font-semibold text-white shadow-[0_8px_20px_-4px_rgba(42,37,32,0.4)] transition-all hover:bg-graphite/90 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {submitting ? (
                   <>
@@ -138,7 +138,7 @@ export function Login() {
                 Got a team invite link?{" "}
                 <button
                   type="button"
-                  className="font-semibold text-slate-900 hover:text-slate-700 underline-offset-2 hover:underline"
+                  className="font-semibold text-graphite hover:text-slate-700 underline-offset-2 hover:underline"
                   onClick={() => {
                     setEmail("teammate@labvault.app");
                     setPassword("");

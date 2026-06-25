@@ -15,6 +15,7 @@ import {
 import { useMemo, useState } from "react";
 import { useChemicals } from "@/hooks/lab/useChemicals";
 import { useApparatus } from "@/hooks/lab/useApparatus";
+import { useRecentlyScanned } from "@/hooks/lab/useRecentlyScanned";
 import { findByQr } from "@/lib/lab/storage";
 import type { Chemical, Apparatus } from "@/lib/lab/types";
 import { GlassCard } from "@/components/lab/shared/GlassCard";
@@ -37,6 +38,7 @@ type ScannerProps = {
 export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
   const { chemicals, consume, restock } = useChemicals();
   const { apparatus, logBreakage, restock: restockApparatus } = useApparatus();
+  const { recent, addScan } = useRecentlyScanned();
 
   const [mode, setMode] = useState<Mode>("idle");
   const [result, setResult] = useState<ScanResult>(null);
@@ -79,6 +81,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
       if (found) {
         setResult(found);
         setMode("found");
+        addScan({ id: found.item.id, type: found.type, name: found.item.name });
       } else {
         setMode("notFound");
       }
@@ -123,24 +126,25 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
     setResult(sel);
     setMode("found");
     setSearch("");
+    addScan({ id: sel.item.id, type: sel.type, name: sel.item.name });
   }
 
   return (
     <div className="px-4 pt-6 pb-4">
       <header className="mb-4 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Scanner</h1>
+          <h1 className="text-2xl font-bold text-graphite">Scanner</h1>
           <p className="text-sm text-slate-500">
             Scan an item's QR to log activity
           </p>
         </div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 text-white shadow-md">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-600 to-graphite text-white shadow-md">
           <ScanLine className="h-5 w-5" />
         </div>
       </header>
 
       {/* Camera viewport */}
-      <div className="relative mb-5 aspect-square w-full overflow-hidden rounded-3xl border border-white/80 bg-slate-900 shadow-lg">
+      <div className="relative mb-5 aspect-square w-full overflow-hidden rounded-3xl border border-white/80 bg-graphite shadow-lg">
         {/* Mock camera background — animated gradient simulating low-light camera feed */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800" />
         <div className="blob-1 absolute -top-20 -left-20 h-60 w-60 rounded-full bg-white/5 blur-2xl" />
@@ -220,7 +224,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
           <div className="absolute inset-x-0 bottom-4 flex justify-center">
             <button
               onClick={startScan}
-              className="flex items-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-slate-900/40 transition-all hover:bg-slate-800 active:scale-95"
+              className="flex items-center gap-2 rounded-full bg-graphite px-6 py-3 text-sm font-bold text-white shadow-lg shadow-graphite/40 transition-all hover:bg-graphite/90 active:scale-95"
             >
               <ScanLine className="h-5 w-5" />
               Start scanning
@@ -260,6 +264,40 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
         )}
       </AnimatePresence>
 
+      {/* Recently scanned chips */}
+      {mode !== "scanning" && mode !== "found" && recent.length > 0 && (
+        <div className="mb-5">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Recently scanned
+          </p>
+          <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1">
+            {recent.map((r) => {
+              const item = r.type === "chemical"
+                ? chemicals.find((c) => c.id === r.id)
+                : apparatus.find((a) => a.id === r.id);
+              if (!item) return null;
+              return (
+                <button
+                  key={r.id}
+                  onClick={() =>
+                    handleManualSelect({
+                      type: r.type,
+                      item,
+                    } as { type: "chemical"; item: Chemical } | { type: "apparatus"; item: Apparatus })
+                  }
+                  className="flex shrink-0 items-center gap-2 rounded-full border border-white/80 bg-white/70 px-3 py-1.5 text-xs font-semibold text-graphite shadow-sm backdrop-blur transition-colors hover:bg-white"
+                >
+                  <span className="text-slate-400">
+                    {r.type === "chemical" ? "🧪" : "⚗️"}
+                  </span>
+                  <span className="max-w-[120px] truncate">{r.name}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Manual lookup */}
       {mode !== "scanning" && mode !== "found" && (
         <div>
@@ -269,7 +307,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Or search by name…"
-              className="w-full rounded-xl border border-white/80 bg-white/70 py-3 pl-10 pr-3 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm outline-none backdrop-blur focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-white/80 bg-white/70 py-3 pl-10 pr-3 text-sm text-graphite placeholder:text-slate-400 shadow-sm outline-none backdrop-blur focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             />
           </div>
 
@@ -298,7 +336,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="truncate text-sm font-semibold text-slate-900">
+                        <p className="truncate text-sm font-semibold text-graphite">
                           {item.name}
                         </p>
                         <p className="text-xs text-slate-500">
@@ -330,12 +368,12 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
           <Printer className="h-5 w-5" />
         </div>
         <div className="flex-1">
-          <p className="text-sm font-bold text-slate-900">Print QR labels</p>
+          <p className="text-sm font-bold text-graphite">Print QR labels</p>
           <p className="text-xs text-slate-500">
             All {chemicals.length + apparatus.length} items on one A4 sheet
           </p>
         </div>
-        <span className="text-xs font-semibold text-slate-900">Print</span>
+        <span className="text-xs font-semibold text-graphite">Print</span>
       </GlassCard>
 
       {/* Hidden print sheet */}
@@ -401,11 +439,11 @@ function ScanResultCard({
         </span>
         <Badge tone={isChemical ? "slate" : "slate"}>{result.type}</Badge>
       </div>
-      <h3 className="mt-2 text-lg font-bold text-slate-900">{item.name}</h3>
+      <h3 className="mt-2 text-lg font-bold text-graphite">{item.name}</h3>
       <div className="mt-3">
         <div className="flex justify-between text-xs text-slate-500">
           <span>Stock</span>
-          <span className="font-bold tabular-nums text-slate-900">
+          <span className="font-bold tabular-nums text-graphite">
             {quantity} / {initialQuantity} {unit}
           </span>
         </div>

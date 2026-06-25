@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 import {
   deleteApparatus,
   getApparatus,
@@ -90,33 +91,72 @@ export function useApparatus() {
     [apparatus, log, refresh],
   );
 
-  /** Log a breakage: reduce quantity by 1. */
+  /** Log a breakage: reduce quantity by 1. Shows undo toast for 5s. */
   const logBreakage = useCallback(
     (id: string, note?: string): void => {
       const current = apparatus.find((a) => a.id === id);
       if (!current) return;
+      const prevQty = current.quantity;
       const newQty = Math.max(0, current.quantity - 1);
       const next: Apparatus = { ...current, quantity: newQty };
       saveApparatus(next);
-      log(next, "broken", 1, note);
+      const logEntry = log(next, "broken", 1, note);
       refresh();
+
+      toast(`Logged breakage of ${current.name}`, {
+        action: {
+          label: "Undo",
+          onClick: () => {
+            const restored: Apparatus = { ...current, quantity: prevQty };
+            saveApparatus(restored);
+            const allLogs = JSON.parse(localStorage.getItem("labvault.logs") || "[]");
+            const filtered = allLogs.filter((l: ConsumptionLog) => l.id !== logEntry.id);
+            localStorage.setItem("labvault.logs", JSON.stringify(filtered));
+            refresh();
+            toast("Breakage undone");
+          },
+        },
+        duration: 5000,
+      });
     },
     [apparatus, log, refresh],
   );
 
-  /** Restock (add) units. */
+  /** Restock (add) units. Shows undo toast for 5s. */
   const restock = useCallback(
     (id: string, amount: number, note?: string): void => {
       const current = apparatus.find((a) => a.id === id);
       if (!current) return;
+      const prevQty = current.quantity;
+      const prevInitial = current.initialQuantity;
       const next: Apparatus = {
         ...current,
         quantity: current.quantity + amount,
         initialQuantity: Math.max(current.initialQuantity, current.quantity + amount),
       };
       saveApparatus(next);
-      log(next, "restocked", amount, note);
+      const logEntry = log(next, "restocked", amount, note);
       refresh();
+
+      toast(`Restocked ${amount} × ${current.name}`, {
+        action: {
+          label: "Undo",
+          onClick: () => {
+            const restored: Apparatus = {
+              ...current,
+              quantity: prevQty,
+              initialQuantity: prevInitial,
+            };
+            saveApparatus(restored);
+            const allLogs = JSON.parse(localStorage.getItem("labvault.logs") || "[]");
+            const filtered = allLogs.filter((l: ConsumptionLog) => l.id !== logEntry.id);
+            localStorage.setItem("labvault.logs", JSON.stringify(filtered));
+            refresh();
+            toast("Restock undone");
+          },
+        },
+        duration: 5000,
+      });
     },
     [apparatus, log, refresh],
   );

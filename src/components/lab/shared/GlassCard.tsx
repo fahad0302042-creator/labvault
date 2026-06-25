@@ -42,7 +42,7 @@ export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
         className={cn(
           "rounded-2xl border border-white/80 bg-white/60 backdrop-blur-xl shadow-[0_2px_12px_-2px_rgba(15,23,42,0.08),0_8px_24px_-8px_rgba(15,23,42,0.06)]",
           interactive &&
-            "transition-shadow hover:shadow-[0_4px_16px_-2px_rgba(15,23,42,0.12),0_12px_32px_-8px_rgba(14,165,233,0.12)] cursor-pointer",
+            "transition-shadow hover:shadow-[0_4px_16px_-2px_rgba(15,23,42,0.12),0_12px_32px_-8px_rgba(42,37,32,0.12)] cursor-pointer",
           className
         )}
         {...motionProps}
