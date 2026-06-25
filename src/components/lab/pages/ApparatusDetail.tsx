@@ -7,7 +7,6 @@ import {
   Pencil,
   Trash2,
   History,
-  QrCode,
   Check,
   PackagePlus,
   AlertOctagon,
@@ -19,7 +18,6 @@ import { useLogs } from "@/hooks/lab/useLogs";
 import { Modal } from "@/components/lab/shared/Modal";
 import { Badge } from "@/components/lab/shared/Badge";
 import { StockBar } from "@/components/lab/shared/StockBar";
-import { QRGenerator } from "@/components/lab/qr/QRGenerator";
 
 const CATEGORIES: ApparatusCategory[] = [
   "glassware",
@@ -39,7 +37,7 @@ type ApparatusDetailProps = {
   onDelete: (id: string) => void;
 };
 
-type Mode = "view" | "edit" | "restock" | "breakage" | "qr";
+type Mode = "view" | "edit" | "restock" | "breakage";
 
 export function ApparatusDetail({
   apparatus,
@@ -248,7 +246,7 @@ export function ApparatusDetail({
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-3 gap-3">
             <ActionButton
               tone="red"
               icon={<AlertOctagon className="h-5 w-5" />}
@@ -262,13 +260,6 @@ export function ApparatusDetail({
               label="Restock"
               sub="+N units"
               onClick={() => setMode("restock")}
-            />
-            <ActionButton
-              tone="teal"
-              icon={<QrCode className="h-5 w-5" />}
-              label="Show QR"
-              sub="Print label"
-              onClick={() => setMode("qr")}
             />
             <ActionButton
               tone="slate"
@@ -474,24 +465,6 @@ export function ApparatusDetail({
         </form>
       )}
 
-      {mode === "qr" && (
-        <div className="flex flex-col items-center gap-4 py-2">
-          <QRGenerator value={apparatus.qr_code} size={200} />
-          <div className="text-center">
-            <p className="text-sm font-bold text-graphite">{apparatus.name}</p>
-            <p className="text-xs capitalize text-slate-500">{apparatus.category}</p>
-            <p className="mt-1 break-all font-mono text-[10px] text-slate-400">
-              {apparatus.qr_code}
-            </p>
-          </div>
-          <button
-            onClick={() => window.print()}
-            className="flex items-center gap-2 rounded-xl bg-graphite px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-graphite/30 hover:bg-graphite/90"
-          >
-            Print label
-          </button>
-        </div>
-      )}
     </Modal>
   );
 }

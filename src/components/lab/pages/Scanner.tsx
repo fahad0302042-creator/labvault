@@ -69,15 +69,15 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
   function startScan() {
     setMode("scanning");
     setResult(null);
-    // Simulate camera scan: after 2.5s, "find" a random item
+    // Simulate camera scan: after 2.5s, "find" a random chemical by its QR.
+    // Apparatus doesn't have QR codes — only chemicals do.
     setTimeout(() => {
-      if (allItems.length === 0) {
+      if (chemicals.length === 0) {
         setMode("notFound");
         return;
       }
-      // Try to find by random QR (works because we're using mock storage)
-      const pick = allItems[Math.floor(Math.random() * allItems.length)];
-      const found = findByQr(pick.item.qr_code);
+      const pick = chemicals[Math.floor(Math.random() * chemicals.length)];
+      const found = findByQr(pick.qr_code);
       if (found) {
         setResult(found);
         setMode("found");
@@ -368,16 +368,16 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
           <Printer className="h-5 w-5" />
         </div>
         <div className="flex-1">
-          <p className="text-sm font-bold text-graphite">Print QR labels</p>
+          <p className="text-sm font-bold text-graphite">Print chemical QR labels</p>
           <p className="text-xs text-slate-500">
-            All {chemicals.length + apparatus.length} items on one A4 sheet
+            {chemicals.length} chemical{chemicals.length === 1 ? "" : "s"} · A4 sheet for box stickers
           </p>
         </div>
         <span className="text-xs font-semibold text-graphite">Print</span>
       </GlassCard>
 
       {/* Hidden print sheet */}
-      <QrPrintSheet chemicals={chemicals} apparatus={apparatus} />
+      <QrPrintSheet chemicals={chemicals} />
     </div>
   );
 }

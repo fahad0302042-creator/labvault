@@ -6,12 +6,13 @@ import {
   deleteApparatus,
   getApparatus,
   pushLog,
+  removeLog,
   saveApparatus,
 } from "@/lib/lab/storage";
 import type { Apparatus, ConsumptionLog, LogAction } from "@/lib/lab/types";
 import { useAuth } from "@/context/AuthContext";
 
-export type NewApparatus = Omit<Apparatus, "id" | "qr_code" | "created_at">;
+export type NewApparatus = Omit<Apparatus, "id" | "created_at">;
 export type ApparatusUpdate = Partial<NewApparatus>;
 
 export function useApparatus() {
@@ -57,7 +58,7 @@ export function useApparatus() {
       const a: Apparatus = {
         ...input,
         id: crypto.randomUUID(),
-        qr_code: crypto.randomUUID(),
+        // Note: apparatus doesn't get a QR code — only chemicals do
         created_at: new Date().toISOString(),
       };
       saveApparatus(a);
@@ -109,9 +110,7 @@ export function useApparatus() {
           onClick: () => {
             const restored: Apparatus = { ...current, quantity: prevQty };
             saveApparatus(restored);
-            const allLogs = JSON.parse(localStorage.getItem("labvault.logs") || "[]");
-            const filtered = allLogs.filter((l: ConsumptionLog) => l.id !== logEntry.id);
-            localStorage.setItem("labvault.logs", JSON.stringify(filtered));
+            removeLog(logEntry.id);
             refresh();
             toast("Breakage undone");
           },
@@ -148,9 +147,7 @@ export function useApparatus() {
               initialQuantity: prevInitial,
             };
             saveApparatus(restored);
-            const allLogs = JSON.parse(localStorage.getItem("labvault.logs") || "[]");
-            const filtered = allLogs.filter((l: ConsumptionLog) => l.id !== logEntry.id);
-            localStorage.setItem("labvault.logs", JSON.stringify(filtered));
+            removeLog(logEntry.id);
             refresh();
             toast("Restock undone");
           },

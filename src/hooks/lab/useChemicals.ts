@@ -6,6 +6,7 @@ import {
   deleteChemical,
   getChemicals,
   pushLog,
+  removeLog,
   saveChemical,
 } from "@/lib/lab/storage";
 import type { Chemical, ConsumptionLog, LogAction } from "@/lib/lab/types";
@@ -121,13 +122,9 @@ export function useChemicals() {
         action: {
           label: "Undo",
           onClick: () => {
-            // Restore previous quantity + remove the log entry
             const restored: Chemical = { ...current, quantity: prevQty };
             saveChemical(restored);
-            // Remove the log entry by filtering it out
-            const allLogs = JSON.parse(localStorage.getItem("labvault.logs") || "[]");
-            const filtered = allLogs.filter((l: ConsumptionLog) => l.id !== logEntry.id);
-            localStorage.setItem("labvault.logs", JSON.stringify(filtered));
+            removeLog(logEntry.id);
             refresh();
             toast("Consumption undone");
           },
@@ -164,9 +161,7 @@ export function useChemicals() {
               initialQuantity: prevInitial,
             };
             saveChemical(restored);
-            const allLogs = JSON.parse(localStorage.getItem("labvault.logs") || "[]");
-            const filtered = allLogs.filter((l: ConsumptionLog) => l.id !== logEntry.id);
-            localStorage.setItem("labvault.logs", JSON.stringify(filtered));
+            removeLog(logEntry.id);
             refresh();
             toast("Restock undone");
           },

@@ -18,6 +18,7 @@ create table if not exists public.chemicals (
 );
 
 -- ---------- Apparatus ----------
+-- Note: apparatus does NOT have QR codes — only chemicals do.
 create table if not exists public.apparatus (
   id               uuid primary key default gen_random_uuid(),
   name             text not null,
@@ -25,7 +26,6 @@ create table if not exists public.apparatus (
   quantity         integer not null default 0,
   initial_quantity integer not null default 0,
   notes            text,
-  qr_code          text unique not null default gen_random_uuid(),
   created_at       timestamptz not null default now(),
   created_by       uuid references auth.users(id)
 );

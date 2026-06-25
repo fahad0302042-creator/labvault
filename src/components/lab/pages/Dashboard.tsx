@@ -12,12 +12,15 @@ import {
   ArrowUpRight,
   AlertCircle,
   Search,
+  Trash2,
 } from "lucide-react";
 import { useMemo, useState } from "react";
+import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
 import { useChemicals } from "@/hooks/lab/useChemicals";
 import { useApparatus } from "@/hooks/lab/useApparatus";
 import { useLogs } from "@/hooks/lab/useLogs";
+import { clearAllData } from "@/lib/lab/storage";
 import { GlassCard } from "@/components/lab/shared/GlassCard";
 import { Badge } from "@/components/lab/shared/Badge";
 import { Sparkline } from "@/components/lab/shared/Sparkline";
@@ -145,9 +148,9 @@ function KpiCard({
 
 export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProps) {
   const { user } = useAuth();
-  const { chemicals } = useChemicals();
-  const { apparatus } = useApparatus();
-  const { logs } = useLogs();
+  const { chemicals, refresh: refreshChemicals } = useChemicals();
+  const { apparatus, refresh: refreshApparatus } = useApparatus();
+  const { logs, refresh: refreshLogs } = useLogs();
   const [searchOpen, setSearchOpen] = useState(false);
 
   const dailyData = use7DayData(logs);
@@ -415,6 +418,34 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
             <ChevronRight className="h-4 w-4 text-amber-400" />
           </GlassCard>
         </motion.section>
+      )}
+
+      {/* Clear all data — for testing / resetting */}
+      {chemicals.length === 0 && apparatus.length === 0 && logs.length === 0 ? (
+        <GlassCard className="p-4 text-center" enter={false}>
+          <p className="text-sm font-semibold text-graphite">
+            Welcome to LabVault
+          </p>
+          <p className="mt-1 text-xs text-slate-500">
+            Your inventory is empty. Tap "Add Chemical" or "Add Apparatus" above to get started.
+          </p>
+        </GlassCard>
+      ) : (
+        <button
+          onClick={() => {
+            if (confirm("Clear ALL inventory data? This removes every chemical, apparatus, and log. This cannot be undone.")) {
+              clearAllData();
+              refreshChemicals();
+              refreshApparatus();
+              refreshLogs();
+              toast("All inventory data cleared");
+            }
+          }}
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50/40 py-2.5 text-xs font-semibold text-red-600 transition-colors hover:bg-red-100"
+        >
+          <Trash2 className="h-3.5 w-3.5" />
+          Clear all inventory data
+        </button>
       )}
 
       {/* Global search overlay */}

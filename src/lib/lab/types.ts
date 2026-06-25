@@ -33,10 +33,11 @@ export type Apparatus = {
   category: ApparatusCategory;
   quantity: number;
   initialQuantity: number;
-  /** @deprecated Kept for backward-compat with old seed data; new apparatus don't track condition. */
+  /** @deprecated Apparatus no longer gets QR codes — only chemicals do. */
   condition?: ApparatusCondition;
+  /** @deprecated Apparatus no longer gets QR codes. Kept for backward-compat with old seed data. */
+  qr_code?: string;
   notes?: string;
-  qr_code: string;
   created_at: string;
 };
 
