@@ -11,14 +11,9 @@ import {
   Check,
   PackagePlus,
   AlertOctagon,
-  Beaker,
 } from "lucide-react";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
-import type {
-  Apparatus,
-  ApparatusCategory,
-  ApparatusCondition,
-} from "@/lib/lab/types";
+import type { Apparatus, ApparatusCategory } from "@/lib/lab/types";
 import { formatRelative } from "@/lib/lab/types";
 import { useLogs } from "@/hooks/lab/useLogs";
 import { Modal } from "@/components/lab/shared/Modal";
@@ -33,19 +28,6 @@ const CATEGORIES: ApparatusCategory[] = [
   "measurement",
   "other",
 ];
-const CONDITIONS: ApparatusCondition[] = ["good", "damaged", "broken"];
-
-const CONDITION_TONE = {
-  good: "green",
-  damaged: "amber",
-  broken: "red",
-} as const;
-
-const CONDITION_LABEL = {
-  good: "Good",
-  damaged: "Damaged",
-  broken: "Broken",
-} as const;
 
 type ApparatusDetailProps = {
   apparatus: Apparatus | null;
@@ -119,7 +101,6 @@ export function ApparatusDetail({
       category: form.category,
       quantity: Number(form.quantity),
       initialQuantity: Number(form.initialQuantity),
-      condition: form.condition,
       notes: form.notes,
     });
     setMode("view");
@@ -138,6 +119,71 @@ export function ApparatusDetail({
     setTimeout(() => setTickShown(false), 800);
   }
 
+  // Compute the footer content based on mode — so Cancel/Submit are always visible
+  function getFooter() {
+    if (mode === "breakage") {
+      return (
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={() => setMode("view")}
+            className="flex-1 rounded-xl bg-slate-100 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-200"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="flex-1 rounded-xl bg-red-500 py-3 text-sm font-semibold text-white shadow-lg shadow-red-500/30 hover:bg-red-400"
+          >
+            Log breakage
+          </button>
+        </div>
+      );
+    }
+    if (mode === "restock") {
+      return (
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={() => setMode("view")}
+            className="flex-1 rounded-xl bg-slate-100 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-200"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="flex-1 rounded-xl bg-emerald-500 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-400"
+          >
+            Confirm restock
+          </button>
+        </div>
+      );
+    }
+    if (mode === "edit") {
+      return (
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={() => setMode("view")}
+            className="flex-1 rounded-xl bg-slate-100 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-200"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            form="edit-apparatus-form"
+            className="flex-1 rounded-xl bg-slate-900 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/30 hover:bg-slate-800"
+          >
+            Save changes
+          </button>
+        </div>
+      );
+    }
+    return null;
+  }
+
   return (
     <Modal
       open={open}
@@ -149,6 +195,7 @@ export function ApparatusDetail({
           ? `${apparatus.category} · ${apparatus.quantity} of ${apparatus.initialQuantity} units`
           : undefined
       }
+      footer={getFooter()}
     >
       {tickShown && (
         <motion.div
@@ -170,12 +217,9 @@ export function ApparatusDetail({
 
       {mode === "view" && (
         <div className="space-y-5">
-          <div className="flex items-center justify-between">
+          <div>
             <Badge tone="slate" className="capitalize">
               {apparatus.category}
-            </Badge>
-            <Badge tone={CONDITION_TONE[apparatus.condition]} dot>
-              {CONDITION_LABEL[apparatus.condition]}
             </Badge>
           </div>
 
@@ -304,21 +348,6 @@ export function ApparatusDetail({
               className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-red-400 focus:ring-2 focus:ring-red-200"
             />
           </div>
-
-          <div className="flex gap-3">
-            <button
-              onClick={() => setMode("view")}
-              className="flex-1 rounded-xl bg-slate-100 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-200"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleSubmit}
-              className="flex-1 rounded-xl bg-red-500 py-3 text-sm font-semibold text-white shadow-lg shadow-red-500/30 hover:bg-red-400"
-            >
-              Log breakage
-            </button>
-          </div>
         </div>
       )}
 
@@ -374,26 +403,11 @@ export function ApparatusDetail({
               className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-200"
             />
           </div>
-
-          <div className="flex gap-3">
-            <button
-              onClick={() => setMode("view")}
-              className="flex-1 rounded-xl bg-slate-100 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-200"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleSubmit}
-              className="flex-1 rounded-xl bg-emerald-500 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-400"
-            >
-              Confirm restock
-            </button>
-          </div>
         </div>
       )}
 
       {mode === "edit" && form && (
-        <form onSubmit={handleSaveEdit} className="space-y-4">
+        <form id="edit-apparatus-form" onSubmit={handleSaveEdit} className="space-y-4">
           <Field label="Name">
             <input
               required
@@ -402,44 +416,24 @@ export function ApparatusDetail({
               className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             />
           </Field>
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="Category">
-              <select
-                value={form.category}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    category: e.target.value as ApparatusCategory,
-                  })
-                }
-                className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm capitalize outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
-              >
-                {CATEGORIES.map((c) => (
-                  <option key={c} value={c} className="capitalize">
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </Field>
-            <Field label="Condition">
-              <select
-                value={form.condition}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    condition: e.target.value as ApparatusCondition,
-                  })
-                }
-                className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm capitalize outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
-              >
-                {CONDITIONS.map((c) => (
-                  <option key={c} value={c} className="capitalize">
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </Field>
-          </div>
+          <Field label="Category">
+            <select
+              value={form.category}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  category: e.target.value as ApparatusCategory,
+                })
+              }
+              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm capitalize outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+            >
+              {CATEGORIES.map((c) => (
+                <option key={c} value={c} className="capitalize">
+                  {c}
+                </option>
+              ))}
+            </select>
+          </Field>
           <div className="grid grid-cols-2 gap-3">
             <Field label="Quantity">
               <input
@@ -477,21 +471,6 @@ export function ApparatusDetail({
               className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             />
           </Field>
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={() => setMode("view")}
-              className="flex-1 rounded-xl bg-slate-100 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-200"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="flex-1 rounded-xl bg-slate-900 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/30 hover:bg-slate-800"
-            >
-              Save changes
-            </button>
-          </div>
         </form>
       )}
 

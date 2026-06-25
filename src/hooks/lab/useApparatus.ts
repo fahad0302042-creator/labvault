@@ -90,15 +90,13 @@ export function useApparatus() {
     [apparatus, log, refresh],
   );
 
-  /** Log a breakage: reduce quantity by 1 and mark condition if all units broken. */
+  /** Log a breakage: reduce quantity by 1. */
   const logBreakage = useCallback(
     (id: string, note?: string): void => {
       const current = apparatus.find((a) => a.id === id);
       if (!current) return;
       const newQty = Math.max(0, current.quantity - 1);
-      const condition =
-        newQty === 0 ? "broken" : current.condition === "good" ? "damaged" : current.condition;
-      const next: Apparatus = { ...current, quantity: newQty, condition };
+      const next: Apparatus = { ...current, quantity: newQty };
       saveApparatus(next);
       log(next, "broken", 1, note);
       refresh();
@@ -115,7 +113,6 @@ export function useApparatus() {
         ...current,
         quantity: current.quantity + amount,
         initialQuantity: Math.max(current.initialQuantity, current.quantity + amount),
-        condition: current.condition === "broken" ? "good" : current.condition,
       };
       saveApparatus(next);
       log(next, "restocked", amount, note);

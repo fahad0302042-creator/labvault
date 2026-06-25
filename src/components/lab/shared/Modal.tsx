@@ -26,6 +26,11 @@ const SIZE_CLASSES = {
 /**
  * Bottom-sheet-style modal on mobile, centered on desktop.
  * Frosted backdrop, glass panel.
+ *
+ * Layout: flexbox column with a STICKY HEADER (close button always visible)
+ * and a STICKY FOOTER (action buttons always visible), and a scrollable
+ * middle region for the form/content. This way the user can always reach
+ * Cancel and Close without scrolling, even on a tall form on a short phone.
  */
 export function Modal({
   open,
@@ -74,8 +79,7 @@ export function Modal({
             aria-modal="true"
             aria-label={title}
             className={cn(
-              "relative w-full rounded-t-3xl sm:rounded-3xl border border-white/80 bg-white/85 backdrop-blur-2xl shadow-2xl",
-              "max-h-[92vh] overflow-y-auto no-scrollbar",
+              "relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/80 bg-white/90 backdrop-blur-2xl shadow-2xl",
               SIZE_CLASSES[size]
             )}
             initial={{ y: "100%", opacity: 0.6, scale: 0.98 }}
@@ -84,34 +88,54 @@ export function Modal({
             transition={{ type: "spring", stiffness: 320, damping: 32 }}
           >
             {/* Drag handle (mobile) */}
-            <div className="flex justify-center pt-3 sm:hidden">
+            <div className="flex shrink-0 justify-center pt-3 sm:hidden">
               <div className="h-1.5 w-10 rounded-full bg-slate-300" />
             </div>
 
+            {/* Sticky header — close button always visible */}
             {(title || description) && (
-              <div className="px-6 pt-4 pb-2">
+              <div className="relative shrink-0 px-6 pt-4 pb-2">
                 {title && (
-                  <h2 className="text-lg font-bold text-slate-900">{title}</h2>
+                  <h2 className="pr-10 text-lg font-bold text-slate-900">
+                    {title}
+                  </h2>
                 )}
                 {description && (
-                  <p className="text-sm text-slate-500 mt-0.5">{description}</p>
+                  <p className="mt-0.5 pr-10 text-sm text-slate-500">
+                    {description}
+                  </p>
                 )}
+                <button
+                  type="button"
+                  onClick={onClose}
+                  aria-label="Close"
+                  className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition-colors hover:bg-slate-200 hover:text-slate-700"
+                >
+                  <X className="h-4 w-4" />
+                </button>
               </div>
             )}
 
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label="Close"
-              className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition-colors hover:bg-slate-200 hover:text-slate-700"
-            >
-              <X className="h-4 w-4" />
-            </button>
+            {/* When no title, still render an always-visible close button */}
+            {!title && !description && (
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Close"
+                className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition-colors hover:bg-slate-200 hover:text-slate-700"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
 
-            <div className="px-6 pb-4">{children}</div>
+            {/* Scrollable content region */}
+            <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto px-6 pb-4">
+              {children}
+            </div>
 
+            {/* Sticky footer — actions always visible */}
             {footer && (
-              <div className="sticky bottom-0 mt-2 flex gap-3 border-t border-slate-200/70 bg-white/80 px-6 py-4 backdrop-blur-md">
+              <div className="shrink-0 border-t border-slate-200/70 bg-white/80 px-6 py-4 backdrop-blur-md">
                 {footer}
               </div>
             )}

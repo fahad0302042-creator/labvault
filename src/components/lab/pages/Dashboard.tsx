@@ -127,7 +127,7 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
     };
   }, [chemicals, apparatus, logs]);
 
-  const recentLogs = logs.slice(0, 10);
+  const recentLogs = logs.slice(0, 5);
 
   return (
     <div className="space-y-5 px-4 pt-6 pb-4">

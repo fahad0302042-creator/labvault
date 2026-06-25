@@ -6,14 +6,12 @@ import { useMemo, useState } from "react";
 import { useApparatus } from "@/hooks/lab/useApparatus";
 import { GlassCard } from "@/components/lab/shared/GlassCard";
 import { StockBar } from "@/components/lab/shared/StockBar";
-import { Badge } from "@/components/lab/shared/Badge";
 import { FAB } from "@/components/lab/shared/FAB";
 import { ApparatusDetail } from "./ApparatusDetail";
 import { AddApparatusModal } from "./AddApparatusModal";
 import type {
   Apparatus,
   ApparatusCategory,
-  ApparatusCondition,
 } from "@/lib/lab/types";
 
 const CATEGORY_LABEL: Record<ApparatusCategory, string> = {
@@ -23,12 +21,6 @@ const CATEGORY_LABEL: Record<ApparatusCategory, string> = {
   measurement: "Measurement",
   other: "Other",
 };
-
-const CONDITION_TONE = {
-  good: "green",
-  damaged: "amber",
-  broken: "red",
-} as const;
 
 type ApparatusPageProps = {
   addSignal?: number;
@@ -156,12 +148,6 @@ export function ApparatusPage({
                           {CATEGORY_LABEL[a.category]}
                         </p>
                       </div>
-                      <Badge
-                        tone={CONDITION_TONE[a.condition as ApparatusCondition]}
-                        dot
-                      >
-                        {a.condition}
-                      </Badge>
                     </div>
                     <div className="mt-3 flex items-center gap-2">
                       <StockBar

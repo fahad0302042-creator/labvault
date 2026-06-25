@@ -58,8 +58,26 @@ export function AddChemicalModal({
       size="lg"
       title="Add Chemical"
       description="A QR code will be auto-generated on save."
+      footer={
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex-1 rounded-xl bg-slate-100 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-200"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            form="add-chemical-form"
+            className="flex-1 rounded-xl bg-slate-900 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/30 hover:bg-slate-800"
+          >
+            Add to inventory
+          </button>
+        </div>
+      }
     >
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form id="add-chemical-form" onSubmit={handleSubmit} className="space-y-4">
         <div className="flex items-center gap-3 rounded-xl bg-slate-50/80 p-3 ring-1 ring-inset ring-slate-100">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
             <FlaskConical className="h-5 w-5" />
@@ -128,22 +146,6 @@ export function AddChemicalModal({
             className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
           />
         </Field>
-
-        <div className="flex gap-3">
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex-1 rounded-xl bg-slate-100 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-200"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="flex-1 rounded-xl bg-slate-900 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/30 hover:bg-slate-800"
-          >
-            Add to inventory
-          </button>
-        </div>
       </form>
     </Modal>
   );

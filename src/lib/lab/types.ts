@@ -33,7 +33,8 @@ export type Apparatus = {
   category: ApparatusCategory;
   quantity: number;
   initialQuantity: number;
-  condition: ApparatusCondition;
+  /** @deprecated Kept for backward-compat with old seed data; new apparatus don't track condition. */
+  condition?: ApparatusCondition;
   notes?: string;
   qr_code: string;
   created_at: string;
