@@ -63,7 +63,7 @@ export function Reports() {
             {rows.length === 1 ? "" : "s"}
           </p>
         </div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-sky-400 to-cyan-500 text-white shadow-md">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 text-white shadow-md">
           <FileBarChart2 className="h-5 w-5" />
         </div>
       </header>
@@ -81,7 +81,7 @@ export function Reports() {
             {period === p && (
               <motion.span
                 layoutId="report-period-pill"
-                className="absolute inset-0 rounded-lg bg-sky-500 shadow-sm"
+                className="absolute inset-0 rounded-lg bg-slate-900 shadow-sm"
                 transition={{ type: "spring", stiffness: 320, damping: 30 }}
               />
             )}
@@ -264,7 +264,7 @@ function SummaryCard({
   const toneClasses = {
     green: "from-emerald-400 to-emerald-500",
     amber: "from-amber-400 to-orange-500",
-    teal: "from-sky-400 to-cyan-500",
+    teal: "from-slate-700 to-slate-900",
   }[tone];
 
   return (

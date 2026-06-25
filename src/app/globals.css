@@ -45,40 +45,40 @@
 
 :root {
   --radius: 0.875rem;
-  /* LabVault palette — warm white, teal accent, frosted glass */
+  /* LabVault palette — pure white + frosted glass + graphite accent */
   --background: #F5F5F7;
   --foreground: #1D1D1F;
   --card: rgba(255, 255, 255, 0.6);
   --card-foreground: #1D1D1F;
   --popover: #ffffff;
   --popover-foreground: #1D1D1F;
-  --primary: #0EA5E9;            /* chemistry teal */
+  --primary: #1D1D1F;            /* graphite — buttons, active states */
   --primary-foreground: #ffffff;
-  --secondary: rgba(14, 165, 233, 0.08);
-  --secondary-foreground: #0c4a6e;
+  --secondary: rgba(29, 29, 31, 0.06);
+  --secondary-foreground: #1D1D1F;
   --muted: #EFEFF2;
   --muted-foreground: #6B7280;
-  --accent: #0EA5E9;
+  --accent: #1D1D1F;
   --accent-foreground: #ffffff;
   --destructive: #DC2626;
   --success: #16A34A;
   --warning: #F59E0B;
   --border: rgba(255, 255, 255, 0.8);
   --input: rgba(255, 255, 255, 0.7);
-  --ring: #0EA5E9;
-  --chart-1: #0EA5E9;
+  --ring: #1D1D1F;
+  --chart-1: #1D1D1F;
   --chart-2: #16A34A;
   --chart-3: #F59E0B;
   --chart-4: #DC2626;
   --chart-5: #8B5CF6;
   --sidebar: #ffffff;
   --sidebar-foreground: #1D1D1F;
-  --sidebar-primary: #0EA5E9;
+  --sidebar-primary: #1D1D1F;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #F5F5F7;
   --sidebar-accent-foreground: #1D1D1F;
   --sidebar-border: rgba(0, 0, 0, 0.06);
-  --sidebar-ring: #0EA5E9;
+  --sidebar-ring: #1D1D1F;
 }
 
 .dark {
@@ -88,33 +88,33 @@
   --card-foreground: #E5E7EB;
   --popover: #1E293B;
   --popover-foreground: #E5E7EB;
-  --primary: #38BDF8;
+  --primary: #F8FAFC;
   --primary-foreground: #0B0F14;
-  --secondary: rgba(56, 189, 248, 0.1);
-  --secondary-foreground: #7DD3FC;
+  --secondary: rgba(248, 250, 252, 0.08);
+  --secondary-foreground: #CBD5E1;
   --muted: #1E293B;
   --muted-foreground: #94A3B8;
-  --accent: #38BDF8;
+  --accent: #F8FAFC;
   --accent-foreground: #0B0F14;
   --destructive: #EF4444;
   --success: #22C55E;
   --warning: #FBBF24;
   --border: rgba(255, 255, 255, 0.08);
   --input: rgba(255, 255, 255, 0.05);
-  --ring: #38BDF8;
-  --chart-1: #38BDF8;
+  --ring: #F8FAFC;
+  --chart-1: #F8FAFC;
   --chart-2: #22C55E;
   --chart-3: #FBBF24;
   --chart-4: #EF4444;
   --chart-5: #A78BFA;
   --sidebar: #1E293B;
   --sidebar-foreground: #E5E7EB;
-  --sidebar-primary: #38BDF8;
+  --sidebar-primary: #F8FAFC;
   --sidebar-primary-foreground: #0B0F14;
   --sidebar-accent: #0F172A;
   --sidebar-accent-foreground: #E5E7EB;
   --sidebar-border: rgba(255, 255, 255, 0.08);
-  --sidebar-ring: #38BDF8;
+  --sidebar-ring: #F8FAFC;
 }
 
 @layer base {

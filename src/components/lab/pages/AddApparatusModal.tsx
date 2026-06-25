@@ -89,7 +89,7 @@ export function AddApparatusModal({
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="e.g. 250 mL Erlenmeyer Flask"
-            className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+            className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
           />
         </Field>
 
@@ -100,7 +100,7 @@ export function AddApparatusModal({
               onChange={(e) =>
                 setCategory(e.target.value as ApparatusCategory)
               }
-              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm capitalize outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm capitalize outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             >
               {CATEGORIES.map((c) => (
                 <option key={c} value={c} className="capitalize">
@@ -116,7 +116,7 @@ export function AddApparatusModal({
               min={0}
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
-              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm tabular-nums outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             />
           </Field>
         </div>
@@ -150,7 +150,7 @@ export function AddApparatusModal({
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
             placeholder="Location, calibration date, supplier…"
-            className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+            className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
           />
         </Field>
 
@@ -164,7 +164,7 @@ export function AddApparatusModal({
           </button>
           <button
             type="submit"
-            className="flex-1 rounded-xl bg-sky-500 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-500/30 hover:bg-sky-400"
+            className="flex-1 rounded-xl bg-slate-900 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/30 hover:bg-slate-800"
           >
             Add to inventory
           </button>

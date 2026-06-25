@@ -24,8 +24,8 @@ export function FAB({ onClick, icon, label = "Add", className }: FABProps) {
       onClick={onClick}
       aria-label={label}
       className={cn(
-        "fixed right-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-sky-500 text-white shadow-[0_8px_24px_-4px_rgba(14,165,233,0.5)]",
-        "transition-colors hover:bg-sky-400 active:bg-sky-600",
+        "fixed right-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-slate-900 text-white shadow-[0_8px_24px_-4px_rgba(29,29,31,0.45)]",
+        "transition-colors hover:bg-slate-800 active:bg-slate-950",
         className
       )}
       style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 88px)" }}

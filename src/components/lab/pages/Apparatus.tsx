@@ -90,7 +90,7 @@ export function ApparatusPage({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by name or category…"
-          className="w-full rounded-xl border border-white/80 bg-white/70 py-3 pl-10 pr-3 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm outline-none backdrop-blur focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+          className="w-full rounded-xl border border-white/80 bg-white/70 py-3 pl-10 pr-3 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm outline-none backdrop-blur focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
         />
       </div>
 
@@ -102,7 +102,7 @@ export function ApparatusPage({
             onClick={() => setFilter(f as ApparatusCategory | "all")}
             className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold capitalize transition-colors ${
               filter === f
-                ? "bg-sky-500 text-white shadow-sm"
+                ? "bg-slate-900 text-white shadow-sm"
                 : "bg-white/70 text-slate-600 ring-1 ring-inset ring-white/80 backdrop-blur hover:bg-white"
             }`}
           >

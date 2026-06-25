@@ -134,7 +134,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
             Scan an item's QR to log activity
           </p>
         </div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-sky-400 to-cyan-500 text-white shadow-md">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 text-white shadow-md">
           <ScanLine className="h-5 w-5" />
         </div>
       </header>
@@ -143,26 +143,26 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
       <div className="relative mb-5 aspect-square w-full overflow-hidden rounded-3xl border border-white/80 bg-slate-900 shadow-lg">
         {/* Mock camera background — animated gradient simulating low-light camera feed */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800" />
-        <div className="blob-1 absolute -top-20 -left-20 h-60 w-60 rounded-full bg-sky-500/10 blur-2xl" />
-        <div className="blob-2 absolute -bottom-20 -right-20 h-60 w-60 rounded-full bg-cyan-400/10 blur-2xl" />
+        <div className="blob-1 absolute -top-20 -left-20 h-60 w-60 rounded-full bg-white/5 blur-2xl" />
+        <div className="blob-2 absolute -bottom-20 -right-20 h-60 w-60 rounded-full bg-white/5 blur-2xl" />
 
         {/* Center frame */}
         <div className="absolute inset-0 flex items-center justify-center">
           {mode === "scanning" ? (
             <div className="relative">
               {/* Pulse rings */}
-              <div className="qr-pulse-ring absolute inset-0 rounded-3xl border-2 border-sky-400" />
+              <div className="qr-pulse-ring absolute inset-0 rounded-3xl border-2 border-white/70" />
               <div
-                className="qr-pulse-ring absolute inset-0 rounded-3xl border-2 border-sky-400"
+                className="qr-pulse-ring absolute inset-0 rounded-3xl border-2 border-white/70"
                 style={{ animationDelay: "0.6s" }}
               />
               {/* Viewfinder */}
-              <div className="relative h-48 w-48 rounded-3xl border-2 border-sky-300/80">
+              <div className="relative h-48 w-48 rounded-3xl border-2 border-white/50">
                 {/* Corner brackets */}
                 <CornerBrackets />
                 {/* Moving scan line */}
                 <motion.div
-                  className="absolute inset-x-2 h-0.5 rounded-full bg-sky-400 shadow-[0_0_8px_2px_rgba(14,165,233,0.8)]"
+                  className="absolute inset-x-2 h-0.5 rounded-full bg-white shadow-[0_0_8px_2px_rgba(255,255,255,0.6)]"
                   initial={{ top: "10%" }}
                   animate={{ top: ["10%", "90%", "10%"] }}
                   transition={{
@@ -193,7 +193,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
             </div>
           ) : (
             <div className="px-6 text-center text-white">
-              <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-sky-500/20 text-sky-300">
+              <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-white/15 text-white">
                 <Camera className="h-7 w-7" />
               </div>
               <p className="font-bold">Point your camera at a QR</p>
@@ -220,7 +220,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
           <div className="absolute inset-x-0 bottom-4 flex justify-center">
             <button
               onClick={startScan}
-              className="flex items-center gap-2 rounded-full bg-sky-500 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-sky-500/40 transition-all hover:bg-sky-400 active:scale-95"
+              className="flex items-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-slate-900/40 transition-all hover:bg-slate-800 active:scale-95"
             >
               <ScanLine className="h-5 w-5" />
               Start scanning
@@ -269,7 +269,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Or search by name…"
-              className="w-full rounded-xl border border-white/80 bg-white/70 py-3 pl-10 pr-3 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm outline-none backdrop-blur focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+              className="w-full rounded-xl border border-white/80 bg-white/70 py-3 pl-10 pr-3 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm outline-none backdrop-blur focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             />
           </div>
 
@@ -291,7 +291,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
                       <div
                         className={`flex h-9 w-9 items-center justify-center rounded-lg ${
                           type === "chemical"
-                            ? "bg-sky-100 text-sky-600"
+                            ? "bg-slate-100 text-slate-700"
                             : "bg-violet-100 text-violet-600"
                         }`}
                       >
@@ -339,7 +339,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
             All {chemicals.length + apparatus.length} items on one A4 sheet
           </p>
         </div>
-        <span className="text-xs font-semibold text-sky-600">Print</span>
+        <span className="text-xs font-semibold text-slate-900">Print</span>
       </GlassCard>
 
       {/* Hidden print sheet */}
@@ -349,7 +349,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
 }
 
 function CornerBrackets() {
-  const corner = "absolute h-6 w-6 border-sky-400";
+  const corner = "absolute h-6 w-6 border-white/70";
   return (
     <>
       <span className={`${corner} -top-1 -left-1 rounded-tl-2xl border-l-2 border-t-2`} />
@@ -397,7 +397,7 @@ function ScanResultCard({
         <span
           className={`inline-flex h-8 w-8 items-center justify-center rounded-lg ${
             isChemical
-              ? "bg-sky-100 text-sky-600"
+              ? "bg-slate-100 text-slate-700"
               : "bg-violet-100 text-violet-600"
           }`}
         >

@@ -293,7 +293,7 @@ export function ChemicalDetail({
                 step={1}
                 value={amount}
                 onChange={(e) => setAmount(Math.max(0, Number(e.target.value)))}
-                className="flex-1 rounded-xl border border-slate-200 bg-white/80 py-3 text-center text-lg font-bold tabular-nums text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+                className="flex-1 rounded-xl border border-slate-200 bg-white/80 py-3 text-center text-lg font-bold tabular-nums text-slate-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
               />
               <button
                 type="button"
@@ -318,7 +318,7 @@ export function ChemicalDetail({
                   ? "e.g. Used in titration prac"
                   : "e.g. New bottle from stores"
               }
-              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             />
           </div>
 
@@ -351,14 +351,14 @@ export function ChemicalDetail({
               required
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             />
           </Field>
           <Field label="Formula (optional)">
             <input
               value={form.formula ?? ""}
               onChange={(e) => setForm({ ...form, formula: e.target.value })}
-              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             />
           </Field>
           <div className="grid grid-cols-3 gap-3">
@@ -371,7 +371,7 @@ export function ChemicalDetail({
                 onChange={(e) =>
                   setForm({ ...form, quantity: Number(e.target.value) })
                 }
-                className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm tabular-nums outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+                className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
               />
             </Field>
             <Field label="Initial Qty">
@@ -383,7 +383,7 @@ export function ChemicalDetail({
                 onChange={(e) =>
                   setForm({ ...form, initialQuantity: Number(e.target.value) })
                 }
-                className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm tabular-nums outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+                className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
               />
             </Field>
             <Field label="Unit">
@@ -392,7 +392,7 @@ export function ChemicalDetail({
                 onChange={(e) =>
                   setForm({ ...form, unit: e.target.value as ChemicalUnit })
                 }
-                className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+                className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
               >
                 {UNITS.map((u) => (
                   <option key={u} value={u}>
@@ -407,7 +407,7 @@ export function ChemicalDetail({
               value={form.notes ?? ""}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
               rows={3}
-              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             />
           </Field>
           <div className="flex gap-3">
@@ -420,7 +420,7 @@ export function ChemicalDetail({
             </button>
             <button
               type="submit"
-              className="flex-1 rounded-xl bg-sky-500 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-500/30 hover:bg-sky-400"
+              className="flex-1 rounded-xl bg-slate-900 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/30 hover:bg-slate-800"
             >
               Save changes
             </button>
@@ -443,7 +443,7 @@ export function ChemicalDetail({
           </div>
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-2 rounded-xl bg-sky-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-sky-500/30 hover:bg-sky-400"
+            className="flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-slate-900/30 hover:bg-slate-800"
           >
             Print label
           </button>
@@ -486,7 +486,7 @@ function ActionButton({
   const toneClasses = {
     amber: "bg-amber-50 text-amber-700 hover:bg-amber-100 ring-amber-200/60",
     green: "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 ring-emerald-200/60",
-    teal: "bg-sky-50 text-sky-700 hover:bg-sky-100 ring-sky-200/60",
+    teal: "bg-slate-100 text-slate-700 hover:bg-slate-200 ring-slate-200/60",
     slate: "bg-slate-50 text-slate-700 hover:bg-slate-100 ring-slate-200/60",
   }[tone];
 

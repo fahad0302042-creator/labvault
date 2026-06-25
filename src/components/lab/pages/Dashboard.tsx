@@ -64,7 +64,7 @@ function KpiCard({
   onClick?: () => void;
 }) {
   const toneClasses = {
-    teal: "from-sky-400 to-cyan-500 shadow-[0_8px_20px_-6px_rgba(14,165,233,0.4)]",
+    teal: "from-slate-700 to-slate-900 shadow-[0_8px_20px_-6px_rgba(29,29,31,0.35)]",
     amber: "from-amber-400 to-orange-500 shadow-[0_8px_20px_-6px_rgba(245,158,11,0.4)]",
     red: "from-rose-400 to-red-500 shadow-[0_8px_20px_-6px_rgba(220,38,38,0.4)]",
     violet: "from-violet-400 to-purple-500 shadow-[0_8px_20px_-6px_rgba(139,92,246,0.4)]",
@@ -146,7 +146,7 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
             {greeting()}, {user?.name?.split(" ")[0] ?? "Researcher"}
           </h1>
         </div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-sm font-bold text-sky-600 shadow-sm ring-1 ring-white/80 backdrop-blur">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-sm font-bold text-slate-900 shadow-sm ring-1 ring-white/80 backdrop-blur">
           {user?.name?.charAt(0) ?? "R"}
         </div>
       </motion.header>
@@ -221,7 +221,7 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
           </h2>
           <button
             onClick={() => onNavigate("reports")}
-            className="text-xs font-semibold text-sky-600 hover:text-sky-700"
+            className="text-xs font-semibold text-slate-900 hover:text-slate-700"
           >
             View all
           </button>
@@ -333,7 +333,7 @@ function QuickAction({
       onClick={onClick}
       className="flex flex-col items-center gap-2 p-4"
     >
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-100 text-sky-600 transition-colors group-hover:bg-sky-200">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700 transition-colors group-hover:bg-slate-200">
         {icon}
       </div>
       <span className="text-center text-xs font-semibold text-slate-700">

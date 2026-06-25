@@ -60,13 +60,13 @@ export function AddChemicalModal({
       description="A QR code will be auto-generated on save."
     >
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex items-center gap-3 rounded-xl bg-sky-50/80 p-3 ring-1 ring-inset ring-sky-100">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-100 text-sky-600">
+        <div className="flex items-center gap-3 rounded-xl bg-slate-50/80 p-3 ring-1 ring-inset ring-slate-100">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
             <FlaskConical className="h-5 w-5" />
           </div>
-          <div className="flex-1 text-sm text-sky-900">
+          <div className="flex-1 text-sm text-slate-900">
             <p className="font-semibold">New inventory item</p>
-            <p className="text-xs text-sky-700">
+            <p className="text-xs text-slate-700">
               Fill in the details — you can edit any of this later.
             </p>
           </div>
@@ -80,7 +80,7 @@ export function AddChemicalModal({
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="e.g. Sodium Chloride"
-            className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+            className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
           />
         </Field>
 
@@ -89,7 +89,7 @@ export function AddChemicalModal({
             value={formula}
             onChange={(e) => setFormula(e.target.value)}
             placeholder="e.g. NaCl"
-            className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm font-mono outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+            className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm font-mono outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
           />
         </Field>
 
@@ -101,14 +101,14 @@ export function AddChemicalModal({
               min={0}
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
-              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm tabular-nums outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             />
           </Field>
           <Field label="Unit">
             <select
               value={unit}
               onChange={(e) => setUnit(e.target.value as ChemicalUnit)}
-              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             >
               {UNITS.map((u) => (
                 <option key={u} value={u}>
@@ -125,7 +125,7 @@ export function AddChemicalModal({
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
             placeholder="Storage location, hazards, supplier…"
-            className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+            className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
           />
         </Field>
 
@@ -139,7 +139,7 @@ export function AddChemicalModal({
           </button>
           <button
             type="submit"
-            className="flex-1 rounded-xl bg-sky-500 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-500/30 hover:bg-sky-400"
+            className="flex-1 rounded-xl bg-slate-900 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/30 hover:bg-slate-800"
           >
             Add to inventory
           </button>

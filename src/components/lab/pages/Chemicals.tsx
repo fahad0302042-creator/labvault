@@ -78,7 +78,7 @@ export function Chemicals({ addSignal, onAddSignalConsumed }: ChemicalsProps) {
             {chemicals.length} item{chemicals.length === 1 ? "" : "s"} in inventory
           </p>
         </div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-sky-400 to-cyan-500 text-white shadow-md">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 text-white shadow-md">
           <FlaskConical className="h-5 w-5" />
         </div>
       </header>
@@ -90,7 +90,7 @@ export function Chemicals({ addSignal, onAddSignalConsumed }: ChemicalsProps) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by name or formula…"
-          className="w-full rounded-xl border border-white/80 bg-white/70 py-3 pl-10 pr-3 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm outline-none backdrop-blur focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+          className="w-full rounded-xl border border-white/80 bg-white/70 py-3 pl-10 pr-3 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm outline-none backdrop-blur focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
         />
       </div>
 
@@ -102,7 +102,7 @@ export function Chemicals({ addSignal, onAddSignalConsumed }: ChemicalsProps) {
             onClick={() => setFilter(f)}
             className={`rounded-full px-3.5 py-1.5 text-xs font-semibold capitalize transition-colors ${
               filter === f
-                ? "bg-sky-500 text-white shadow-sm"
+                ? "bg-slate-900 text-white shadow-sm"
                 : "bg-white/70 text-slate-600 ring-1 ring-inset ring-white/80 backdrop-blur hover:bg-white"
             }`}
           >
