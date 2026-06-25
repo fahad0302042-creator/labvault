@@ -107,11 +107,13 @@ export function getLogs(): ConsumptionLog[] {
   );
 }
 
-export function pushLog(log: Omit<ConsumptionLog, "id" | "logged_at">): ConsumptionLog {
+export function pushLog(
+  log: Omit<ConsumptionLog, "id" | "logged_at"> & { logged_at?: string },
+): ConsumptionLog {
   const entry: ConsumptionLog = {
     ...log,
     id: uuid(),
-    logged_at: new Date().toISOString(),
+    logged_at: log.logged_at ?? new Date().toISOString(),
   };
   const all = read<ConsumptionLog[]>(KEYS.logs, []);
   all.unshift(entry);

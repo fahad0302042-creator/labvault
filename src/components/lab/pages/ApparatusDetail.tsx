@@ -31,8 +31,8 @@ type ApparatusDetailProps = {
   apparatus: Apparatus | null;
   open: boolean;
   onClose: () => void;
-  onLogBreakage: (id: string, note?: string) => void;
-  onRestock: (id: string, amount: number, note?: string) => void;
+  onLogBreakage: (id: string, note?: string, loggedAt?: string) => void;
+  onRestock: (id: string, amount: number, note?: string, loggedAt?: string) => void;
   onUpdate: (id: string, patch: Partial<Apparatus>) => void;
   onDelete: (id: string) => void;
 };
@@ -52,6 +52,7 @@ export function ApparatusDetail({
   const [mode, setMode] = useState<Mode>("view");
   const [amount, setAmount] = useState(1);
   const [note, setNote] = useState("");
+  const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [tickShown, setTickShown] = useState(false);
   const [form, setForm] = useState<Apparatus | null>(null);
 
@@ -60,6 +61,7 @@ export function ApparatusDetail({
       setMode("view");
       setAmount(1);
       setNote("");
+      setDate(new Date().toISOString().slice(0, 10));
       setTickShown(false);
       setForm(apparatus);
     }
@@ -80,11 +82,13 @@ export function ApparatusDetail({
 
   function handleSubmit() {
     if (!apparatus) return;
+    // Convert YYYY-MM-DD to ISO timestamp (noon local time to avoid TZ edge cases)
+    const loggedAt = new Date(`${date}T12:00:00`).toISOString();
     if (mode === "breakage") {
-      onLogBreakage(apparatus.id, note || undefined);
+      onLogBreakage(apparatus.id, note || undefined, loggedAt);
       flashTick();
     } else if (mode === "restock") {
-      onRestock(apparatus.id, amount, note || undefined);
+      onRestock(apparatus.id, amount, note || undefined, loggedAt);
       flashTick();
     }
     setMode("view");
@@ -339,6 +343,24 @@ export function ApparatusDetail({
               className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-red-400 focus:ring-2 focus:ring-red-200"
             />
           </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Date
+            </label>
+            <input
+              type="date"
+              value={date}
+              max={new Date().toISOString().slice(0, 10)}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+            />
+            {date !== new Date().toISOString().slice(0, 10) && (
+              <p className="text-[11px] font-medium text-amber-600">
+                ⚠️ Backdating — this will appear in the past activity feed
+              </p>
+            )}
+          </div>
         </div>
       )}
 
@@ -380,6 +402,24 @@ export function ApparatusDetail({
                 <Plus className="h-4 w-4" />
               </button>
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Date
+            </label>
+            <input
+              type="date"
+              value={date}
+              max={new Date().toISOString().slice(0, 10)}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+            />
+            {date !== new Date().toISOString().slice(0, 10) && (
+              <p className="text-[11px] font-medium text-amber-600">
+                ⚠️ Backdating — this will appear in the past activity feed
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">

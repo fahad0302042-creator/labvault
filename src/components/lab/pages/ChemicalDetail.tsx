@@ -27,8 +27,8 @@ type ChemicalDetailProps = {
   chemical: Chemical | null;
   open: boolean;
   onClose: () => void;
-  onConsume: (id: string, amount: number, note?: string) => void;
-  onRestock: (id: string, amount: number, note?: string) => void;
+  onConsume: (id: string, amount: number, note?: string, loggedAt?: string) => void;
+  onRestock: (id: string, amount: number, note?: string, loggedAt?: string) => void;
   onUpdate: (id: string, patch: Partial<Chemical>) => void;
   onDelete: (id: string) => void;
 };
@@ -48,6 +48,7 @@ export function ChemicalDetail({
   const [mode, setMode] = useState<Mode>("view");
   const [amount, setAmount] = useState(10);
   const [note, setNote] = useState("");
+  const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [tickShown, setTickShown] = useState(false);
 
   // Edit form state
@@ -58,6 +59,7 @@ export function ChemicalDetail({
       setMode("view");
       setAmount(10);
       setNote("");
+      setDate(new Date().toISOString().slice(0, 10));
       setTickShown(false);
       setForm(chemical);
     }
@@ -82,11 +84,13 @@ export function ChemicalDetail({
 
   function handleSubmit() {
     if (!chemical) return;
+    // Convert YYYY-MM-DD to ISO timestamp (noon local time to avoid TZ edge cases)
+    const loggedAt = new Date(`${date}T12:00:00`).toISOString();
     if (mode === "consume") {
-      onConsume(chemical.id, amount, note || undefined);
+      onConsume(chemical.id, amount, note || undefined, loggedAt);
       flashTick();
     } else if (mode === "restock") {
-      onRestock(chemical.id, amount, note || undefined);
+      onRestock(chemical.id, amount, note || undefined, loggedAt);
       flashTick();
     }
     setMode("view");
@@ -303,6 +307,24 @@ export function ChemicalDetail({
                 <Plus className="h-4 w-4" />
               </button>
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Date
+            </label>
+            <input
+              type="date"
+              value={date}
+              max={new Date().toISOString().slice(0, 10)}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+            />
+            {date !== new Date().toISOString().slice(0, 10) && (
+              <p className="text-[11px] font-medium text-amber-600">
+                ⚠️ Backdating — this will appear in the past activity feed
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">

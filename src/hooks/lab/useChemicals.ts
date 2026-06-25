@@ -48,6 +48,7 @@ export function useChemicals() {
       action: LogAction,
       quantity: number,
       note?: string,
+      loggedAt?: string,
     ): ConsumptionLog => {
       return pushLog({
         item_id: item.id,
@@ -59,6 +60,7 @@ export function useChemicals() {
         logged_by: user?.id ?? "unknown",
         logged_by_name: user?.name ?? "Unknown",
         note,
+        logged_at: loggedAt,
       });
     },
     [user],
@@ -105,7 +107,7 @@ export function useChemicals() {
 
   /** Consume `amount` units; clamps at 0. Shows undo toast for 5s. */
   const consume = useCallback(
-    (id: string, amount: number, note?: string): void => {
+    (id: string, amount: number, note?: string, loggedAt?: string): void => {
       const current = chemicals.find((c) => c.id === id);
       if (!current) return;
       const prevQty = current.quantity;
@@ -114,7 +116,7 @@ export function useChemicals() {
         quantity: Math.max(0, current.quantity - amount),
       };
       saveChemical(next);
-      const logEntry = log(next, "consumed", amount, note);
+      const logEntry = log(next, "consumed", amount, note, loggedAt);
       refresh();
 
       // Undo toast
@@ -137,7 +139,7 @@ export function useChemicals() {
 
   /** Restock `amount` units. Shows undo toast for 5s. */
   const restock = useCallback(
-    (id: string, amount: number, note?: string): void => {
+    (id: string, amount: number, note?: string, loggedAt?: string): void => {
       const current = chemicals.find((c) => c.id === id);
       if (!current) return;
       const prevQty = current.quantity;
@@ -148,7 +150,7 @@ export function useChemicals() {
         initialQuantity: Math.max(current.initialQuantity, current.quantity + amount),
       };
       saveChemical(next);
-      const logEntry = log(next, "restocked", amount, note);
+      const logEntry = log(next, "restocked", amount, note, loggedAt);
       refresh();
 
       toast(`Restocked ${amount} ${current.unit} of ${current.name}`, {

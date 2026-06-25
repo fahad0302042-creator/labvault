@@ -38,6 +38,7 @@ export function useApparatus() {
       action: LogAction,
       quantity: number,
       note?: string,
+      loggedAt?: string,
     ): ConsumptionLog => {
       return pushLog({
         item_id: item.id,
@@ -48,6 +49,7 @@ export function useApparatus() {
         logged_by: user?.id ?? "unknown",
         logged_by_name: user?.name ?? "Unknown",
         note,
+        logged_at: loggedAt,
       });
     },
     [user],
@@ -94,14 +96,14 @@ export function useApparatus() {
 
   /** Log a breakage: reduce quantity by 1. Shows undo toast for 5s. */
   const logBreakage = useCallback(
-    (id: string, note?: string): void => {
+    (id: string, note?: string, loggedAt?: string): void => {
       const current = apparatus.find((a) => a.id === id);
       if (!current) return;
       const prevQty = current.quantity;
       const newQty = Math.max(0, current.quantity - 1);
       const next: Apparatus = { ...current, quantity: newQty };
       saveApparatus(next);
-      const logEntry = log(next, "broken", 1, note);
+      const logEntry = log(next, "broken", 1, note, loggedAt);
       refresh();
 
       toast(`Logged breakage of ${current.name}`, {
@@ -123,7 +125,7 @@ export function useApparatus() {
 
   /** Restock (add) units. Shows undo toast for 5s. */
   const restock = useCallback(
-    (id: string, amount: number, note?: string): void => {
+    (id: string, amount: number, note?: string, loggedAt?: string): void => {
       const current = apparatus.find((a) => a.id === id);
       if (!current) return;
       const prevQty = current.quantity;
@@ -134,7 +136,7 @@ export function useApparatus() {
         initialQuantity: Math.max(current.initialQuantity, current.quantity + amount),
       };
       saveApparatus(next);
-      const logEntry = log(next, "restocked", amount, note);
+      const logEntry = log(next, "restocked", amount, note, loggedAt);
       refresh();
 
       toast(`Restocked ${amount} × ${current.name}`, {
