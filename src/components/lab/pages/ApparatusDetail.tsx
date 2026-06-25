@@ -171,7 +171,7 @@ export function ApparatusDetail({
       {mode === "view" && (
         <div className="space-y-5">
           <div className="flex items-center justify-between">
-            <Badge tone="violet" className="capitalize">
+            <Badge tone="slate" className="capitalize">
               {apparatus.category}
             </Badge>
             <Badge tone={CONDITION_TONE[apparatus.condition]} dot>

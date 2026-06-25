@@ -69,13 +69,13 @@ export function AddApparatusModal({
       description="A QR code will be auto-generated on save."
     >
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex items-center gap-3 rounded-xl bg-violet-50/80 p-3 ring-1 ring-inset ring-violet-100">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-100 text-violet-600">
+        <div className="flex items-center gap-3 rounded-xl bg-slate-50/80 p-3 ring-1 ring-inset ring-slate-100">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
             <Beaker className="h-5 w-5" />
           </div>
-          <div className="flex-1 text-sm text-violet-900">
+          <div className="flex-1 text-sm text-slate-900">
             <p className="font-semibold">New apparatus entry</p>
-            <p className="text-xs text-violet-700">
+            <p className="text-xs text-slate-700">
               Glassware, balances, heaters — anything reusable.
             </p>
           </div>

@@ -67,7 +67,7 @@ function KpiCard({
     teal: "from-slate-700 to-slate-900 shadow-[0_8px_20px_-6px_rgba(29,29,31,0.35)]",
     amber: "from-amber-400 to-orange-500 shadow-[0_8px_20px_-6px_rgba(245,158,11,0.4)]",
     red: "from-rose-400 to-red-500 shadow-[0_8px_20px_-6px_rgba(220,38,38,0.4)]",
-    violet: "from-violet-400 to-purple-500 shadow-[0_8px_20px_-6px_rgba(139,92,246,0.4)]",
+    violet: "from-slate-700 to-slate-900 shadow-[0_8px_20px_-6px_rgba(29,29,31,0.35)]",
   }[tone];
 
   return (

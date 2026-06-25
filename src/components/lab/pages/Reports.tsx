@@ -103,7 +103,7 @@ export function Reports() {
             {tab === t && (
               <motion.span
                 layoutId="report-tab-pill"
-                className="absolute inset-0 rounded-lg bg-violet-500 shadow-sm"
+                className="absolute inset-0 rounded-lg bg-slate-900 shadow-sm"
                 transition={{ type: "spring", stiffness: 320, damping: 30 }}
               />
             )}

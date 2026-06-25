@@ -289,11 +289,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
                       className="flex w-full items-center gap-3 rounded-xl border border-white/80 bg-white/70 p-3 text-left backdrop-blur transition-colors hover:bg-white/90"
                     >
                       <div
-                        className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                          type === "chemical"
-                            ? "bg-slate-100 text-slate-700"
-                            : "bg-violet-100 text-violet-600"
-                        }`}
+                        className={`flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-700`}
                       >
                         {type === "chemical" ? (
                           <PackageMinus className="h-4 w-4" />
@@ -398,12 +394,12 @@ function ScanResultCard({
           className={`inline-flex h-8 w-8 items-center justify-center rounded-lg ${
             isChemical
               ? "bg-slate-100 text-slate-700"
-              : "bg-violet-100 text-violet-600"
+              : "bg-slate-100 text-slate-700"
           }`}
         >
           {isChemical ? "🧪" : "⚗️"}
         </span>
-        <Badge tone={isChemical ? "teal" : "violet"}>{result.type}</Badge>
+        <Badge tone={isChemical ? "slate" : "slate"}>{result.type}</Badge>
       </div>
       <h3 className="mt-2 text-lg font-bold text-slate-900">{item.name}</h3>
       <div className="mt-3">

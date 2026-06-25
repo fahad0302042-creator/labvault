@@ -79,7 +79,7 @@ export function ApparatusPage({
             {apparatus.length} item{apparatus.length === 1 ? "" : "s"} tracked
           </p>
         </div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-400 to-purple-500 text-white shadow-md">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 text-white shadow-md">
           <Beaker className="h-5 w-5" />
         </div>
       </header>
