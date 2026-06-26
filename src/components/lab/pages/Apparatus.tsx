@@ -104,7 +104,7 @@ export function ApparatusPage({
             className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold capitalize transition-colors ${
               filter === f
                 ? "bg-graphite text-white shadow-sm"
-                : "bg-white text-slate-600 ring-1 ring-inset ring-slate-200 hover:bg-slate-50"
+                : "bg-white text-slate-800 ring-1 ring-inset ring-slate-200 hover:bg-slate-50"
             }`}
           >
             {f === "all" ? "All" : CATEGORY_LABEL[f as ApparatusCategory]}

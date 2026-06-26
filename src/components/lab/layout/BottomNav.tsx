@@ -62,7 +62,7 @@ export function BottomNav({ active, onChange }: BottomNavProps) {
                   "relative flex h-16 w-full flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition-colors",
                   isActive
                     ? "text-graphite"
-                    : "text-slate-600 hover:text-slate-600"
+                    : "text-slate-700 hover:text-graphite"
                 )}
               >
                 {isActive && (
