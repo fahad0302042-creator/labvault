@@ -134,7 +134,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
       <header className="mb-4 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-graphite">Scanner</h1>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-slate-700">
             Scan an item's QR to log activity
           </p>
         </div>
@@ -185,7 +185,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
                 <X className="h-7 w-7" />
               </div>
               <p className="font-bold">No item found</p>
-              <p className="mt-1 text-sm text-slate-400">
+              <p className="mt-1 text-sm text-slate-600">
                 That QR code isn't registered. Try another or add it manually.
               </p>
               <button
@@ -201,7 +201,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
                 <Camera className="h-7 w-7" />
               </div>
               <p className="font-bold">Point your camera at a QR</p>
-              <p className="mt-1 text-sm text-slate-400">
+              <p className="mt-1 text-sm text-slate-600">
                 Or browse all items below to find it manually.
               </p>
             </div>
@@ -267,7 +267,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
       {/* Recently scanned chips */}
       {mode !== "scanning" && mode !== "found" && recent.length > 0 && (
         <div className="mb-5">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-700">
             Recently scanned
           </p>
           <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1">
@@ -287,7 +287,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
                   }
                   className="flex shrink-0 items-center gap-2 rounded-full border border-slate-100 bg-white px-3 py-1.5 text-xs font-semibold text-graphite shadow-sm backdrop-blur transition-colors hover:bg-white"
                 >
-                  <span className="text-slate-400">
+                  <span className="text-slate-600">
                     {r.type === "chemical" ? "🧪" : "⚗️"}
                   </span>
                   <span className="max-w-[120px] truncate">{r.name}</span>
@@ -302,19 +302,19 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
       {mode !== "scanning" && mode !== "found" && (
         <div>
           <div className="relative mb-3">
-            <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Or search by name…"
-              className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-3 text-sm text-graphite placeholder:text-slate-400 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-slate-100"
+              className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-3 text-sm text-graphite placeholder:text-slate-600 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-slate-100"
             />
           </div>
 
           {search.trim() && (
             <ul className="space-y-2">
               {filtered.length === 0 ? (
-                <li className="rounded-xl bg-white p-4 text-center text-sm text-slate-500 backdrop-blur">
+                <li className="rounded-xl bg-white p-4 text-center text-sm text-slate-700 backdrop-blur">
                   No matches.
                 </li>
               ) : (
@@ -339,7 +339,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
                         <p className="truncate text-sm font-semibold text-graphite">
                           {item.name}
                         </p>
-                        <p className="text-xs text-slate-500">
+                        <p className="text-xs text-slate-700">
                           {type === "chemical"
                             ? `${(item as Chemical).quantity} ${(item as Chemical).unit}`
                             : `${(item as Apparatus).quantity} units`}
@@ -369,7 +369,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
         </div>
         <div className="flex-1">
           <p className="text-sm font-bold text-graphite">Print chemical QR labels</p>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-700">
             {chemicals.length} chemical{chemicals.length === 1 ? "" : "s"} · A4 sheet for box stickers
           </p>
         </div>
@@ -441,7 +441,7 @@ function ScanResultCard({
       </div>
       <h3 className="mt-2 text-lg font-bold text-graphite">{item.name}</h3>
       <div className="mt-3">
-        <div className="flex justify-between text-xs text-slate-500">
+        <div className="flex justify-between text-xs text-slate-700">
           <span>Stock</span>
           <span className="font-bold tabular-nums text-graphite">
             {quantity} / {initialQuantity} {unit}

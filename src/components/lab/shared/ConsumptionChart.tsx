@@ -31,16 +31,16 @@ export function ConsumptionChart({ data, className }: ConsumptionChartProps) {
       <div className="mb-3 flex items-center justify-between">
         <div>
           <h3 className="text-sm font-bold text-graphite">7-Day Activity</h3>
-          <p className="text-xs text-slate-500">Consumed vs restocked</p>
+          <p className="text-xs text-slate-700">Consumed vs restocked</p>
         </div>
         <div className="flex items-center gap-3 text-xs">
           <span className="flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-amber-500" />
-            <span className="text-slate-500">Used</span>
+            <span className="text-slate-700">Used</span>
           </span>
           <span className="flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-emerald-500" />
-            <span className="text-slate-500">Added</span>
+            <span className="text-slate-700">Added</span>
           </span>
         </div>
       </div>

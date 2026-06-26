@@ -51,7 +51,7 @@ export function Login() {
             <h1 className="text-3xl font-bold tracking-tight text-graphite">
               LabVault
             </h1>
-            <p className="mt-1.5 text-sm text-slate-400">
+            <p className="mt-1.5 text-sm text-slate-600">
               Chemistry lab inventory, in your pocket.
             </p>
           </div>
@@ -61,12 +61,12 @@ export function Login() {
             <div className="space-y-1.5">
               <label
                 htmlFor="email"
-                className="text-xs font-semibold uppercase tracking-wide text-slate-400"
+                className="text-xs font-semibold uppercase tracking-wide text-slate-600"
               >
                 Email
               </label>
               <div className="relative">
-                <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
                 <input
                   id="email"
                   type="email"
@@ -74,7 +74,7 @@ export function Login() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-white py-3.5 pl-11 pr-4 text-sm text-graphite placeholder:text-slate-400 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-slate-100"
+                  className="w-full rounded-xl border border-slate-200 bg-white py-3.5 pl-11 pr-4 text-sm text-graphite placeholder:text-slate-600 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-slate-100"
                   placeholder="you@lab.com"
                 />
               </div>
@@ -83,12 +83,12 @@ export function Login() {
             <div className="space-y-1.5">
               <label
                 htmlFor="password"
-                className="text-xs font-semibold uppercase tracking-wide text-slate-400"
+                className="text-xs font-semibold uppercase tracking-wide text-slate-600"
               >
                 Password
               </label>
               <div className="relative">
-                <Lock className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <Lock className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
                 <input
                   id="password"
                   type="password"
@@ -96,7 +96,7 @@ export function Login() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-white py-3.5 pl-11 pr-4 text-sm text-graphite placeholder:text-slate-400 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-slate-100"
+                  className="w-full rounded-xl border border-slate-200 bg-white py-3.5 pl-11 pr-4 text-sm text-graphite placeholder:text-slate-600 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-slate-100"
                   placeholder="••••••••"
                 />
               </div>
@@ -131,7 +131,7 @@ export function Login() {
             </button>
           </form>
 
-          <p className="mt-8 text-center text-[11px] text-slate-400">
+          <p className="mt-8 text-center text-[11px] text-slate-600">
             Use the account you created in Supabase → Authentication → Users.
           </p>
         </motion.div>

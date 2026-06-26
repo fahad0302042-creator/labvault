@@ -162,7 +162,7 @@ export function ChemicalDetail({
           {/* Stock overview */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <span className="text-xs font-semibold uppercase tracking-wide text-slate-700">
                 Stock remaining
               </span>
               <Badge tone={stockTone as "green" | "amber" | "red"} dot>
@@ -180,7 +180,7 @@ export function ChemicalDetail({
           {/* Notes */}
           {chemical.notes && (
             <div className="rounded-xl bg-slate-50 p-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-700">
                 Notes
               </p>
               <p className="mt-1 text-sm text-slate-700">{chemical.notes}</p>
@@ -221,12 +221,12 @@ export function ChemicalDetail({
 
           {/* Activity */}
           <div>
-            <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-700">
               <History className="h-3.5 w-3.5" />
               Activity log
             </div>
             {itemLogs.length === 0 ? (
-              <p className="rounded-xl bg-slate-50 p-3 text-sm text-slate-500">
+              <p className="rounded-xl bg-slate-50 p-3 text-sm text-slate-700">
                 No activity recorded yet.
               </p>
             ) : (
@@ -241,9 +241,9 @@ export function ChemicalDetail({
                         {l.action} · {l.quantity} {l.unit}
                       </p>
                       {l.note && (
-                        <p className="text-xs text-slate-500">{l.note}</p>
+                        <p className="text-xs text-slate-700">{l.note}</p>
                       )}
-                      <p className="text-[11px] text-slate-400">
+                      <p className="text-[11px] text-slate-600">
                         {l.logged_by_name} · {formatRelative(l.logged_at)}
                       </p>
                     </div>
@@ -268,19 +268,19 @@ export function ChemicalDetail({
       {(mode === "consume" || mode === "restock") && (
         <div className="space-y-5">
           <div className="rounded-xl bg-slate-50 p-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-700">
               Current stock
             </p>
             <p className="mt-0.5 text-2xl font-bold tabular-nums text-graphite">
               {chemical.quantity}{" "}
-              <span className="text-base font-normal text-slate-500">
+              <span className="text-base font-normal text-slate-700">
                 {chemical.unit}
               </span>
             </p>
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
               {mode === "consume" ? "Amount to use" : "Amount to add"} ({chemical.unit})
             </label>
             <div className="flex items-center gap-3">
@@ -310,7 +310,7 @@ export function ChemicalDetail({
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
               Date
             </label>
             <input
@@ -328,7 +328,7 @@ export function ChemicalDetail({
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
               Note (optional)
             </label>
             <textarea
@@ -457,9 +457,9 @@ export function ChemicalDetail({
           <div className="text-center">
             <p className="text-sm font-bold text-graphite">{chemical.name}</p>
             {chemical.formula && (
-              <p className="text-xs text-slate-500">{chemical.formula}</p>
+              <p className="text-xs text-slate-700">{chemical.formula}</p>
             )}
-            <p className="mt-1 break-all font-mono text-[10px] text-slate-400">
+            <p className="mt-1 break-all font-mono text-[10px] text-slate-600">
               {chemical.qr_code}
             </p>
           </div>
@@ -484,7 +484,7 @@ function Field({
 }) {
   return (
     <div className="space-y-1.5">
-      <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+      <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
         {label}
       </label>
       {children}

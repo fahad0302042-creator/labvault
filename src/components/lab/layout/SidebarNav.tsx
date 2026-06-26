@@ -50,7 +50,7 @@ export function SidebarNav({ active, onChange }: SidebarNavProps) {
         </div>
         <div>
           <p className="text-base font-bold text-graphite">LabVault</p>
-          <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-600">
             Lab Inventory
           </p>
         </div>
@@ -72,7 +72,7 @@ export function SidebarNav({ active, onChange }: SidebarNavProps) {
                     "relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors",
                     isActive
                       ? "text-graphite"
-                      : "text-slate-500 hover:bg-slate-100 hover:text-graphite"
+                      : "text-slate-700 hover:bg-slate-100 hover:text-graphite"
                   )}
                 >
                   {isActive && (
@@ -104,7 +104,7 @@ export function SidebarNav({ active, onChange }: SidebarNavProps) {
             <p className="truncate text-sm font-semibold text-graphite">
               {user?.name ?? "Researcher"}
             </p>
-            <p className="truncate text-[11px] text-slate-400">
+            <p className="truncate text-[11px] text-slate-600">
               {user?.email ?? ""}
             </p>
           </div>

@@ -101,7 +101,7 @@ export function Modal({
                   </h2>
                 )}
                 {description && (
-                  <p className="mt-0.5 pr-10 text-sm text-slate-500">
+                  <p className="mt-0.5 pr-10 text-sm text-slate-700">
                     {description}
                   </p>
                 )}
@@ -109,7 +109,7 @@ export function Modal({
                   type="button"
                   onClick={onClose}
                   aria-label="Close"
-                  className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition-colors hover:bg-slate-200 hover:text-slate-700"
+                  className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200 hover:text-slate-700"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -122,7 +122,7 @@ export function Modal({
                 type="button"
                 onClick={onClose}
                 aria-label="Close"
-                className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition-colors hover:bg-slate-200 hover:text-slate-700"
+                className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200 hover:text-slate-700"
               >
                 <X className="h-4 w-4" />
               </button>

@@ -98,18 +98,18 @@ export function GlobalSearch({
             <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
               {/* Search input */}
               <div className="flex items-center gap-3 border-b border-slate-100 px-4 py-3">
-                <Search className="h-5 w-5 shrink-0 text-slate-400" />
+                <Search className="h-5 w-5 shrink-0 text-slate-600" />
                 <input
                   autoFocus
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search chemicals & apparatus…"
-                  className="flex-1 bg-transparent text-sm text-graphite outline-none placeholder:text-slate-400"
+                  className="flex-1 bg-transparent text-sm text-graphite outline-none placeholder:text-slate-600"
                 />
                 <button
                   onClick={onClose}
                   aria-label="Close"
-                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition-colors hover:bg-slate-200"
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -118,11 +118,11 @@ export function GlobalSearch({
               {/* Results */}
               <div className="max-h-[60vh] overflow-y-auto no-scrollbar">
                 {query.trim() === "" ? (
-                  <div className="px-4 py-8 text-center text-sm text-slate-400">
+                  <div className="px-4 py-8 text-center text-sm text-slate-600">
                     Start typing to search across all inventory.
                   </div>
                 ) : results.length === 0 ? (
-                  <div className="px-4 py-8 text-center text-sm text-slate-400">
+                  <div className="px-4 py-8 text-center text-sm text-slate-600">
                     No results for "{query}"
                   </div>
                 ) : (
@@ -150,13 +150,13 @@ export function GlobalSearch({
                             <p className="truncate text-sm font-semibold text-graphite">
                               {r.name}
                             </p>
-                            <p className="truncate text-xs text-slate-500">
+                            <p className="truncate text-xs text-slate-700">
                               {r.sub}
                             </p>
                           </div>
                           <div className="flex flex-col items-end gap-1">
                             <Badge tone="slate">{r.type}</Badge>
-                            <span className="font-mono text-xs tabular-nums text-slate-500">
+                            <span className="font-mono text-xs tabular-nums text-slate-700">
                               {r.stock}
                             </span>
                           </div>

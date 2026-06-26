@@ -137,10 +137,10 @@ function KpiCard({
         <div className="text-2xl font-bold tabular-nums text-graphite">
           {value}
         </div>
-        <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <div className="text-xs font-semibold uppercase tracking-wide text-slate-700">
           {label}
         </div>
-        {sub && <div className="mt-0.5 text-[11px] text-slate-400">{sub}</div>}
+        {sub && <div className="mt-0.5 text-[11px] text-slate-600">{sub}</div>}
       </div>
     </GlassCard>
   );
@@ -216,7 +216,7 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
         className="flex items-start justify-between gap-3"
       >
         <div className="min-w-0 flex-1">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-700">
             {formatHeaderDate()}
           </p>
           <h1 className="mt-1 text-2xl font-bold text-graphite">
@@ -235,7 +235,7 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
       {/* Global search trigger bar (tap to open) */}
       <button
         onClick={() => setSearchOpen(true)}
-        className="flex w-full items-center gap-2.5 rounded-xl border border-slate-200 bg-white py-3 px-4 text-sm text-slate-400 shadow-sm transition-colors hover:bg-slate-50"
+        className="flex w-full items-center gap-2.5 rounded-xl border border-slate-200 bg-white py-3 px-4 text-sm text-slate-600 shadow-sm transition-colors hover:bg-slate-50"
       >
         <Search className="h-4 w-4" />
         Search chemicals & apparatus…
@@ -321,7 +321,7 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
       {/* Recent activity */}
       <section aria-label="Recent activity">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-sm font-bold uppercase tracking-wide text-slate-500">
+          <h2 className="text-sm font-bold uppercase tracking-wide text-slate-700">
             Recent Activity
           </h2>
           <button
@@ -334,7 +334,7 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
 
         {recentLogs.length === 0 ? (
           <GlassCard className="p-6 text-center" index={5}>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-slate-700">
               No activity yet. Add or consume something to see it here.
             </p>
           </GlassCard>
@@ -370,14 +370,14 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
                     <p className="truncate text-sm font-semibold text-graphite">
                       {log.item_name}
                     </p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-slate-700">
                       {log.logged_by_name} · {formatRelative(log.logged_at)}
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     <Badge tone={meta.tone}>{meta.label}</Badge>
                     {log.quantity > 0 && (
-                      <span className="font-mono text-xs tabular-nums text-slate-500">
+                      <span className="font-mono text-xs tabular-nums text-slate-700">
                         {log.quantity}
                         {log.unit ? ` ${log.unit}` : ""}
                       </span>
@@ -426,7 +426,7 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
           <p className="text-sm font-semibold text-graphite">
             Welcome to LabVault
           </p>
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="mt-1 text-xs text-slate-700">
             Your inventory is empty. Tap "Add Chemical" or "Add Apparatus" above to get started.
           </p>
         </GlassCard>

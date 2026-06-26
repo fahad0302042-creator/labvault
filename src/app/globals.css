@@ -50,7 +50,7 @@
   /* LabVault palette — clean white + warm graphite, high contrast */
   --graphite: #2A2520;            /* warm brown-black, reads as "lab equipment" */
   --graphite-foreground: #ffffff;
-  --background: #FFFFFF;          /* pure white for max readability */
+  --background: #FAFAF8;          /* warm off-white, not stark white */
   --foreground: #2A2520;
   --card: #FFFFFF;                /* solid white cards, no transparency */
   --card-foreground: #2A2520;
@@ -61,7 +61,7 @@
   --secondary: rgba(42, 37, 32, 0.06);
   --secondary-foreground: #2A2520;
   --muted: #F5F5F7;
-  --muted-foreground: #6B7280;
+  --muted-foreground: #475569;  /* slate-600 — darker for readability */
   --accent: #2A2520;
   --accent-foreground: #ffffff;
   --destructive: #DC2626;

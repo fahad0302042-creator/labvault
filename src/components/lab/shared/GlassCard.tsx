@@ -40,9 +40,9 @@ export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
       <motion.div
         ref={ref}
         className={cn(
-          "rounded-2xl border border-slate-100 bg-white shadow-sm",
+          "rounded-2xl border border-slate-200 bg-slate-50 shadow-sm",
           interactive &&
-            "transition-shadow hover:border-slate-200 hover:shadow-md cursor-pointer",
+            "transition-all hover:border-slate-300 hover:shadow-md cursor-pointer",
           className
         )}
         {...motionProps}

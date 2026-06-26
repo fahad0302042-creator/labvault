@@ -80,7 +80,7 @@ export function Reports() {
         <h1 className="text-3xl font-bold tracking-tight text-graphite">
           Reports
         </h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-sm text-slate-600">
           {period === "weekly" ? "Last 7 days" : "Last 30 days"} ·{" "}
           {rows.length} item{rows.length === 1 ? "" : "s"}
         </p>
@@ -93,7 +93,7 @@ export function Reports() {
             key={p}
             onClick={() => setPeriod(p)}
             className={`relative rounded-full px-5 py-2 text-sm font-semibold capitalize transition-colors ${
-              period === p ? "text-white" : "text-slate-500 hover:text-graphite"
+              period === p ? "text-white" : "text-slate-700 hover:text-graphite"
             }`}
           >
             {period === p && (
@@ -115,7 +115,7 @@ export function Reports() {
       ) : rows.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
           <p className="text-lg font-semibold text-graphite">No data yet</p>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-sm text-slate-600">
             Add {tab === "chemicals" ? "chemicals" : "apparatus"} and log
             activity to see reports here.
           </p>
@@ -138,13 +138,13 @@ export function Reports() {
             <div className="flex items-center gap-6 rounded-2xl border border-slate-100 bg-white p-6">
               <CircularProgress value={healthPct} />
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-600">
                   Inventory Health
                 </p>
                 <p className="mt-1 text-2xl font-bold text-graphite">
                   {healthPct}%
                 </p>
-                <p className="mt-0.5 text-xs text-slate-400">
+                <p className="mt-0.5 text-xs text-slate-600">
                   {rows.filter((r) => r.health === "healthy").length} of{" "}
                   {rows.length} items healthy
                 </p>
@@ -159,7 +159,7 @@ export function Reports() {
                 key={t}
                 onClick={() => setTab(t)}
                 className={`relative rounded-full px-5 py-2 text-sm font-semibold capitalize transition-colors ${
-                  tab === t ? "text-white" : "text-slate-500 hover:text-graphite"
+                  tab === t ? "text-white" : "text-slate-700 hover:text-graphite"
                 }`}
               >
                 {tab === t && (
@@ -177,7 +177,7 @@ export function Reports() {
           {/* Export button — minimalist */}
           <button
             onClick={() => window.print()}
-            className="no-print mb-6 flex items-center gap-2 text-sm font-semibold text-slate-500 transition-colors hover:text-graphite"
+            className="no-print mb-6 flex items-center gap-2 text-sm font-semibold text-slate-700 transition-colors hover:text-graphite"
           >
             <span className="text-base">↓</span>
             Export as PDF
@@ -188,7 +188,7 @@ export function Reports() {
             {/* Print-only header */}
             <div className="hidden print:mb-6 print:block">
               <h1 className="text-2xl font-bold">LabVault Report</h1>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-slate-700">
                 {tab === "chemicals" ? "Chemicals" : "Apparatus"} ·{" "}
                 {period === "weekly" ? "Weekly" : "Monthly"} · Generated{" "}
                 {new Date().toLocaleString()}
@@ -210,7 +210,7 @@ export function Reports() {
                         {r.name}
                       </p>
                       {r.sub && (
-                        <p className="font-mono text-xs text-slate-400">
+                        <p className="font-mono text-xs text-slate-600">
                           {r.sub}
                         </p>
                       )}
@@ -218,7 +218,7 @@ export function Reports() {
                     <div className="text-right">
                       <p className="font-mono text-lg font-bold tabular-nums text-graphite">
                         {r.remaining}
-                        <span className="ml-0.5 text-xs font-normal text-slate-400">
+                        <span className="ml-0.5 text-xs font-normal text-slate-600">
                           {r.unit}
                         </span>
                       </p>
@@ -228,13 +228,13 @@ export function Reports() {
                   {/* Stats row */}
                   <div className="mt-2 flex items-center gap-6 text-xs">
                     <span className="flex items-center gap-1.5">
-                      <span className="text-slate-400">In</span>
+                      <span className="text-slate-600">In</span>
                       <span className="font-mono font-semibold text-emerald-600">
                         +{r.stockIn}
                       </span>
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <span className="text-slate-400">Used</span>
+                      <span className="text-slate-600">Used</span>
                       <span className="font-mono font-semibold text-amber-600">
                         −{r.used}
                       </span>
@@ -297,7 +297,7 @@ function StatCard({
 
   return (
     <div className="text-center sm:text-left">
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+      <p className="text-xs font-semibold uppercase tracking-wide text-slate-600">
         {label}
       </p>
       <p className={`mt-1 text-2xl font-bold tabular-nums sm:text-3xl ${valueColor}`}>

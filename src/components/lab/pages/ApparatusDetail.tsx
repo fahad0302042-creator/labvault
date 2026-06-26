@@ -227,10 +227,10 @@ export function ApparatusDetail({
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <span className="text-xs font-semibold uppercase tracking-wide text-slate-700">
                 Units remaining
               </span>
-              <span className="text-xs tabular-nums text-slate-500">
+              <span className="text-xs tabular-nums text-slate-700">
                 {Math.round(pct)}%
               </span>
             </div>
@@ -243,7 +243,7 @@ export function ApparatusDetail({
 
           {apparatus.notes && (
             <div className="rounded-xl bg-slate-50 p-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-700">
                 Notes
               </p>
               <p className="mt-1 text-sm text-slate-700">{apparatus.notes}</p>
@@ -275,12 +275,12 @@ export function ApparatusDetail({
           </div>
 
           <div>
-            <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-700">
               <History className="h-3.5 w-3.5" />
               Activity log
             </div>
             {itemLogs.length === 0 ? (
-              <p className="rounded-xl bg-slate-50 p-3 text-sm text-slate-500">
+              <p className="rounded-xl bg-slate-50 p-3 text-sm text-slate-700">
                 No activity recorded yet.
               </p>
             ) : (
@@ -295,9 +295,9 @@ export function ApparatusDetail({
                         {l.action} · {l.quantity}
                       </p>
                       {l.note && (
-                        <p className="text-xs text-slate-500">{l.note}</p>
+                        <p className="text-xs text-slate-700">{l.note}</p>
                       )}
-                      <p className="text-[11px] text-slate-400">
+                      <p className="text-[11px] text-slate-600">
                         {l.logged_by_name} · {formatRelative(l.logged_at)}
                       </p>
                     </div>
@@ -332,7 +332,7 @@ export function ApparatusDetail({
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
               What happened? (optional)
             </label>
             <textarea
@@ -345,7 +345,7 @@ export function ApparatusDetail({
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
               Date
             </label>
             <input
@@ -376,7 +376,7 @@ export function ApparatusDetail({
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
               How many to add?
             </label>
             <div className="flex items-center gap-3">
@@ -405,7 +405,7 @@ export function ApparatusDetail({
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
               Date
             </label>
             <input
@@ -423,7 +423,7 @@ export function ApparatusDetail({
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
               Note (optional)
             </label>
             <textarea
@@ -518,7 +518,7 @@ function Field({
 }) {
   return (
     <div className="space-y-1.5">
-      <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+      <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
         {label}
       </label>
       {children}

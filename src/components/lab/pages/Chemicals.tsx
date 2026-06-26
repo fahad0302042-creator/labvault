@@ -75,7 +75,7 @@ export function Chemicals({ addSignal, onAddSignalConsumed }: ChemicalsProps) {
       <header className="mb-4 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-graphite">Chemicals</h1>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-slate-700">
             {chemicals.length} item{chemicals.length === 1 ? "" : "s"} in inventory
           </p>
         </div>
@@ -96,12 +96,12 @@ export function Chemicals({ addSignal, onAddSignalConsumed }: ChemicalsProps) {
 
       {/* Search */}
       <div className="relative mb-3">
-        <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+        <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by name or formula…"
-          className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-3 text-sm text-graphite placeholder:text-slate-400 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-slate-100"
+          className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-3 text-sm text-graphite placeholder:text-slate-600 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-slate-100"
         />
       </div>
 
@@ -187,7 +187,7 @@ export function Chemicals({ addSignal, onAddSignalConsumed }: ChemicalsProps) {
                       <GlassCard
                         interactive
                         enter={false}
-                        className="p-4"
+                        className="border-slate-200 bg-slate-50 p-4"
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0 flex-1">
@@ -200,7 +200,7 @@ export function Chemicals({ addSignal, onAddSignalConsumed }: ChemicalsProps) {
                               )}
                             </div>
                             {c.formula && (
-                              <p className="font-mono text-xs text-slate-500">
+                              <p className="font-mono text-xs text-slate-700">
                                 {c.formula}
                               </p>
                             )}
@@ -208,11 +208,11 @@ export function Chemicals({ addSignal, onAddSignalConsumed }: ChemicalsProps) {
                           <div className="text-right">
                             <p className="text-lg font-bold tabular-nums text-graphite">
                               {c.quantity}
-                              <span className="ml-0.5 text-xs font-normal text-slate-500">
+                              <span className="ml-0.5 text-xs font-normal text-slate-700">
                                 {c.unit}
                               </span>
                             </p>
-                            <p className="text-[10px] text-slate-400">
+                            <p className="text-[10px] text-slate-600">
                               of {c.initialQuantity} {c.unit}
                             </p>
                           </div>
@@ -305,12 +305,12 @@ function EmptyState({
 }) {
   return (
     <GlassCard className="flex flex-col items-center gap-3 p-10 text-center" enter={false}>
-      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-600">
         {icon}
       </div>
       <div>
         <p className="font-bold text-slate-700">{title}</p>
-        <p className="mt-0.5 text-sm text-slate-500">{sub}</p>
+        <p className="mt-0.5 text-sm text-slate-700">{sub}</p>
       </div>
     </GlassCard>
   );
