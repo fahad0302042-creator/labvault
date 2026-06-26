@@ -9,8 +9,8 @@ import { GlassCard } from "@/components/lab/shared/GlassCard";
 
 export function Login() {
   const { signIn } = useAuth();
-  const [email, setEmail] = useState("researcher@labvault.app");
-  const [password, setPassword] = useState("demo1234");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,8 +28,8 @@ export function Login() {
     setSubmitting(true);
     try {
       await signIn(email, password);
-    } catch {
-      setError("Could not sign in. Please try again.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not sign in. Please try again.");
       setSubmitting(false);
     }
   }
@@ -151,7 +151,7 @@ export function Login() {
           </GlassCard>
 
           <p className="mt-6 text-center text-[11px] text-slate-400">
-            Prototype mode · any email + 4+ char password will sign you in.
+            Use the account you created in Supabase → Authentication → Users.
           </p>
         </motion.div>
       </main>

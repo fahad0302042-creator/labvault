@@ -8,8 +8,9 @@ export function useLogs() {
   const [logs, setLogs] = useState<ConsumptionLog[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const refresh = useCallback(() => {
-    setLogs(getLogs());
+  const refresh = useCallback(async () => {
+    const data = await getLogs();
+    setLogs(data);
     setLoading(false);
   }, []);
 
@@ -17,7 +18,6 @@ export function useLogs() {
     refresh();
     const handler = () => refresh();
     window.addEventListener("storage", handler);
-    // Re-read on window focus so logs added elsewhere surface immediately.
     const onFocus = () => refresh();
     window.addEventListener("focus", onFocus);
     return () => {

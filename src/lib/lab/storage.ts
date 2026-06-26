@@ -7,17 +7,17 @@ import type {
   ConsumptionLog,
   LabUser,
 } from "./types";
+import { supabase, isSupabaseEnabled } from "./supabase";
 
 /**
- * Mock data layer that mimics Supabase's table-per-entity model.
+ * Data access layer — uses Supabase when configured, falls back to
+ * localStorage for offline/prototype mode.
  *
- * When you wire up Supabase later, replace the body of each function with
- * a `supabase.from('table').select()...` call — the function signatures
- * are intentionally shaped to match.
- *
- * NOTE: No seed data. The app starts empty so the user adds their own
- * chemicals and apparatus.
+ * All functions are async (Supabase is network-based). The hooks call
+ * these and update local React state from the results.
  */
+
+// ---------- Low-level localStorage helpers (used as fallback + for undo) ----------
 
 const KEYS = {
   chemicals: "labvault.chemicals",
@@ -26,9 +26,7 @@ const KEYS = {
   user: "labvault.user",
 } as const;
 
-// ---------- Low-level helpers ----------
-
-function read<T>(key: string, fallback: T): T {
+function readLocal<T>(key: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
   try {
     const raw = localStorage.getItem(key);
@@ -38,136 +36,313 @@ function read<T>(key: string, fallback: T): T {
   }
 }
 
-function write<T>(key: string, value: T): void {
+function writeLocal<T>(key: string, value: T): void {
   if (typeof window === "undefined") return;
   localStorage.setItem(key, JSON.stringify(value));
 }
 
-/**
- * Backward-compat: older versions wrote a `labvault.seeded.v1` flag.
- * We don't seed anymore, but we honor the flag so existing users
- * don't lose their data on upgrade. New users start with empty tables.
- */
+/** Convert snake_case DB row → camelCase Chemical */
+function rowToChemical(row: any): Chemical {
+  return {
+    id: row.id,
+    name: row.name,
+    formula: row.formula ?? undefined,
+    quantity: Number(row.quantity),
+    initialQuantity: Number(row.initial_quantity),
+    unit: row.unit,
+    notes: row.notes ?? undefined,
+    qr_code: row.qr_code,
+    created_at: row.created_at,
+  };
+}
+
+/** Convert camelCase Chemical → snake_case DB row */
+function chemicalToRow(c: Chemical) {
+  return {
+    id: c.id,
+    name: c.name,
+    formula: c.formula ?? null,
+    quantity: c.quantity,
+    initial_quantity: c.initialQuantity,
+    unit: c.unit,
+    notes: c.notes ?? null,
+    qr_code: c.qr_code,
+  };
+}
+
+function rowToApparatus(row: any): Apparatus {
+  return {
+    id: row.id,
+    name: row.name,
+    category: row.category,
+    quantity: Number(row.quantity),
+    initialQuantity: Number(row.initial_quantity),
+    notes: row.notes ?? undefined,
+    created_at: row.created_at,
+  };
+}
+
+function apparatusToRow(a: Apparatus) {
+  return {
+    id: a.id,
+    name: a.name,
+    category: a.category,
+    quantity: a.quantity,
+    initial_quantity: a.initialQuantity,
+    notes: a.notes ?? null,
+  };
+}
+
+function rowToLog(row: any): ConsumptionLog {
+  return {
+    id: row.id,
+    item_id: row.item_id,
+    item_type: row.item_type,
+    item_name: row.item_name,
+    action: row.action,
+    quantity: Number(row.quantity),
+    unit: row.unit ?? undefined,
+    note: row.note ?? undefined,
+    logged_by: row.logged_by ?? "unknown",
+    logged_by_name: row.logged_by_name ?? "Unknown",
+    logged_at: row.logged_at,
+  };
+}
+
+// ---------- Seed (no-op) ----------
+
 export function ensureSeed(): void {
-  // No-op — app starts empty. Kept for AuthContext compatibility.
   return;
 }
 
 // ---------- Chemicals ----------
 
-export function getChemicals(): Chemical[] {
-  return read<Chemical[]>(KEYS.chemicals, []).sort(
+export async function getChemicals(): Promise<Chemical[]> {
+  if (isSupabaseEnabled && supabase) {
+    const { data, error } = await supabase
+      .from("chemicals")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) {
+      console.error("getChemicals error:", error);
+      return [];
+    }
+    return (data ?? []).map(rowToChemical);
+  }
+  return readLocal<Chemical[]>(KEYS.chemicals, []).sort(
     (a, b) => +new Date(b.created_at) - +new Date(a.created_at),
   );
 }
 
-export function saveChemical(c: Chemical): void {
-  const all = read<Chemical[]>(KEYS.chemicals, []);
+export async function saveChemical(c: Chemical): Promise<void> {
+  if (isSupabaseEnabled && supabase) {
+    const { error } = await supabase
+      .from("chemicals")
+      .upsert(chemicalToRow(c));
+    if (error) console.error("saveChemical error:", error);
+    return;
+  }
+  const all = readLocal<Chemical[]>(KEYS.chemicals, []);
   const idx = all.findIndex((x) => x.id === c.id);
   if (idx >= 0) all[idx] = c;
   else all.unshift(c);
-  write(KEYS.chemicals, all);
+  writeLocal(KEYS.chemicals, all);
 }
 
-export function deleteChemical(id: string): void {
-  write(
+export async function deleteChemical(id: string): Promise<void> {
+  if (isSupabaseEnabled && supabase) {
+    const { error } = await supabase.from("chemicals").delete().eq("id", id);
+    if (error) console.error("deleteChemical error:", error);
+    return;
+  }
+  writeLocal(
     KEYS.chemicals,
-    read<Chemical[]>(KEYS.chemicals, []).filter((c) => c.id !== id),
+    readLocal<Chemical[]>(KEYS.chemicals, []).filter((c) => c.id !== id),
   );
 }
 
 // ---------- Apparatus ----------
 
-export function getApparatus(): Apparatus[] {
-  return read<Apparatus[]>(KEYS.apparatus, []).sort(
+export async function getApparatus(): Promise<Apparatus[]> {
+  if (isSupabaseEnabled && supabase) {
+    const { data, error } = await supabase
+      .from("apparatus")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) {
+      console.error("getApparatus error:", error);
+      return [];
+    }
+    return (data ?? []).map(rowToApparatus);
+  }
+  return readLocal<Apparatus[]>(KEYS.apparatus, []).sort(
     (a, b) => +new Date(b.created_at) - +new Date(a.created_at),
   );
 }
 
-export function saveApparatus(a: Apparatus): void {
-  const all = read<Apparatus[]>(KEYS.apparatus, []);
+export async function saveApparatus(a: Apparatus): Promise<void> {
+  if (isSupabaseEnabled && supabase) {
+    const { error } = await supabase
+      .from("apparatus")
+      .upsert(apparatusToRow(a));
+    if (error) console.error("saveApparatus error:", error);
+    return;
+  }
+  const all = readLocal<Apparatus[]>(KEYS.apparatus, []);
   const idx = all.findIndex((x) => x.id === a.id);
   if (idx >= 0) all[idx] = a;
   else all.unshift(a);
-  write(KEYS.apparatus, all);
+  writeLocal(KEYS.apparatus, all);
 }
 
-export function deleteApparatus(id: string): void {
-  write(
+export async function deleteApparatus(id: string): Promise<void> {
+  if (isSupabaseEnabled && supabase) {
+    const { error } = await supabase.from("apparatus").delete().eq("id", id);
+    if (error) console.error("deleteApparatus error:", error);
+    return;
+  }
+  writeLocal(
     KEYS.apparatus,
-    read<Apparatus[]>(KEYS.apparatus, []).filter((a) => a.id !== id),
+    readLocal<Apparatus[]>(KEYS.apparatus, []).filter((a) => a.id !== id),
   );
 }
 
 // ---------- Logs ----------
 
-export function getLogs(): ConsumptionLog[] {
-  return read<ConsumptionLog[]>(KEYS.logs, []).sort(
+export async function getLogs(): Promise<ConsumptionLog[]> {
+  if (isSupabaseEnabled && supabase) {
+    const { data, error } = await supabase
+      .from("consumption_logs")
+      .select("*")
+      .order("logged_at", { ascending: false });
+    if (error) {
+      console.error("getLogs error:", error);
+      return [];
+    }
+    return (data ?? []).map(rowToLog);
+  }
+  return readLocal<ConsumptionLog[]>(KEYS.logs, []).sort(
     (a, b) => +new Date(b.logged_at) - +new Date(a.logged_at),
   );
 }
 
-export function pushLog(
+export async function pushLog(
   log: Omit<ConsumptionLog, "id" | "logged_at"> & { logged_at?: string },
-): ConsumptionLog {
+): Promise<ConsumptionLog> {
   const entry: ConsumptionLog = {
     ...log,
     id: uuid(),
     logged_at: log.logged_at ?? new Date().toISOString(),
   };
-  const all = read<ConsumptionLog[]>(KEYS.logs, []);
+
+  if (isSupabaseEnabled && supabase) {
+    const row = {
+      id: entry.id,
+      item_id: entry.item_id,
+      item_type: entry.item_type,
+      item_name: entry.item_name,
+      action: entry.action,
+      quantity: entry.quantity,
+      unit: entry.unit ?? null,
+      note: entry.note ?? null,
+      logged_by: entry.logged_by,
+      logged_by_name: entry.logged_by_name,
+      logged_at: entry.logged_at,
+    };
+    const { error } = await supabase.from("consumption_logs").insert(row);
+    if (error) console.error("pushLog error:", error);
+    return entry;
+  }
+
+  const all = readLocal<ConsumptionLog[]>(KEYS.logs, []);
   all.unshift(entry);
-  write(KEYS.logs, all);
+  writeLocal(KEYS.logs, all);
   return entry;
 }
 
-/** Remove a log entry by id — used by the Undo toast. */
-export function removeLog(id: string): void {
-  write(
+export async function removeLog(id: string): Promise<void> {
+  if (isSupabaseEnabled && supabase) {
+    const { error } = await supabase
+      .from("consumption_logs")
+      .delete()
+      .eq("id", id);
+    if (error) console.error("removeLog error:", error);
+    return;
+  }
+  writeLocal(
     KEYS.logs,
-    read<ConsumptionLog[]>(KEYS.logs, []).filter((l) => l.id !== id),
+    readLocal<ConsumptionLog[]>(KEYS.logs, []).filter((l) => l.id !== id),
   );
 }
 
-// ---------- Auth (mock) ----------
+// ---------- Auth (mock fallback) ----------
 
 export function getCurrentUser(): LabUser | null {
-  return read<LabUser | null>(KEYS.user, null);
+  return readLocal<LabUser | null>(KEYS.user, null);
 }
 
 export function setCurrentUser(u: LabUser | null): void {
-  if (u) write(KEYS.user, u);
+  if (u) writeLocal(KEYS.user, u);
   else if (typeof window !== "undefined") localStorage.removeItem(KEYS.user);
 }
 
 // ---------- Lookup ----------
 
-/**
- * Find a CHEMICAL by QR code.
- * Apparatus doesn't have QR codes — only chemicals do.
- */
-export function findByQr(
+/** Find a chemical by QR code. Apparatus doesn't have QR codes. */
+export async function findByQr(
   qr: string,
-): { type: "chemical"; item: Chemical } | null {
-  const c = read<Chemical[]>(KEYS.chemicals, []).find((x) => x.qr_code === qr);
+): Promise<{ type: "chemical"; item: Chemical } | null> {
+  if (isSupabaseEnabled && supabase) {
+    const { data, error } = await supabase
+      .from("chemicals")
+      .select("*")
+      .eq("qr_code", qr)
+      .maybeSingle();
+    if (error || !data) return null;
+    return { type: "chemical", item: rowToChemical(data) };
+  }
+  const c = readLocal<Chemical[]>(KEYS.chemicals, []).find(
+    (x) => x.qr_code === qr,
+  );
   return c ? { type: "chemical", item: c } : null;
 }
 
-/** Cross-table id lookup — used by the scanner result view. */
-export function findById(
+export async function findById(
   id: string,
-): { type: "chemical"; item: Chemical } | { type: "apparatus"; item: Apparatus } | null {
-  const c = read<Chemical[]>(KEYS.chemicals, []).find((x) => x.id === id);
+): Promise<
+  { type: "chemical"; item: Chemical } | { type: "apparatus"; item: Apparatus } | null
+> {
+  if (isSupabaseEnabled && supabase) {
+    const { data: c } = await supabase
+      .from("chemicals")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+    if (c) return { type: "chemical", item: rowToChemical(c) };
+    const { data: a } = await supabase
+      .from("apparatus")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+    if (a) return { type: "apparatus", item: rowToApparatus(a) };
+    return null;
+  }
+  const c = readLocal<Chemical[]>(KEYS.chemicals, []).find((x) => x.id === id);
   if (c) return { type: "chemical", item: c };
-  const a = read<Apparatus[]>(KEYS.apparatus, []).find((x) => x.id === id);
+  const a = readLocal<Apparatus[]>(KEYS.apparatus, []).find((x) => x.id === id);
   if (a) return { type: "apparatus", item: a };
   return null;
 }
 
 // ---------- Reset ----------
 
-/** Wipe all inventory data (keeps the user session). */
-export function clearAllData(): void {
+export async function clearAllData(): Promise<void> {
+  if (isSupabaseEnabled && supabase) {
+    await supabase.from("consumption_logs").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    await supabase.from("chemicals").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    await supabase.from("apparatus").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    return;
+  }
   if (typeof window === "undefined") return;
   localStorage.removeItem(KEYS.chemicals);
   localStorage.removeItem(KEYS.apparatus);

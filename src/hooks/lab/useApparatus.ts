@@ -20,8 +20,9 @@ export function useApparatus() {
   const [apparatus, setApparatus] = useState<Apparatus[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const refresh = useCallback(() => {
-    setApparatus(getApparatus());
+  const refresh = useCallback(async () => {
+    const data = await getApparatus();
+    setApparatus(data);
     setLoading(false);
   }, []);
 
@@ -33,13 +34,13 @@ export function useApparatus() {
   }, [refresh]);
 
   const log = useCallback(
-    (
+    async (
       item: Apparatus,
       action: LogAction,
       quantity: number,
       note?: string,
       loggedAt?: string,
-    ): ConsumptionLog => {
+    ): Promise<ConsumptionLog> => {
       return pushLog({
         item_id: item.id,
         item_type: "apparatus",
@@ -56,64 +57,64 @@ export function useApparatus() {
   );
 
   const add = useCallback(
-    (input: NewApparatus): Apparatus => {
+    async (input: NewApparatus): Promise<Apparatus> => {
       const a: Apparatus = {
         ...input,
         id: crypto.randomUUID(),
-        // Note: apparatus doesn't get a QR code — only chemicals do
+        // Apparatus doesn't get a QR code — only chemicals do
         created_at: new Date().toISOString(),
       };
-      saveApparatus(a);
-      log(a, "created", a.quantity, "Initial count");
-      refresh();
+      await saveApparatus(a);
+      await log(a, "created", a.quantity, "Initial count");
+      await refresh();
       return a;
     },
     [log, refresh],
   );
 
   const update = useCallback(
-    (id: string, patch: ApparatusUpdate): void => {
+    async (id: string, patch: ApparatusUpdate): Promise<void> => {
       const current = apparatus.find((a) => a.id === id);
       if (!current) return;
       const next: Apparatus = { ...current, ...patch };
-      saveApparatus(next);
-      log(next, "updated", 0);
-      refresh();
+      await saveApparatus(next);
+      await log(next, "updated", 0);
+      await refresh();
     },
     [apparatus, log, refresh],
   );
 
   const remove = useCallback(
-    (id: string): void => {
+    async (id: string): Promise<void> => {
       const current = apparatus.find((a) => a.id === id);
       if (!current) return;
-      deleteApparatus(id);
-      log(current, "deleted", current.quantity);
-      refresh();
+      await deleteApparatus(id);
+      await log(current, "deleted", current.quantity);
+      await refresh();
     },
     [apparatus, log, refresh],
   );
 
   /** Log a breakage: reduce quantity by 1. Shows undo toast for 5s. */
   const logBreakage = useCallback(
-    (id: string, note?: string, loggedAt?: string): void => {
+    async (id: string, note?: string, loggedAt?: string): Promise<void> => {
       const current = apparatus.find((a) => a.id === id);
       if (!current) return;
       const prevQty = current.quantity;
       const newQty = Math.max(0, current.quantity - 1);
       const next: Apparatus = { ...current, quantity: newQty };
-      saveApparatus(next);
-      const logEntry = log(next, "broken", 1, note, loggedAt);
-      refresh();
+      await saveApparatus(next);
+      const logEntry = await log(next, "broken", 1, note, loggedAt);
+      await refresh();
 
       toast(`Logged breakage of ${current.name}`, {
         action: {
           label: "Undo",
-          onClick: () => {
+          onClick: async () => {
             const restored: Apparatus = { ...current, quantity: prevQty };
-            saveApparatus(restored);
-            removeLog(logEntry.id);
-            refresh();
+            await saveApparatus(restored);
+            await removeLog(logEntry.id);
+            await refresh();
             toast("Breakage undone");
           },
         },
@@ -125,7 +126,7 @@ export function useApparatus() {
 
   /** Restock (add) units. Shows undo toast for 5s. */
   const restock = useCallback(
-    (id: string, amount: number, note?: string, loggedAt?: string): void => {
+    async (id: string, amount: number, note?: string, loggedAt?: string): Promise<void> => {
       const current = apparatus.find((a) => a.id === id);
       if (!current) return;
       const prevQty = current.quantity;
@@ -135,22 +136,22 @@ export function useApparatus() {
         quantity: current.quantity + amount,
         initialQuantity: Math.max(current.initialQuantity, current.quantity + amount),
       };
-      saveApparatus(next);
-      const logEntry = log(next, "restocked", amount, note, loggedAt);
-      refresh();
+      await saveApparatus(next);
+      const logEntry = await log(next, "restocked", amount, note, loggedAt);
+      await refresh();
 
       toast(`Restocked ${amount} × ${current.name}`, {
         action: {
           label: "Undo",
-          onClick: () => {
+          onClick: async () => {
             const restored: Apparatus = {
               ...current,
               quantity: prevQty,
               initialQuantity: prevInitial,
             };
-            saveApparatus(restored);
-            removeLog(logEntry.id);
-            refresh();
+            await saveApparatus(restored);
+            await removeLog(logEntry.id);
+            await refresh();
             toast("Restock undone");
           },
         },

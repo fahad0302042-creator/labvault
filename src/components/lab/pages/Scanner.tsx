@@ -66,18 +66,18 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
     );
   }, [allItems, search]);
 
-  function startScan() {
+  async function startScan() {
     setMode("scanning");
     setResult(null);
     // Simulate camera scan: after 2.5s, "find" a random chemical by its QR.
     // Apparatus doesn't have QR codes — only chemicals do.
-    setTimeout(() => {
+    setTimeout(async () => {
       if (chemicals.length === 0) {
         setMode("notFound");
         return;
       }
       const pick = chemicals[Math.floor(Math.random() * chemicals.length)];
-      const found = findByQr(pick.qr_code);
+      const found = await findByQr(pick.qr_code);
       if (found) {
         setResult(found);
         setMode("found");

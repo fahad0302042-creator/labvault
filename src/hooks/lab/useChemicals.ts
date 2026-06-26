@@ -21,8 +21,7 @@ export type ChemicalUpdate = Partial<NewChemical>;
 
 /**
  * CRUD hook for chemicals.
- * Each mutating op also writes a consumption_log entry so the activity
- * feed and reports reflect reality.
+ * All operations are async (Supabase is network-based).
  * Consume + restock show an undo toast for 5 seconds.
  */
 export function useChemicals() {
@@ -30,8 +29,9 @@ export function useChemicals() {
   const [chemicals, setChemicals] = useState<Chemical[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const refresh = useCallback(() => {
-    setChemicals(getChemicals());
+  const refresh = useCallback(async () => {
+    const data = await getChemicals();
+    setChemicals(data);
     setLoading(false);
   }, []);
 
@@ -43,13 +43,13 @@ export function useChemicals() {
   }, [refresh]);
 
   const log = useCallback(
-    (
+    async (
       item: Chemical,
       action: LogAction,
       quantity: number,
       note?: string,
       loggedAt?: string,
-    ): ConsumptionLog => {
+    ): Promise<ConsumptionLog> => {
       return pushLog({
         item_id: item.id,
         item_type: "chemical",
@@ -67,47 +67,47 @@ export function useChemicals() {
   );
 
   const add = useCallback(
-    (input: NewChemical): Chemical => {
+    async (input: NewChemical): Promise<Chemical> => {
       const c: Chemical = {
         ...input,
         id: crypto.randomUUID(),
         qr_code: crypto.randomUUID(),
         created_at: new Date().toISOString(),
       };
-      saveChemical(c);
-      log(c, "created", c.quantity, "Initial stock");
-      refresh();
+      await saveChemical(c);
+      await log(c, "created", c.quantity, "Initial stock");
+      await refresh();
       return c;
     },
     [log, refresh],
   );
 
   const update = useCallback(
-    (id: string, patch: ChemicalUpdate): void => {
+    async (id: string, patch: ChemicalUpdate): Promise<void> => {
       const current = chemicals.find((c) => c.id === id);
       if (!current) return;
       const next: Chemical = { ...current, ...patch };
-      saveChemical(next);
-      log(next, "updated", 0);
-      refresh();
+      await saveChemical(next);
+      await log(next, "updated", 0);
+      await refresh();
     },
     [chemicals, log, refresh],
   );
 
   const remove = useCallback(
-    (id: string): void => {
+    async (id: string): Promise<void> => {
       const current = chemicals.find((c) => c.id === id);
       if (!current) return;
-      deleteChemical(id);
-      log(current, "deleted", current.quantity);
-      refresh();
+      await deleteChemical(id);
+      await log(current, "deleted", current.quantity);
+      await refresh();
     },
     [chemicals, log, refresh],
   );
 
   /** Consume `amount` units; clamps at 0. Shows undo toast for 5s. */
   const consume = useCallback(
-    (id: string, amount: number, note?: string, loggedAt?: string): void => {
+    async (id: string, amount: number, note?: string, loggedAt?: string): Promise<void> => {
       const current = chemicals.find((c) => c.id === id);
       if (!current) return;
       const prevQty = current.quantity;
@@ -115,19 +115,18 @@ export function useChemicals() {
         ...current,
         quantity: Math.max(0, current.quantity - amount),
       };
-      saveChemical(next);
-      const logEntry = log(next, "consumed", amount, note, loggedAt);
-      refresh();
+      await saveChemical(next);
+      const logEntry = await log(next, "consumed", amount, note, loggedAt);
+      await refresh();
 
-      // Undo toast
       toast(`Consumed ${amount} ${current.unit} of ${current.name}`, {
         action: {
           label: "Undo",
-          onClick: () => {
+          onClick: async () => {
             const restored: Chemical = { ...current, quantity: prevQty };
-            saveChemical(restored);
-            removeLog(logEntry.id);
-            refresh();
+            await saveChemical(restored);
+            await removeLog(logEntry.id);
+            await refresh();
             toast("Consumption undone");
           },
         },
@@ -139,7 +138,7 @@ export function useChemicals() {
 
   /** Restock `amount` units. Shows undo toast for 5s. */
   const restock = useCallback(
-    (id: string, amount: number, note?: string, loggedAt?: string): void => {
+    async (id: string, amount: number, note?: string, loggedAt?: string): Promise<void> => {
       const current = chemicals.find((c) => c.id === id);
       if (!current) return;
       const prevQty = current.quantity;
@@ -149,22 +148,22 @@ export function useChemicals() {
         quantity: current.quantity + amount,
         initialQuantity: Math.max(current.initialQuantity, current.quantity + amount),
       };
-      saveChemical(next);
-      const logEntry = log(next, "restocked", amount, note, loggedAt);
-      refresh();
+      await saveChemical(next);
+      const logEntry = await log(next, "restocked", amount, note, loggedAt);
+      await refresh();
 
       toast(`Restocked ${amount} ${current.unit} of ${current.name}`, {
         action: {
           label: "Undo",
-          onClick: () => {
+          onClick: async () => {
             const restored: Chemical = {
               ...current,
               quantity: prevQty,
               initialQuantity: prevInitial,
             };
-            saveChemical(restored);
-            removeLog(logEntry.id);
-            refresh();
+            await saveChemical(restored);
+            await removeLog(logEntry.id);
+            await refresh();
             toast("Restock undone");
           },
         },

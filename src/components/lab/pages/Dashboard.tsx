@@ -432,12 +432,12 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
         </GlassCard>
       ) : (
         <button
-          onClick={() => {
+          onClick={async () => {
             if (confirm("Clear ALL inventory data? This removes every chemical, apparatus, and log. This cannot be undone.")) {
-              clearAllData();
-              refreshChemicals();
-              refreshApparatus();
-              refreshLogs();
+              await clearAllData();
+              await refreshChemicals();
+              await refreshApparatus();
+              await refreshLogs();
               toast("All inventory data cleared");
             }
           }}
