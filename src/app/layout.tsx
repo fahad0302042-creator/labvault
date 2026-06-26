@@ -23,8 +23,24 @@ export const metadata: Metadata = {
     "Mobile-first inventory for chemistry labs. Track chemicals, apparatus, consumption and breakages with QR.",
   keywords: ["lab", "chemistry", "inventory", "QR", "chemicals", "apparatus"],
   authors: [{ name: "LabVault" }],
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "LabVault",
+  },
   icons: {
-    icon: "/logo.svg",
+    icon: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/icon-192.png", sizes: "192x192", type: "image/png" }],
+  },
+  openGraph: {
+    title: "LabVault — Chemistry Lab Inventory",
+    description:
+      "Track chemicals, apparatus, consumption and breakages with QR codes.",
+    type: "website",
   },
 };
 

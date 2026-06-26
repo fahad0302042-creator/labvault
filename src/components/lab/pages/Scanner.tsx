@@ -11,8 +11,9 @@ import {
   Camera,
   X,
   CheckCircle2,
+  CameraOff,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useChemicals } from "@/hooks/lab/useChemicals";
 import { useApparatus } from "@/hooks/lab/useApparatus";
 import { useRecentlyScanned } from "@/hooks/lab/useRecentlyScanned";
@@ -44,6 +45,33 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
   const [result, setResult] = useState<ScanResult>(null);
   const [search, setSearch] = useState("");
   const [tick, setTick] = useState(false);
+  const [cameraError, setCameraError] = useState<string | null>(null);
+  const scannerRef = useRef<any>(null);
+  const scannerDivId = "qr-reader-element";
+
+  // Cleanup camera on unmount or when leaving scanning mode
+  useEffect(() => {
+    return () => {
+      stopCamera();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (mode !== "scanning") {
+      stopCamera();
+    }
+  }, [mode]);
+
+  function stopCamera() {
+    if (scannerRef.current) {
+      try {
+        scannerRef.current.clear();
+      } catch {
+        // ignore
+      }
+      scannerRef.current = null;
+    }
+  }
 
   // Allow dashboard quick-action to trigger a scan
   if (scanSignal && mode !== "scanning") {
@@ -69,23 +97,62 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
   async function startScan() {
     setMode("scanning");
     setResult(null);
-    // Simulate camera scan: after 2.5s, "find" a random chemical by its QR.
-    // Apparatus doesn't have QR codes — only chemicals do.
-    setTimeout(async () => {
-      if (chemicals.length === 0) {
-        setMode("notFound");
-        return;
-      }
-      const pick = chemicals[Math.floor(Math.random() * chemicals.length)];
-      const found = await findByQr(pick.qr_code);
-      if (found) {
-        setResult(found);
-        setMode("found");
-        addScan({ id: found.item.id, type: found.type, name: found.item.name });
-      } else {
-        setMode("notFound");
-      }
-    }, 2500);
+    setCameraError(null);
+
+    // Check if chemicals exist
+    if (chemicals.length === 0) {
+      setMode("notFound");
+      return;
+    }
+
+    // Dynamically import html5-qrcode (only loads when scanning)
+    try {
+      const { Html5Qrcode } = await import("html5-qrcode");
+
+      // Wait for the DOM element to exist
+      await new Promise((r) => setTimeout(r, 100));
+
+      const html5QrCode = new Html5Qrcode(scannerDivId);
+      scannerRef.current = html5QrCode;
+
+      const qrCodeSuccessCallback = async (decodedText: string) => {
+        // Found a QR code — look it up in the database
+        stopCamera();
+        const found = await findByQr(decodedText);
+        if (found) {
+          setResult(found);
+          setMode("found");
+          addScan({ id: found.item.id, type: found.type, name: found.item.name });
+        } else {
+          setMode("notFound");
+        }
+      };
+
+      const config = {
+        fps: 10,
+        qrbox: { width: 250, height: 250 },
+        aspectRatio: 1.0,
+      };
+
+      await html5QrCode.start(
+        { facingMode: "environment" }, // back camera
+        config,
+        qrCodeSuccessCallback,
+        () => {
+          // Ignore scan errors (they fire frequently)
+        },
+      );
+    } catch (err: any) {
+      // Camera not available (no HTTPS, no camera, permission denied, etc.)
+      stopCamera();
+      setCameraError(
+        err?.message?.includes("Permission") ||
+          err?.message?.includes("NotAllowed")
+          ? "Camera permission denied. Allow camera access and try again."
+          : "Camera not available. Use manual search below to find items.",
+      );
+      setMode("idle");
+    }
   }
 
   function cancelScan() {
@@ -154,28 +221,49 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
         <div className="absolute inset-0 flex items-center justify-center">
           {mode === "scanning" ? (
             <div className="relative">
-              {/* Pulse rings */}
-              <div className="qr-pulse-ring absolute inset-0 rounded-3xl border-2 border-slate-100" />
+              {/* Hidden div where html5-qrcode renders the camera feed */}
+              <div id={scannerDivId} className="overflow-hidden rounded-3xl" />
+
+              {/* Pulse rings + viewfinder (shown as overlay on top of camera, or standalone if camera hasn't started) */}
+              <div className="qr-pulse-ring absolute inset-0 rounded-3xl border-2 border-white/70 pointer-events-none" />
               <div
-                className="qr-pulse-ring absolute inset-0 rounded-3xl border-2 border-slate-100"
+                className="qr-pulse-ring absolute inset-0 rounded-3xl border-2 border-white/70 pointer-events-none"
                 style={{ animationDelay: "0.6s" }}
               />
-              {/* Viewfinder */}
-              <div className="relative h-48 w-48 rounded-3xl border-2 border-white/50">
-                {/* Corner brackets */}
-                <CornerBrackets />
-                {/* Moving scan line */}
-                <motion.div
-                  className="absolute inset-x-2 h-0.5 rounded-full bg-white shadow-[0_0_8px_2px_rgba(255,255,255,0.6)]"
-                  initial={{ top: "10%" }}
-                  animate={{ top: ["10%", "90%", "10%"] }}
-                  transition={{
-                    duration: 1.6,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
+              {/* Viewfinder overlay */}
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                <div className="relative h-48 w-48 rounded-3xl border-2 border-white/50">
+                  <CornerBrackets />
+                  <motion.div
+                    className="absolute inset-x-2 h-0.5 rounded-full bg-white shadow-[0_0_8px_2px_rgba(255,255,255,0.6)]"
+                    initial={{ top: "10%" }}
+                    animate={{ top: ["10%", "90%", "10%"] }}
+                    transition={{
+                      duration: 1.6,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  />
+                </div>
               </div>
+              {/* Loading hint */}
+              <p className="pointer-events-none absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm font-semibold text-white/80">
+                Scanning…
+              </p>
+            </div>
+          ) : cameraError ? (
+            <div className="px-6 text-center text-white">
+              <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/20 text-amber-300">
+                <CameraOff className="h-7 w-7" />
+              </div>
+              <p className="font-bold">Camera unavailable</p>
+              <p className="mt-1 text-sm text-slate-600">{cameraError}</p>
+              <button
+                onClick={() => setCameraError(null)}
+                className="mt-4 rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/20"
+              >
+                Dismiss
+              </button>
             </div>
           ) : mode === "found" && result ? (
             <ScanResultCard result={result} tick={tick} />
@@ -190,7 +278,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
               </p>
               <button
                 onClick={cancelScan}
-                className="mt-4 rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur hover:bg-white/20"
+                className="mt-4 rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/20"
               >
                 Try again
               </button>
