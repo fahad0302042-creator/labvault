@@ -34,11 +34,18 @@ type Mode = "idle" | "scanning" | "found" | "notFound" | "manual";
 type ScannerProps = {
   scanSignal?: number;
   onScanSignalConsumed?: () => void;
+  onOpenChemicalDetail?: (id: string) => void;
+  onOpenApparatusDetail?: (id: string) => void;
 };
 
-export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
-  const { chemicals, consume, restock } = useChemicals();
-  const { apparatus, logBreakage, restock: restockApparatus } = useApparatus();
+export function Scanner({
+  scanSignal,
+  onScanSignalConsumed,
+  onOpenChemicalDetail,
+  onOpenApparatusDetail,
+}: ScannerProps) {
+  const { chemicals } = useChemicals();
+  const { apparatus } = useApparatus();
   const { recent, addScan } = useRecentlyScanned();
 
   const [mode, setMode] = useState<Mode>("idle");
@@ -105,14 +112,29 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
       return;
     }
 
+    // Check if camera API is available
+    if (typeof navigator === "undefined" || !navigator.mediaDevices?.getUserMedia) {
+      setCameraError("Camera not supported on this device. Use manual search below.");
+      setMode("idle");
+      return;
+    }
+
     // Dynamically import html5-qrcode (only loads when scanning)
     try {
       const { Html5Qrcode } = await import("html5-qrcode");
 
       // Wait for the DOM element to exist
-      await new Promise((r) => setTimeout(r, 100));
+      await new Promise((r) => setTimeout(r, 200));
 
-      const html5QrCode = new Html5Qrcode(scannerDivId);
+      // Verify the element exists
+      const el = document.getElementById(scannerDivId);
+      if (!el) {
+        throw new Error("Scanner element not found");
+      }
+
+      const html5QrCode = new Html5Qrcode(scannerDivId, {
+        verbose: false,
+      });
       scannerRef.current = html5QrCode;
 
       const qrCodeSuccessCallback = async (decodedText: string) => {
@@ -128,29 +150,40 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
         }
       };
 
+      // Use a function for qrbox so it adapts to screen size (min of 60% of width/height, capped)
       const config = {
         fps: 10,
-        qrbox: { width: 250, height: 250 },
+        qrbox: (viewfinderWidth: number, viewfinderHeight: number) => {
+          const minEdge = Math.min(viewfinderWidth, viewfinderHeight);
+          const size = Math.floor(minEdge * 0.7);
+          return { width: size, height: size };
+        },
         aspectRatio: 1.0,
+        showTorchButtonIfSupported: true,
+        showZoomSliderIfSupported: true,
       };
 
       await html5QrCode.start(
-        { facingMode: "environment" }, // back camera
+        { facingMode: "environment" },
         config,
         qrCodeSuccessCallback,
         () => {
-          // Ignore scan errors (they fire frequently)
+          // Ignore individual scan errors (they fire frequently)
         },
       );
     } catch (err: any) {
-      // Camera not available (no HTTPS, no camera, permission denied, etc.)
+      console.error("Camera start error:", err);
       stopCamera();
-      setCameraError(
-        err?.message?.includes("Permission") ||
-          err?.message?.includes("NotAllowed")
-          ? "Camera permission denied. Allow camera access and try again."
-          : "Camera not available. Use manual search below to find items.",
-      );
+      const msg = err?.message || String(err);
+      if (msg.includes("Permission") || msg.includes("NotAllowed") || msg.includes("denied")) {
+        setCameraError("Camera permission denied. Allow camera access in your browser settings and try again.");
+      } else if (msg.includes("NotFound") || msg.includes("NotReadable") || msg.includes("device")) {
+        setCameraError("No camera found on this device. Use manual search below.");
+      } else if (msg.includes("element")) {
+        setCameraError("Scanner failed to initialize. Try refreshing the page.");
+      } else {
+        setCameraError("Camera couldn't start. Make sure you're on HTTPS and have granted camera permission.");
+      }
       setMode("idle");
     }
   }
@@ -162,24 +195,25 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
 
   function handleConsume() {
     if (!result) return;
+    // Don't auto-consume a fixed amount — open the detail modal so the user
+    // can enter the exact amount, date, and note.
     if (result.type === "chemical") {
-      consume(result.item.id, 10, "Consumed via QR scan");
+      onOpenChemicalDetail?.(result.item.id);
     } else {
-      logBreakage(result.item.id, "Logged via QR scan");
+      onOpenApparatusDetail?.(result.item.id);
     }
-    flashTick();
-    setTimeout(() => cancelScan(), 900);
+    cancelScan();
   }
 
   function handleRestock() {
     if (!result) return;
+    // Same — open detail modal for the user to enter amount.
     if (result.type === "chemical") {
-      restock(result.item.id, 50, "Restocked via QR scan");
+      onOpenChemicalDetail?.(result.item.id);
     } else {
-      restockApparatus(result.item.id, 1, "Restocked via QR scan");
+      onOpenApparatusDetail?.(result.item.id);
     }
-    flashTick();
-    setTimeout(() => cancelScan(), 900);
+    cancelScan();
   }
 
   function flashTick() {

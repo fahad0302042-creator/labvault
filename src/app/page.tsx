@@ -15,6 +15,11 @@ import { Chemicals } from "@/components/lab/pages/Chemicals";
 import { ApparatusPage } from "@/components/lab/pages/Apparatus";
 import { Scanner } from "@/components/lab/pages/Scanner";
 import { Reports } from "@/components/lab/pages/Reports";
+import { ChemicalDetail } from "@/components/lab/pages/ChemicalDetail";
+import { ApparatusDetail } from "@/components/lab/pages/ApparatusDetail";
+import { useChemicals } from "@/hooks/lab/useChemicals";
+import { useApparatus } from "@/hooks/lab/useApparatus";
+import type { Chemical, Apparatus } from "@/lib/lab/types";
 
 function LabVaultApp() {
   const { user, loading } = useAuth();
@@ -24,6 +29,13 @@ function LabVaultApp() {
   const [addChemicalSignal, setAddChemicalSignal] = useState(0);
   const [addApparatusSignal, setAddApparatusSignal] = useState(0);
   const [scanSignal, setScanSignal] = useState(0);
+
+  // Global detail modal state — so any screen (including Scanner) can open
+  // a chemical/apparatus detail modal by id.
+  const { chemicals, consume, restock, update: updateChemical, remove: removeChemical } = useChemicals();
+  const { apparatus, logBreakage, restock: restockApparatus, update: updateApparatus, remove: removeApparatus } = useApparatus();
+  const [selectedChemical, setSelectedChemical] = useState<Chemical | null>(null);
+  const [selectedApparatus, setSelectedApparatus] = useState<Apparatus | null>(null);
 
   const navigate = useCallback((next: TabKey) => setTab(next), []);
 
@@ -41,6 +53,17 @@ function LabVaultApp() {
     setTab("scanner");
     setScanSignal((n) => n + 1);
   }, []);
+
+  // Open detail modal by id — used by Scanner after a scan
+  const openChemicalDetail = useCallback((id: string) => {
+    const c = chemicals.find((c) => c.id === id);
+    if (c) setSelectedChemical(c);
+  }, [chemicals]);
+
+  const openApparatusDetail = useCallback((id: string) => {
+    const a = apparatus.find((a) => a.id === id);
+    if (a) setSelectedApparatus(a);
+  }, [apparatus]);
 
   if (loading) {
     return (
@@ -100,6 +123,8 @@ function LabVaultApp() {
                     <Scanner
                       scanSignal={scanSignal}
                       onScanSignalConsumed={() => {}}
+                      onOpenChemicalDetail={openChemicalDetail}
+                      onOpenApparatusDetail={openApparatusDetail}
                     />
                   )}
                   {tab === "reports" && <Reports />}
@@ -112,6 +137,26 @@ function LabVaultApp() {
           <BottomNav active={tab} onChange={navigate} />
         </div>
       </div>
+
+      {/* Global detail modals — rendered at top level so they work from any tab */}
+      <ChemicalDetail
+        chemical={selectedChemical ? chemicals.find((c) => c.id === selectedChemical.id) ?? null : null}
+        open={!!selectedChemical}
+        onClose={() => setSelectedChemical(null)}
+        onConsume={consume}
+        onRestock={restock}
+        onUpdate={updateChemical}
+        onDelete={removeChemical}
+      />
+      <ApparatusDetail
+        apparatus={selectedApparatus ? apparatus.find((a) => a.id === selectedApparatus.id) ?? null : null}
+        open={!!selectedApparatus}
+        onClose={() => setSelectedApparatus(null)}
+        onLogBreakage={logBreakage}
+        onRestock={restockApparatus}
+        onUpdate={updateApparatus}
+        onDelete={removeApparatus}
+      />
     </>
   );
 }
