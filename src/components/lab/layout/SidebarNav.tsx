@@ -42,15 +42,15 @@ export function SidebarNav({ active, onChange }: SidebarNavProps) {
   const { user } = useAuth();
 
   return (
-    <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-slate-100 bg-white lg:flex">
+    <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-stone-200 bg-white lg:flex">
       {/* Logo */}
       <div className="flex items-center gap-3 px-6 py-6">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-graphite to-graphite/80 text-white shadow-md">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 text-white shadow-md">
           <FlaskRound className="h-5 w-5" strokeWidth={2.2} />
         </div>
         <div>
-          <p className="text-base font-bold text-graphite">LabVault</p>
-          <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-600">
+          <p className="text-base font-bold text-stone-900">LabVault</p>
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-stone-600">
             Lab Inventory
           </p>
         </div>
@@ -71,19 +71,19 @@ export function SidebarNav({ active, onChange }: SidebarNavProps) {
                   className={cn(
                     "relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors",
                     isActive
-                      ? "text-graphite"
-                      : "text-slate-700 hover:bg-slate-100 hover:text-graphite"
+                      ? "text-orange-600"
+                      : "text-stone-700 hover:bg-stone-100 hover:text-orange-600"
                   )}
                 >
                   {isActive && (
                     <motion.span
                       layoutId="sidebar-active"
-                      className="absolute inset-0 rounded-xl bg-slate-100"
+                      className="absolute inset-0 rounded-xl bg-orange-50"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
                   <Icon
-                    className={cn("relative h-5 w-5", isActive && "text-graphite")}
+                    className={cn("relative h-5 w-5", isActive && "text-orange-600")}
                     strokeWidth={isActive ? 2.5 : 2}
                   />
                   <span className="relative">{tab.label}</span>
@@ -95,16 +95,16 @@ export function SidebarNav({ active, onChange }: SidebarNavProps) {
       </nav>
 
       {/* User at bottom */}
-      <div className="border-t border-slate-100 px-4 py-4">
+      <div className="border-t border-stone-200 px-4 py-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-graphite text-sm font-bold text-white">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-orange-600 text-sm font-bold text-white">
             {user?.name?.charAt(0) ?? "R"}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-semibold text-graphite">
+            <p className="truncate text-sm font-semibold text-stone-900">
               {user?.name ?? "Researcher"}
             </p>
-            <p className="truncate text-[11px] text-slate-600">
+            <p className="truncate text-[11px] text-stone-600">
               {user?.email ?? ""}
             </p>
           </div>

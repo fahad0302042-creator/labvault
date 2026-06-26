@@ -39,7 +39,7 @@ export function StockBar({
   return (
     <div
       className={cn(
-        "relative h-2.5 w-full overflow-hidden rounded-full bg-slate-200/70",
+        "relative h-2.5 w-full overflow-hidden rounded-full bg-stone-200/70",
         className
       )}
       role="progressbar"

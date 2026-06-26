@@ -123,13 +123,18 @@ export function Scanner({
     try {
       const { Html5Qrcode } = await import("html5-qrcode");
 
-      // Wait for the DOM element to exist
-      await new Promise((r) => setTimeout(r, 200));
+      // Wait for the next paint so the div has real dimensions
+      await new Promise((r) => requestAnimationFrame(() => r(null)));
+      await new Promise((r) => setTimeout(r, 50));
 
-      // Verify the element exists
+      // Verify the element exists AND has dimensions
       const el = document.getElementById(scannerDivId);
       if (!el) {
         throw new Error("Scanner element not found");
+      }
+      const rect = el.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) {
+        throw new Error("Scanner element has no dimensions");
       }
 
       const html5QrCode = new Html5Qrcode(scannerDivId, {
@@ -150,12 +155,12 @@ export function Scanner({
         }
       };
 
-      // Use a function for qrbox so it adapts to screen size (min of 60% of width/height, capped)
+      // Adaptive qrbox — 70% of the scanner div's actual rendered size
       const config = {
         fps: 10,
         qrbox: (viewfinderWidth: number, viewfinderHeight: number) => {
           const minEdge = Math.min(viewfinderWidth, viewfinderHeight);
-          const size = Math.floor(minEdge * 0.7);
+          const size = Math.max(150, Math.floor(minEdge * 0.7));
           return { width: size, height: size };
         },
         aspectRatio: 1.0,
@@ -234,56 +239,52 @@ export function Scanner({
     <div className="px-4 pt-6 pb-4">
       <header className="mb-4 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-graphite">Scanner</h1>
-          <p className="text-sm text-slate-700">
+          <h1 className="text-2xl font-bold text-stone-900">Scanner</h1>
+          <p className="text-sm text-stone-700">
             Scan an item's QR to log activity
           </p>
         </div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-600 to-graphite text-white shadow-md">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 text-white shadow-md">
           <ScanLine className="h-5 w-5" />
         </div>
       </header>
 
-      {/* Camera viewport */}
-      <div className="relative mb-5 aspect-square w-full overflow-hidden rounded-3xl border border-slate-100 bg-graphite shadow-lg">
-        {/* Mock camera background — animated gradient simulating low-light camera feed */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800" />
-        <div className="blob-1 absolute -top-20 -left-20 h-60 w-60 rounded-full bg-white/5 blur-2xl" />
-        <div className="blob-2 absolute -bottom-20 -right-20 h-60 w-60 rounded-full bg-white/5 blur-2xl" />
+      {/* Camera viewport — windowed style, large rounded square */}
+      <div className="relative mb-5 aspect-square w-full overflow-hidden rounded-3xl bg-stone-900 shadow-lg ring-1 ring-stone-300">
+        {/* The camera feed container — html5-qrcode renders the video here.
+            This div MUST have explicit dimensions for the camera to show. */}
+        <div
+          id={scannerDivId}
+          className="absolute inset-0 h-full w-full [&>video]:h-full [&>video]:w-full [&>video]:object-cover"
+        />
 
-        {/* Center frame */}
+        {/* Dark overlay shown when NOT scanning (idle state) */}
+        {mode !== "scanning" && (
+          <div className="absolute inset-0 bg-gradient-to-br from-stone-800 via-stone-900 to-stone-800">
+            <div className="blob-1 absolute -top-20 -left-20 h-60 w-60 rounded-full bg-orange-500/10 blur-2xl" />
+            <div className="blob-2 absolute -bottom-20 -right-20 h-60 w-60 rounded-full bg-amber-400/10 blur-2xl" />
+          </div>
+        )}
+
+        {/* Center content overlay */}
         <div className="absolute inset-0 flex items-center justify-center">
           {mode === "scanning" ? (
-            <div className="relative">
-              {/* Hidden div where html5-qrcode renders the camera feed */}
-              <div id={scannerDivId} className="overflow-hidden rounded-3xl" />
-
-              {/* Pulse rings + viewfinder (shown as overlay on top of camera, or standalone if camera hasn't started) */}
-              <div className="qr-pulse-ring absolute inset-0 rounded-3xl border-2 border-white/70 pointer-events-none" />
-              <div
-                className="qr-pulse-ring absolute inset-0 rounded-3xl border-2 border-white/70 pointer-events-none"
-                style={{ animationDelay: "0.6s" }}
+            /* Scanning — camera feed is showing in the div above.
+               Overlay just the viewfinder frame + scan line on top. */
+            <div className="pointer-events-none relative flex h-48 w-48 items-center justify-center">
+              {/* Corner brackets */}
+              <CornerBrackets />
+              {/* Moving scan line */}
+              <motion.div
+                className="absolute inset-x-2 h-0.5 rounded-full bg-orange-400 shadow-[0_0_8px_2px_rgba(194,65,12,0.6)]"
+                initial={{ top: "10%" }}
+                animate={{ top: ["10%", "90%", "10%"] }}
+                transition={{
+                  duration: 1.6,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               />
-              {/* Viewfinder overlay */}
-              <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                <div className="relative h-48 w-48 rounded-3xl border-2 border-white/50">
-                  <CornerBrackets />
-                  <motion.div
-                    className="absolute inset-x-2 h-0.5 rounded-full bg-white shadow-[0_0_8px_2px_rgba(255,255,255,0.6)]"
-                    initial={{ top: "10%" }}
-                    animate={{ top: ["10%", "90%", "10%"] }}
-                    transition={{
-                      duration: 1.6,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                  />
-                </div>
-              </div>
-              {/* Loading hint */}
-              <p className="pointer-events-none absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm font-semibold text-white/80">
-                Scanning…
-              </p>
             </div>
           ) : cameraError ? (
             <div className="px-6 text-center text-white">
@@ -291,7 +292,7 @@ export function Scanner({
                 <CameraOff className="h-7 w-7" />
               </div>
               <p className="font-bold">Camera unavailable</p>
-              <p className="mt-1 text-sm text-slate-600">{cameraError}</p>
+              <p className="mt-1 text-sm text-stone-400">{cameraError}</p>
               <button
                 onClick={() => setCameraError(null)}
                 className="mt-4 rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/20"
@@ -307,7 +308,7 @@ export function Scanner({
                 <X className="h-7 w-7" />
               </div>
               <p className="font-bold">No item found</p>
-              <p className="mt-1 text-sm text-slate-600">
+              <p className="mt-1 text-sm text-stone-400">
                 That QR code isn't registered. Try another or add it manually.
               </p>
               <button
@@ -323,7 +324,7 @@ export function Scanner({
                 <Camera className="h-7 w-7" />
               </div>
               <p className="font-bold">Point your camera at a QR</p>
-              <p className="mt-1 text-sm text-slate-600">
+              <p className="mt-1 text-sm text-stone-400">
                 Or browse all items below to find it manually.
               </p>
             </div>
@@ -334,19 +335,26 @@ export function Scanner({
         {mode === "scanning" && (
           <button
             onClick={cancelScan}
-            className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur hover:bg-white/20"
+            className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur hover:bg-black/60"
             aria-label="Cancel scan"
           >
             <X className="h-4 w-4" />
           </button>
         )}
 
-        {/* Big scan button at bottom of viewport */}
+        {/* Scan status text while scanning */}
+        {mode === "scanning" && (
+          <p className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm font-semibold text-white/90">
+            Scanning…
+          </p>
+        )}
+
+        {/* Big scan button at bottom of viewport (when idle/not found) */}
         {mode !== "scanning" && mode !== "found" && (
           <div className="absolute inset-x-0 bottom-4 flex justify-center">
             <button
               onClick={startScan}
-              className="flex items-center gap-2 rounded-full bg-graphite px-6 py-3 text-sm font-bold text-white shadow-lg shadow-graphite/20 transition-all hover:bg-graphite/90 active:scale-95"
+              className="flex items-center gap-2 rounded-full bg-orange-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-orange-600/30 transition-all hover:bg-orange-500 active:scale-95"
             >
               <ScanLine className="h-5 w-5" />
               Start scanning
@@ -389,7 +397,7 @@ export function Scanner({
       {/* Recently scanned chips */}
       {mode !== "scanning" && mode !== "found" && recent.length > 0 && (
         <div className="mb-5">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-700">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-700">
             Recently scanned
           </p>
           <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1">
@@ -407,9 +415,9 @@ export function Scanner({
                       item,
                     } as { type: "chemical"; item: Chemical } | { type: "apparatus"; item: Apparatus })
                   }
-                  className="flex shrink-0 items-center gap-2 rounded-full border border-slate-100 bg-white px-3 py-1.5 text-xs font-semibold text-graphite shadow-sm backdrop-blur transition-colors hover:bg-white"
+                  className="flex shrink-0 items-center gap-2 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-semibold text-stone-900 shadow-sm backdrop-blur transition-colors hover:bg-white"
                 >
-                  <span className="text-slate-600">
+                  <span className="text-stone-600">
                     {r.type === "chemical" ? "🧪" : "⚗️"}
                   </span>
                   <span className="max-w-[120px] truncate">{r.name}</span>
@@ -424,19 +432,19 @@ export function Scanner({
       {mode !== "scanning" && mode !== "found" && (
         <div>
           <div className="relative mb-3">
-            <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
+            <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-600" />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Or search by name…"
-              className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-3 text-sm text-graphite placeholder:text-slate-600 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-slate-100"
+              className="w-full rounded-xl border border-stone-200 bg-white py-3 pl-10 pr-3 text-sm text-stone-900 placeholder:text-stone-600 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-stone-200"
             />
           </div>
 
           {search.trim() && (
             <ul className="space-y-2">
               {filtered.length === 0 ? (
-                <li className="rounded-xl bg-white p-4 text-center text-sm text-slate-700 backdrop-blur">
+                <li className="rounded-xl bg-white p-4 text-center text-sm text-stone-700 backdrop-blur">
                   No matches.
                 </li>
               ) : (
@@ -446,10 +454,10 @@ export function Scanner({
                       onClick={() =>
                         handleManualSelect({ type, item })
                       }
-                      className="flex w-full items-center gap-3 rounded-xl border border-slate-100 bg-white p-3 text-left backdrop-blur transition-colors hover:bg-white"
+                      className="flex w-full items-center gap-3 rounded-xl border border-stone-200 bg-white p-3 text-left backdrop-blur transition-colors hover:bg-white"
                     >
                       <div
-                        className={`flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-700`}
+                        className={`flex h-9 w-9 items-center justify-center rounded-lg bg-stone-100 text-stone-700`}
                       >
                         {type === "chemical" ? (
                           <PackageMinus className="h-4 w-4" />
@@ -458,10 +466,10 @@ export function Scanner({
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="truncate text-sm font-semibold text-graphite">
+                        <p className="truncate text-sm font-semibold text-stone-900">
                           {item.name}
                         </p>
-                        <p className="text-xs text-slate-700">
+                        <p className="text-xs text-stone-700">
                           {type === "chemical"
                             ? `${(item as Chemical).quantity} ${(item as Chemical).unit}`
                             : `${(item as Apparatus).quantity} units`}
@@ -486,16 +494,16 @@ export function Scanner({
         className="mt-5 flex items-center gap-3 p-4"
         enter={false}
       >
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-stone-100 text-stone-600">
           <Printer className="h-5 w-5" />
         </div>
         <div className="flex-1">
-          <p className="text-sm font-bold text-graphite">Print chemical QR labels</p>
-          <p className="text-xs text-slate-700">
+          <p className="text-sm font-bold text-stone-900">Print chemical QR labels</p>
+          <p className="text-xs text-stone-700">
             {chemicals.length} chemical{chemicals.length === 1 ? "" : "s"} · A4 sheet for box stickers
           </p>
         </div>
-        <span className="text-xs font-semibold text-graphite">Print</span>
+        <span className="text-xs font-semibold text-stone-900">Print</span>
       </GlassCard>
 
       {/* Hidden print sheet */}
@@ -505,7 +513,7 @@ export function Scanner({
 }
 
 function CornerBrackets() {
-  const corner = "absolute h-6 w-6 border-slate-100";
+  const corner = "absolute h-6 w-6 border-stone-200";
   return (
     <>
       <span className={`${corner} -top-1 -left-1 rounded-tl-2xl border-l-2 border-t-2`} />
@@ -553,19 +561,19 @@ function ScanResultCard({
         <span
           className={`inline-flex h-8 w-8 items-center justify-center rounded-lg ${
             isChemical
-              ? "bg-slate-100 text-slate-700"
-              : "bg-slate-100 text-slate-700"
+              ? "bg-stone-100 text-stone-700"
+              : "bg-stone-100 text-stone-700"
           }`}
         >
           {isChemical ? "🧪" : "⚗️"}
         </span>
         <Badge tone={isChemical ? "slate" : "slate"}>{result.type}</Badge>
       </div>
-      <h3 className="mt-2 text-lg font-bold text-graphite">{item.name}</h3>
+      <h3 className="mt-2 text-lg font-bold text-stone-900">{item.name}</h3>
       <div className="mt-3">
-        <div className="flex justify-between text-xs text-slate-700">
+        <div className="flex justify-between text-xs text-stone-700">
           <span>Stock</span>
-          <span className="font-bold tabular-nums text-graphite">
+          <span className="font-bold tabular-nums text-stone-900">
             {quantity} / {initialQuantity} {unit}
           </span>
         </div>

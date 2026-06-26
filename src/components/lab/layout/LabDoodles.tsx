@@ -26,7 +26,7 @@ function LabDoodlesComponent() {
       className="pointer-events-none fixed inset-0 -z-20 overflow-hidden"
     >
       <svg
-        className="absolute inset-0 h-full w-full text-graphite"
+        className="absolute inset-0 h-full w-full text-stone-900"
         viewBox="0 0 400 800"
         preserveAspectRatio="xMidYMid slice"
         fill="none"

@@ -77,23 +77,23 @@ export function Reports() {
     <div className="min-h-screen bg-white px-5 pt-8 pb-32 sm:px-8 lg:pb-8">
       {/* Header */}
       <header className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight text-graphite">
+        <h1 className="text-3xl font-bold tracking-tight text-stone-900">
           Reports
         </h1>
-        <p className="mt-1 text-sm text-slate-600">
+        <p className="mt-1 text-sm text-stone-600">
           {period === "weekly" ? "Last 7 days" : "Last 30 days"} ·{" "}
           {rows.length} item{rows.length === 1 ? "" : "s"}
         </p>
       </header>
 
       {/* Period toggle — minimalist pill */}
-      <div className="mb-8 inline-flex rounded-full bg-slate-100 p-1">
+      <div className="mb-8 inline-flex rounded-full bg-stone-100 p-1">
         {(["weekly", "monthly"] as const).map((p) => (
           <button
             key={p}
             onClick={() => setPeriod(p)}
             className={`relative rounded-full px-5 py-2 text-sm font-semibold capitalize transition-colors ${
-              period === p ? "text-white" : "text-slate-700 hover:text-graphite"
+              period === p ? "text-white" : "text-stone-700 hover:text-orange-600"
             }`}
           >
             {period === p && (
@@ -110,12 +110,12 @@ export function Reports() {
 
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-graphite" />
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-stone-200 border-t-orange-600" />
         </div>
       ) : rows.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <p className="text-lg font-semibold text-graphite">No data yet</p>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="text-lg font-semibold text-stone-900">No data yet</p>
+          <p className="mt-1 text-sm text-stone-600">
             Add {tab === "chemicals" ? "chemicals" : "apparatus"} and log
             activity to see reports here.
           </p>
@@ -135,16 +135,16 @@ export function Reports() {
 
           {/* Inventory health — circular progress */}
           <section className="mb-8">
-            <div className="flex items-center gap-6 rounded-2xl border border-slate-100 bg-white p-6">
+            <div className="flex items-center gap-6 rounded-2xl border border-stone-200 bg-white p-6">
               <CircularProgress value={healthPct} />
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-600">
+                <p className="text-xs font-semibold uppercase tracking-wide text-stone-600">
                   Inventory Health
                 </p>
-                <p className="mt-1 text-2xl font-bold text-graphite">
+                <p className="mt-1 text-2xl font-bold text-stone-900">
                   {healthPct}%
                 </p>
-                <p className="mt-0.5 text-xs text-slate-600">
+                <p className="mt-0.5 text-xs text-stone-600">
                   {rows.filter((r) => r.health === "healthy").length} of{" "}
                   {rows.length} items healthy
                 </p>
@@ -153,13 +153,13 @@ export function Reports() {
           </section>
 
           {/* Tab toggle */}
-          <div className="mb-6 inline-flex rounded-full bg-slate-100 p-1">
+          <div className="mb-6 inline-flex rounded-full bg-stone-100 p-1">
             {(["chemicals", "apparatus"] as const).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
                 className={`relative rounded-full px-5 py-2 text-sm font-semibold capitalize transition-colors ${
-                  tab === t ? "text-white" : "text-slate-700 hover:text-graphite"
+                  tab === t ? "text-white" : "text-stone-700 hover:text-orange-600"
                 }`}
               >
                 {tab === t && (
@@ -177,7 +177,7 @@ export function Reports() {
           {/* Export button — minimalist */}
           <button
             onClick={() => window.print()}
-            className="no-print mb-6 flex items-center gap-2 text-sm font-semibold text-slate-700 transition-colors hover:text-graphite"
+            className="no-print mb-6 flex items-center gap-2 text-sm font-semibold text-stone-700 transition-colors hover:text-orange-600"
           >
             <span className="text-base">↓</span>
             Export as PDF
@@ -188,7 +188,7 @@ export function Reports() {
             {/* Print-only header */}
             <div className="hidden print:mb-6 print:block">
               <h1 className="text-2xl font-bold">LabVault Report</h1>
-              <p className="text-sm text-slate-700">
+              <p className="text-sm text-stone-700">
                 {tab === "chemicals" ? "Chemicals" : "Apparatus"} ·{" "}
                 {period === "weekly" ? "Weekly" : "Monthly"} · Generated{" "}
                 {new Date().toLocaleString()}
@@ -202,23 +202,23 @@ export function Reports() {
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: Math.min(i * 0.03, 0.3) }}
-                  className="border-b border-slate-100 py-4 last:border-0"
+                  className="border-b border-stone-200 py-4 last:border-0"
                 >
                   <div className="flex items-baseline justify-between gap-3">
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-base font-semibold text-graphite">
+                      <p className="truncate text-base font-semibold text-stone-900">
                         {r.name}
                       </p>
                       {r.sub && (
-                        <p className="font-mono text-xs text-slate-600">
+                        <p className="font-mono text-xs text-stone-600">
                           {r.sub}
                         </p>
                       )}
                     </div>
                     <div className="text-right">
-                      <p className="font-mono text-lg font-bold tabular-nums text-graphite">
+                      <p className="font-mono text-lg font-bold tabular-nums text-stone-900">
                         {r.remaining}
-                        <span className="ml-0.5 text-xs font-normal text-slate-600">
+                        <span className="ml-0.5 text-xs font-normal text-stone-600">
                           {r.unit}
                         </span>
                       </p>
@@ -228,13 +228,13 @@ export function Reports() {
                   {/* Stats row */}
                   <div className="mt-2 flex items-center gap-6 text-xs">
                     <span className="flex items-center gap-1.5">
-                      <span className="text-slate-600">In</span>
+                      <span className="text-stone-600">In</span>
                       <span className="font-mono font-semibold text-emerald-600">
                         +{r.stockIn}
                       </span>
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <span className="text-slate-600">Used</span>
+                      <span className="text-stone-600">Used</span>
                       <span className="font-mono font-semibold text-amber-600">
                         −{r.used}
                       </span>
@@ -259,9 +259,9 @@ export function Reports() {
 
                   {/* Minimal usage bar */}
                   {r.used > 0 && (
-                    <div className="mt-3 h-1 overflow-hidden rounded-full bg-slate-100">
+                    <div className="mt-3 h-1 overflow-hidden rounded-full bg-stone-100">
                       <motion.div
-                        className="h-full rounded-full bg-slate-1000"
+                        className="h-full rounded-full bg-stone-1000"
                         initial={{ width: 0 }}
                         animate={{ width: `${(r.used / maxUsed) * 100}%` }}
                         transition={{ duration: 0.5, delay: i * 0.03 }}
@@ -293,11 +293,11 @@ function StatCard({
       ? "text-emerald-600"
       : tone === "negative"
         ? "text-amber-600"
-        : "text-graphite";
+        : "text-stone-900";
 
   return (
     <div className="text-center sm:text-left">
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-600">
+      <p className="text-xs font-semibold uppercase tracking-wide text-stone-600">
         {label}
       </p>
       <p className={`mt-1 text-2xl font-bold tabular-nums sm:text-3xl ${valueColor}`}>
@@ -341,7 +341,7 @@ function CircularProgress({ value }: { value: number }) {
         stroke="currentColor"
         strokeWidth={strokeWidth}
         strokeLinecap="round"
-        className="text-graphite"
+        className="text-stone-900"
         strokeDasharray={circumference}
         initial={{ strokeDashoffset: circumference }}
         animate={{ strokeDashoffset: offset }}

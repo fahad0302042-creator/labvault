@@ -79,7 +79,7 @@ export function Modal({
             aria-modal="true"
             aria-label={title}
             className={cn(
-              "relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-slate-200 bg-white shadow-2xl",
+              "relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-stone-200 bg-white shadow-2xl",
               SIZE_CLASSES[size]
             )}
             initial={{ y: "100%", opacity: 0.6, scale: 0.98 }}
@@ -96,12 +96,12 @@ export function Modal({
             {(title || description) && (
               <div className="relative shrink-0 px-6 pt-4 pb-2">
                 {title && (
-                  <h2 className="pr-10 text-lg font-bold text-graphite">
+                  <h2 className="pr-10 text-lg font-bold text-stone-900">
                     {title}
                   </h2>
                 )}
                 {description && (
-                  <p className="mt-0.5 pr-10 text-sm text-slate-700">
+                  <p className="mt-0.5 pr-10 text-sm text-stone-700">
                     {description}
                   </p>
                 )}
@@ -109,7 +109,7 @@ export function Modal({
                   type="button"
                   onClick={onClose}
                   aria-label="Close"
-                  className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200 hover:text-slate-700"
+                  className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-stone-100 text-stone-700 transition-colors hover:bg-stone-200 hover:text-stone-700"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -122,7 +122,7 @@ export function Modal({
                 type="button"
                 onClick={onClose}
                 aria-label="Close"
-                className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200 hover:text-slate-700"
+                className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-stone-100 text-stone-700 transition-colors hover:bg-stone-200 hover:text-stone-700"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -135,7 +135,7 @@ export function Modal({
 
             {/* Sticky footer — actions always visible */}
             {footer && (
-              <div className="shrink-0 border-t border-slate-100 bg-white px-6 py-4">
+              <div className="shrink-0 border-t border-stone-200 bg-white px-6 py-4">
                 {footer}
               </div>
             )}

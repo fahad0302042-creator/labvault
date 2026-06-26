@@ -110,10 +110,10 @@ function KpiCard({
   onClick?: () => void;
 }) {
   const toneClasses = {
-    teal: "from-slate-600 to-graphite shadow-[0_8px_20px_-6px_rgba(42,37,32,0.35)]",
+    teal: "from-orange-500 to-orange-700 shadow-[0_8px_20px_-6px_rgba(42,37,32,0.35)]",
     amber: "from-amber-400 to-orange-500 shadow-[0_8px_20px_-6px_rgba(245,158,11,0.4)]",
     red: "from-rose-400 to-red-500 shadow-[0_8px_20px_-6px_rgba(220,38,38,0.4)]",
-    violet: "from-slate-600 to-graphite shadow-[0_8px_20px_-6px_rgba(42,37,32,0.35)]",
+    violet: "from-orange-500 to-orange-700 shadow-[0_8px_20px_-6px_rgba(42,37,32,0.35)]",
   }[tone];
 
   return (
@@ -134,13 +134,13 @@ function KpiCard({
         </div>
       </div>
       <div className="mt-3">
-        <div className="text-2xl font-bold tabular-nums text-graphite">
+        <div className="text-2xl font-bold tabular-nums text-stone-900">
           {value}
         </div>
-        <div className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+        <div className="text-xs font-semibold uppercase tracking-wide text-stone-700">
           {label}
         </div>
-        {sub && <div className="mt-0.5 text-[11px] text-slate-600">{sub}</div>}
+        {sub && <div className="mt-0.5 text-[11px] text-stone-600">{sub}</div>}
       </div>
     </GlassCard>
   );
@@ -216,17 +216,17 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
         className="flex items-start justify-between gap-3"
       >
         <div className="min-w-0 flex-1">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+          <p className="text-xs font-semibold uppercase tracking-wide text-stone-700">
             {formatHeaderDate()}
           </p>
-          <h1 className="mt-1 text-2xl font-bold text-graphite">
+          <h1 className="mt-1 text-2xl font-bold text-stone-900">
             {greeting()}, {user?.name?.split(" ")[0] ?? "Researcher"}
           </h1>
         </div>
         <button
           onClick={() => setSearchOpen(true)}
           aria-label="Search"
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-graphite shadow-sm ring-1 ring-slate-200 transition-colors hover:bg-slate-50"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-stone-900 shadow-sm ring-1 ring-stone-200 transition-colors hover:bg-stone-100"
         >
           <Search className="h-4 w-4" />
         </button>
@@ -235,7 +235,7 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
       {/* Global search trigger bar (tap to open) */}
       <button
         onClick={() => setSearchOpen(true)}
-        className="flex w-full items-center gap-2.5 rounded-xl border border-slate-200 bg-white py-3 px-4 text-sm text-slate-600 shadow-sm transition-colors hover:bg-slate-50"
+        className="flex w-full items-center gap-2.5 rounded-xl border border-stone-200 bg-white py-3 px-4 text-sm text-stone-600 shadow-sm transition-colors hover:bg-stone-100"
       >
         <Search className="h-4 w-4" />
         Search chemicals & apparatus…
@@ -321,12 +321,12 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
       {/* Recent activity */}
       <section aria-label="Recent activity">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-sm font-bold uppercase tracking-wide text-slate-700">
+          <h2 className="text-sm font-bold uppercase tracking-wide text-stone-700">
             Recent Activity
           </h2>
           <button
             onClick={() => onNavigate("reports")}
-            className="text-xs font-semibold text-graphite hover:text-slate-700"
+            className="text-xs font-semibold text-stone-900 hover:text-stone-700"
           >
             View all
           </button>
@@ -334,12 +334,12 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
 
         {recentLogs.length === 0 ? (
           <GlassCard className="p-6 text-center" index={5}>
-            <p className="text-sm text-slate-700">
+            <p className="text-sm text-stone-700">
               No activity yet. Add or consume something to see it here.
             </p>
           </GlassCard>
         ) : (
-          <GlassCard className="divide-y divide-slate-200" index={5}>
+          <GlassCard className="divide-y divide-stone-200" index={5}>
             {recentLogs.map((log, i) => {
               const meta = ACTION_META[log.action];
               const isUp = log.action === "restocked" || log.action === "created";
@@ -367,17 +367,17 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold text-graphite">
+                    <p className="truncate text-sm font-semibold text-stone-900">
                       {log.item_name}
                     </p>
-                    <p className="text-xs text-slate-700">
+                    <p className="text-xs text-stone-700">
                       {log.logged_by_name} · {formatRelative(log.logged_at)}
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     <Badge tone={meta.tone}>{meta.label}</Badge>
                     {log.quantity > 0 && (
-                      <span className="font-mono text-xs tabular-nums text-slate-700">
+                      <span className="font-mono text-xs tabular-nums text-stone-700">
                         {log.quantity}
                         {log.unit ? ` ${log.unit}` : ""}
                       </span>
@@ -423,10 +423,10 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
       {/* Clear all data — for testing / resetting */}
       {chemicals.length === 0 && apparatus.length === 0 && logs.length === 0 ? (
         <GlassCard className="p-4 text-center" enter={false}>
-          <p className="text-sm font-semibold text-graphite">
+          <p className="text-sm font-semibold text-stone-900">
             Welcome to LabVault
           </p>
-          <p className="mt-1 text-xs text-slate-700">
+          <p className="mt-1 text-xs text-stone-700">
             Your inventory is empty. Tap "Add Chemical" or "Add Apparatus" above to get started.
           </p>
         </GlassCard>
@@ -482,10 +482,10 @@ function QuickAction({
       onClick={onClick}
       className="flex flex-col items-center gap-2 p-4"
     >
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700 transition-colors group-hover:bg-slate-200">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-stone-100 text-stone-700 transition-colors group-hover:bg-stone-200">
         {icon}
       </div>
-      <span className="text-center text-xs font-semibold text-slate-700">
+      <span className="text-center text-xs font-semibold text-stone-700">
         {label}
       </span>
     </GlassCard>

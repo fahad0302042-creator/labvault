@@ -24,7 +24,7 @@ export function QRGenerator({
     <div
       className={
         plate
-          ? `inline-flex items-center justify-center rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200 ${className ?? ""}`
+          ? `inline-flex items-center justify-center rounded-2xl bg-white p-3 shadow-sm ring-1 ring-stone-200 ${className ?? ""}`
           : className
       }
     >

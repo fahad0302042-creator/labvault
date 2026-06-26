@@ -45,7 +45,7 @@ export function BottomNav({ active, onChange }: BottomNavProps) {
   return (
     <nav
       aria-label="Primary"
-      className="no-print safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-slate-100 bg-white lg:hidden"
+      className="no-print safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-stone-200 bg-white lg:hidden"
     >
       <ul className="mx-auto flex max-w-md items-stretch justify-between px-2">
         {TABS.map((tab) => {
@@ -61,14 +61,14 @@ export function BottomNav({ active, onChange }: BottomNavProps) {
                 className={cn(
                   "relative flex h-16 w-full flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition-colors",
                   isActive
-                    ? "text-graphite"
-                    : "text-slate-700 hover:text-graphite"
+                    ? "text-orange-600"
+                    : "text-stone-700 hover:text-orange-600"
                 )}
               >
                 {isActive && (
                   <motion.span
                     layoutId="nav-pill"
-                    className="absolute -top-px h-1 w-10 rounded-full bg-graphite"
+                    className="absolute -top-px h-1 w-10 rounded-full bg-orange-500"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}

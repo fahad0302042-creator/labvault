@@ -15,7 +15,7 @@ type FABProps = {
 
 /**
  * Floating Action Button — fixed to bottom-right above the bottom nav.
- * Always teal, always 56px (thumb-friendly).
+ * Burnt orange accent, always 56px (thumb-friendly).
  */
 export function FAB({ onClick, icon, label = "Add", className }: FABProps) {
   return (
@@ -24,8 +24,8 @@ export function FAB({ onClick, icon, label = "Add", className }: FABProps) {
       onClick={onClick}
       aria-label={label}
       className={cn(
-        "fixed right-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-graphite text-white shadow-[0_8px_24px_-4px_rgba(42,37,32,0.45)]",
-        "transition-colors hover:bg-graphite/90 active:bg-slate-950",
+        "fixed right-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-orange-600 text-white shadow-[0_8px_24px_-4px_rgba(194,65,12,0.5)]",
+        "transition-colors hover:bg-orange-500 active:bg-orange-700",
         "lg:hidden",
         className
       )}

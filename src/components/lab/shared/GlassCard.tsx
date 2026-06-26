@@ -15,9 +15,8 @@ type GlassCardProps = HTMLMotionProps<"div"> & {
 };
 
 /**
- * Clean white card with subtle border.
- * Solid background for maximum text readability.
- * Optionally fades + slides up on mount.
+ * Filled subtle card — warm light fill, no border, minimal shadow.
+ * Sits on the cream background with soft separation.
  */
 export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
   function GlassCard(
@@ -40,9 +39,9 @@ export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
       <motion.div
         ref={ref}
         className={cn(
-          "rounded-2xl border border-slate-200 bg-slate-50 shadow-sm",
+          "rounded-2xl bg-white shadow-sm ring-1 ring-stone-200/60",
           interactive &&
-            "transition-all hover:border-slate-300 hover:shadow-md cursor-pointer",
+            "transition-all hover:shadow-md hover:ring-stone-300 cursor-pointer",
           className
         )}
         {...motionProps}

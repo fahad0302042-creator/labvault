@@ -45,13 +45,13 @@ export function Login() {
         >
           {/* Brand */}
           <div className="mb-10 flex flex-col items-center text-center">
-            <div className="relative mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-graphite text-white shadow-lg">
+            <div className="relative mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-600 text-white shadow-lg">
               <FlaskConical className="h-8 w-8" strokeWidth={2.2} />
             </div>
-            <h1 className="text-3xl font-bold tracking-tight text-graphite">
+            <h1 className="text-3xl font-bold tracking-tight text-stone-900">
               LabVault
             </h1>
-            <p className="mt-1.5 text-sm text-slate-600">
+            <p className="mt-1.5 text-sm text-stone-600">
               Chemistry lab inventory, in your pocket.
             </p>
           </div>
@@ -61,12 +61,12 @@ export function Login() {
             <div className="space-y-1.5">
               <label
                 htmlFor="email"
-                className="text-xs font-semibold uppercase tracking-wide text-slate-600"
+                className="text-xs font-semibold uppercase tracking-wide text-stone-600"
               >
                 Email
               </label>
               <div className="relative">
-                <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
+                <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-600" />
                 <input
                   id="email"
                   type="email"
@@ -74,7 +74,7 @@ export function Login() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-white py-3.5 pl-11 pr-4 text-sm text-graphite placeholder:text-slate-600 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-slate-100"
+                  className="w-full rounded-xl border border-stone-200 bg-white py-3.5 pl-11 pr-4 text-sm text-stone-900 placeholder:text-stone-600 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-stone-200"
                   placeholder="you@lab.com"
                 />
               </div>
@@ -83,12 +83,12 @@ export function Login() {
             <div className="space-y-1.5">
               <label
                 htmlFor="password"
-                className="text-xs font-semibold uppercase tracking-wide text-slate-600"
+                className="text-xs font-semibold uppercase tracking-wide text-stone-600"
               >
                 Password
               </label>
               <div className="relative">
-                <Lock className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
+                <Lock className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-600" />
                 <input
                   id="password"
                   type="password"
@@ -96,7 +96,7 @@ export function Login() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-white py-3.5 pl-11 pr-4 text-sm text-graphite placeholder:text-slate-600 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-slate-100"
+                  className="w-full rounded-xl border border-stone-200 bg-white py-3.5 pl-11 pr-4 text-sm text-stone-900 placeholder:text-stone-600 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-stone-200"
                   placeholder="••••••••"
                 />
               </div>
@@ -115,7 +115,7 @@ export function Login() {
             <button
               type="submit"
               disabled={submitting}
-              className="group flex w-full items-center justify-center gap-2 rounded-xl bg-graphite py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-graphite/90 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
+              className="group flex w-full items-center justify-center gap-2 rounded-xl bg-graphite py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-orange-500 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
             >
               {submitting ? (
                 <>
@@ -131,7 +131,7 @@ export function Login() {
             </button>
           </form>
 
-          <p className="mt-8 text-center text-[11px] text-slate-600">
+          <p className="mt-8 text-center text-[11px] text-stone-600">
             Use the account you created in Supabase → Authentication → Users.
           </p>
         </motion.div>

@@ -129,7 +129,7 @@ export function ApparatusDetail({
           <button
             type="button"
             onClick={() => setMode("view")}
-            className="flex-1 rounded-xl bg-slate-100 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-200"
+            className="flex-1 rounded-xl bg-stone-100 py-3 text-sm font-semibold text-stone-700 hover:bg-stone-200"
           >
             Cancel
           </button>
@@ -149,7 +149,7 @@ export function ApparatusDetail({
           <button
             type="button"
             onClick={() => setMode("view")}
-            className="flex-1 rounded-xl bg-slate-100 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-200"
+            className="flex-1 rounded-xl bg-stone-100 py-3 text-sm font-semibold text-stone-700 hover:bg-stone-200"
           >
             Cancel
           </button>
@@ -169,14 +169,14 @@ export function ApparatusDetail({
           <button
             type="button"
             onClick={() => setMode("view")}
-            className="flex-1 rounded-xl bg-slate-100 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-200"
+            className="flex-1 rounded-xl bg-stone-100 py-3 text-sm font-semibold text-stone-700 hover:bg-stone-200"
           >
             Cancel
           </button>
           <button
             type="submit"
             form="edit-apparatus-form"
-            className="flex-1 rounded-xl bg-graphite py-3 text-sm font-semibold text-white shadow-lg shadow-graphite/20 hover:bg-graphite/90"
+            className="flex-1 rounded-xl bg-graphite py-3 text-sm font-semibold text-white shadow-lg shadow-orange-600/20 hover:bg-orange-500"
           >
             Save changes
           </button>
@@ -227,10 +227,10 @@ export function ApparatusDetail({
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+              <span className="text-xs font-semibold uppercase tracking-wide text-stone-700">
                 Units remaining
               </span>
-              <span className="text-xs tabular-nums text-slate-700">
+              <span className="text-xs tabular-nums text-stone-700">
                 {Math.round(pct)}%
               </span>
             </div>
@@ -242,11 +242,11 @@ export function ApparatusDetail({
           </div>
 
           {apparatus.notes && (
-            <div className="rounded-xl bg-slate-50 p-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+            <div className="rounded-xl bg-stone-100 p-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-stone-700">
                 Notes
               </p>
-              <p className="mt-1 text-sm text-slate-700">{apparatus.notes}</p>
+              <p className="mt-1 text-sm text-stone-700">{apparatus.notes}</p>
             </div>
           )}
 
@@ -275,12 +275,12 @@ export function ApparatusDetail({
           </div>
 
           <div>
-            <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-700">
+            <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-stone-700">
               <History className="h-3.5 w-3.5" />
               Activity log
             </div>
             {itemLogs.length === 0 ? (
-              <p className="rounded-xl bg-slate-50 p-3 text-sm text-slate-700">
+              <p className="rounded-xl bg-stone-100 p-3 text-sm text-stone-700">
                 No activity recorded yet.
               </p>
             ) : (
@@ -288,16 +288,16 @@ export function ApparatusDetail({
                 {itemLogs.map((l) => (
                   <li
                     key={l.id}
-                    className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2 text-sm"
+                    className="flex items-center justify-between rounded-xl bg-stone-100 px-3 py-2 text-sm"
                   >
                     <div>
-                      <p className="font-semibold capitalize text-slate-800">
+                      <p className="font-semibold capitalize text-stone-800">
                         {l.action} · {l.quantity}
                       </p>
                       {l.note && (
-                        <p className="text-xs text-slate-700">{l.note}</p>
+                        <p className="text-xs text-stone-700">{l.note}</p>
                       )}
-                      <p className="text-[11px] text-slate-600">
+                      <p className="text-[11px] text-stone-600">
                         {l.logged_by_name} · {formatRelative(l.logged_at)}
                       </p>
                     </div>
@@ -332,7 +332,7 @@ export function ApparatusDetail({
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+            <label className="text-xs font-semibold uppercase tracking-wide text-stone-700">
               What happened? (optional)
             </label>
             <textarea
@@ -340,12 +340,12 @@ export function ApparatusDetail({
               onChange={(e) => setNote(e.target.value)}
               rows={3}
               placeholder="e.g. Cracked during Year 11 titration prac"
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-red-400 focus:ring-2 focus:ring-red-200"
+              className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-red-400 focus:ring-2 focus:ring-red-200"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+            <label className="text-xs font-semibold uppercase tracking-wide text-stone-700">
               Date
             </label>
             <input
@@ -353,7 +353,7 @@ export function ApparatusDetail({
               value={date}
               max={new Date().toISOString().slice(0, 10)}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-stone-200"
             />
             {date !== new Date().toISOString().slice(0, 10) && (
               <p className="text-[11px] font-medium text-amber-600">
@@ -376,14 +376,14 @@ export function ApparatusDetail({
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+            <label className="text-xs font-semibold uppercase tracking-wide text-stone-700">
               How many to add?
             </label>
             <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => setAmount((a) => Math.max(1, a - 1))}
-                className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200"
+                className="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-100 text-stone-700 transition-colors hover:bg-stone-200"
               >
                 <Minus className="h-4 w-4" />
               </button>
@@ -392,12 +392,12 @@ export function ApparatusDetail({
                 min={1}
                 value={amount}
                 onChange={(e) => setAmount(Math.max(1, Number(e.target.value)))}
-                className="flex-1 rounded-xl border border-slate-200 bg-white py-3 text-center text-lg font-bold tabular-nums text-graphite outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="flex-1 rounded-xl border border-stone-200 bg-white py-3 text-center text-lg font-bold tabular-nums text-stone-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-stone-200"
               />
               <button
                 type="button"
                 onClick={() => setAmount((a) => a + 1)}
-                className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200"
+                className="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-100 text-stone-700 transition-colors hover:bg-stone-200"
               >
                 <Plus className="h-4 w-4" />
               </button>
@@ -405,7 +405,7 @@ export function ApparatusDetail({
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+            <label className="text-xs font-semibold uppercase tracking-wide text-stone-700">
               Date
             </label>
             <input
@@ -413,7 +413,7 @@ export function ApparatusDetail({
               value={date}
               max={new Date().toISOString().slice(0, 10)}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-stone-200"
             />
             {date !== new Date().toISOString().slice(0, 10) && (
               <p className="text-[11px] font-medium text-amber-600">
@@ -423,7 +423,7 @@ export function ApparatusDetail({
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+            <label className="text-xs font-semibold uppercase tracking-wide text-stone-700">
               Note (optional)
             </label>
             <textarea
@@ -431,7 +431,7 @@ export function ApparatusDetail({
               onChange={(e) => setNote(e.target.value)}
               rows={2}
               placeholder="e.g. New set from science office"
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-200"
+              className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-200"
             />
           </div>
         </div>
@@ -444,7 +444,7 @@ export function ApparatusDetail({
               required
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-stone-200"
             />
           </Field>
           <Field label="Category">
@@ -456,7 +456,7 @@ export function ApparatusDetail({
                   category: e.target.value as ApparatusCategory,
                 })
               }
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm capitalize outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm capitalize outline-none focus:border-slate-400 focus:ring-2 focus:ring-stone-200"
             >
               {CATEGORIES.map((c) => (
                 <option key={c} value={c} className="capitalize">
@@ -475,7 +475,7 @@ export function ApparatusDetail({
                 onChange={(e) =>
                   setForm({ ...form, quantity: Number(e.target.value) })
                 }
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-stone-200"
               />
             </Field>
             <Field label="Initial Qty">
@@ -490,7 +490,7 @@ export function ApparatusDetail({
                     initialQuantity: Number(e.target.value),
                   })
                 }
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-stone-200"
               />
             </Field>
           </div>
@@ -499,7 +499,7 @@ export function ApparatusDetail({
               value={form.notes ?? ""}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
               rows={3}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-stone-200"
             />
           </Field>
         </form>
@@ -518,7 +518,7 @@ function Field({
 }) {
   return (
     <div className="space-y-1.5">
-      <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+      <label className="text-xs font-semibold uppercase tracking-wide text-stone-700">
         {label}
       </label>
       {children}
@@ -543,8 +543,8 @@ function ActionButton({
     red: "bg-red-50 text-red-700 hover:bg-red-100 ring-red-200/60",
     green:
       "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 ring-emerald-200/60",
-    teal: "bg-slate-100 text-slate-700 hover:bg-slate-200 ring-slate-200/60",
-    slate: "bg-slate-50 text-slate-700 hover:bg-slate-100 ring-slate-200/60",
+    teal: "bg-stone-100 text-stone-700 hover:bg-stone-200 ring-stone-200/60",
+    slate: "bg-stone-100 text-stone-700 hover:bg-stone-100 ring-stone-200/60",
   }[tone];
 
   return (

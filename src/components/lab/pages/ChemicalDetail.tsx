@@ -162,7 +162,7 @@ export function ChemicalDetail({
           {/* Stock overview */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+              <span className="text-xs font-semibold uppercase tracking-wide text-stone-700">
                 Stock remaining
               </span>
               <Badge tone={stockTone as "green" | "amber" | "red"} dot>
@@ -179,11 +179,11 @@ export function ChemicalDetail({
 
           {/* Notes */}
           {chemical.notes && (
-            <div className="rounded-xl bg-slate-50 p-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+            <div className="rounded-xl bg-stone-100 p-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-stone-700">
                 Notes
               </p>
-              <p className="mt-1 text-sm text-slate-700">{chemical.notes}</p>
+              <p className="mt-1 text-sm text-stone-700">{chemical.notes}</p>
             </div>
           )}
 
@@ -221,12 +221,12 @@ export function ChemicalDetail({
 
           {/* Activity */}
           <div>
-            <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-700">
+            <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-stone-700">
               <History className="h-3.5 w-3.5" />
               Activity log
             </div>
             {itemLogs.length === 0 ? (
-              <p className="rounded-xl bg-slate-50 p-3 text-sm text-slate-700">
+              <p className="rounded-xl bg-stone-100 p-3 text-sm text-stone-700">
                 No activity recorded yet.
               </p>
             ) : (
@@ -234,16 +234,16 @@ export function ChemicalDetail({
                 {itemLogs.map((l) => (
                   <li
                     key={l.id}
-                    className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2 text-sm"
+                    className="flex items-center justify-between rounded-xl bg-stone-100 px-3 py-2 text-sm"
                   >
                     <div>
-                      <p className="font-semibold capitalize text-slate-800">
+                      <p className="font-semibold capitalize text-stone-800">
                         {l.action} · {l.quantity} {l.unit}
                       </p>
                       {l.note && (
-                        <p className="text-xs text-slate-700">{l.note}</p>
+                        <p className="text-xs text-stone-700">{l.note}</p>
                       )}
-                      <p className="text-[11px] text-slate-600">
+                      <p className="text-[11px] text-stone-600">
                         {l.logged_by_name} · {formatRelative(l.logged_at)}
                       </p>
                     </div>
@@ -267,27 +267,27 @@ export function ChemicalDetail({
       {/* Consume / Restock mode */}
       {(mode === "consume" || mode === "restock") && (
         <div className="space-y-5">
-          <div className="rounded-xl bg-slate-50 p-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+          <div className="rounded-xl bg-stone-100 p-4">
+            <p className="text-xs font-semibold uppercase tracking-wide text-stone-700">
               Current stock
             </p>
-            <p className="mt-0.5 text-2xl font-bold tabular-nums text-graphite">
+            <p className="mt-0.5 text-2xl font-bold tabular-nums text-stone-900">
               {chemical.quantity}{" "}
-              <span className="text-base font-normal text-slate-700">
+              <span className="text-base font-normal text-stone-700">
                 {chemical.unit}
               </span>
             </p>
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+            <label className="text-xs font-semibold uppercase tracking-wide text-stone-700">
               {mode === "consume" ? "Amount to use" : "Amount to add"} ({chemical.unit})
             </label>
             <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => setAmount((a) => Math.max(1, a - 5))}
-                className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200"
+                className="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-100 text-stone-700 transition-colors hover:bg-stone-200"
               >
                 <Minus className="h-4 w-4" />
               </button>
@@ -297,12 +297,12 @@ export function ChemicalDetail({
                 step={1}
                 value={amount}
                 onChange={(e) => setAmount(Math.max(0, Number(e.target.value)))}
-                className="flex-1 rounded-xl border border-slate-200 bg-white py-3 text-center text-lg font-bold tabular-nums text-graphite outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="flex-1 rounded-xl border border-stone-200 bg-white py-3 text-center text-lg font-bold tabular-nums text-stone-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-stone-200"
               />
               <button
                 type="button"
                 onClick={() => setAmount((a) => a + 5)}
-                className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200"
+                className="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-100 text-stone-700 transition-colors hover:bg-stone-200"
               >
                 <Plus className="h-4 w-4" />
               </button>
@@ -310,7 +310,7 @@ export function ChemicalDetail({
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+            <label className="text-xs font-semibold uppercase tracking-wide text-stone-700">
               Date
             </label>
             <input
@@ -318,7 +318,7 @@ export function ChemicalDetail({
               value={date}
               max={new Date().toISOString().slice(0, 10)}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-stone-200"
             />
             {date !== new Date().toISOString().slice(0, 10) && (
               <p className="text-[11px] font-medium text-amber-600">
@@ -328,7 +328,7 @@ export function ChemicalDetail({
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+            <label className="text-xs font-semibold uppercase tracking-wide text-stone-700">
               Note (optional)
             </label>
             <textarea
@@ -340,14 +340,14 @@ export function ChemicalDetail({
                   ? "e.g. Used in titration prac"
                   : "e.g. New bottle from stores"
               }
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-stone-200"
             />
           </div>
 
           <div className="flex gap-3">
             <button
               onClick={() => setMode("view")}
-              className="flex-1 rounded-xl bg-slate-100 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-200"
+              className="flex-1 rounded-xl bg-stone-100 py-3 text-sm font-semibold text-stone-700 hover:bg-stone-200"
             >
               Cancel
             </button>
@@ -373,14 +373,14 @@ export function ChemicalDetail({
               required
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-stone-200"
             />
           </Field>
           <Field label="Formula (optional)">
             <input
               value={form.formula ?? ""}
               onChange={(e) => setForm({ ...form, formula: e.target.value })}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-stone-200"
             />
           </Field>
           <div className="grid grid-cols-3 gap-3">
@@ -393,7 +393,7 @@ export function ChemicalDetail({
                 onChange={(e) =>
                   setForm({ ...form, quantity: Number(e.target.value) })
                 }
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-stone-200"
               />
             </Field>
             <Field label="Initial Qty">
@@ -405,7 +405,7 @@ export function ChemicalDetail({
                 onChange={(e) =>
                   setForm({ ...form, initialQuantity: Number(e.target.value) })
                 }
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-stone-200"
               />
             </Field>
             <Field label="Unit">
@@ -414,7 +414,7 @@ export function ChemicalDetail({
                 onChange={(e) =>
                   setForm({ ...form, unit: e.target.value as ChemicalUnit })
                 }
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-stone-200"
               >
                 {UNITS.map((u) => (
                   <option key={u} value={u}>
@@ -429,20 +429,20 @@ export function ChemicalDetail({
               value={form.notes ?? ""}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
               rows={3}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-stone-200"
             />
           </Field>
           <div className="flex gap-3">
             <button
               type="button"
               onClick={() => setMode("view")}
-              className="flex-1 rounded-xl bg-slate-100 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-200"
+              className="flex-1 rounded-xl bg-stone-100 py-3 text-sm font-semibold text-stone-700 hover:bg-stone-200"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="flex-1 rounded-xl bg-graphite py-3 text-sm font-semibold text-white shadow-lg shadow-graphite/20 hover:bg-graphite/90"
+              className="flex-1 rounded-xl bg-graphite py-3 text-sm font-semibold text-white shadow-lg shadow-orange-600/20 hover:bg-orange-500"
             >
               Save changes
             </button>
@@ -455,17 +455,17 @@ export function ChemicalDetail({
         <div className="flex flex-col items-center gap-4 py-2">
           <QRGenerator value={chemical.qr_code} size={200} />
           <div className="text-center">
-            <p className="text-sm font-bold text-graphite">{chemical.name}</p>
+            <p className="text-sm font-bold text-stone-900">{chemical.name}</p>
             {chemical.formula && (
-              <p className="text-xs text-slate-700">{chemical.formula}</p>
+              <p className="text-xs text-stone-700">{chemical.formula}</p>
             )}
-            <p className="mt-1 break-all font-mono text-[10px] text-slate-600">
+            <p className="mt-1 break-all font-mono text-[10px] text-stone-600">
               {chemical.qr_code}
             </p>
           </div>
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-2 rounded-xl bg-graphite px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-graphite/20 hover:bg-graphite/90"
+            className="flex items-center gap-2 rounded-xl bg-graphite px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-orange-600/20 hover:bg-orange-500"
           >
             Print label
           </button>
@@ -484,7 +484,7 @@ function Field({
 }) {
   return (
     <div className="space-y-1.5">
-      <label className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+      <label className="text-xs font-semibold uppercase tracking-wide text-stone-700">
         {label}
       </label>
       {children}
@@ -508,8 +508,8 @@ function ActionButton({
   const toneClasses = {
     amber: "bg-amber-50 text-amber-700 hover:bg-amber-100 ring-amber-200/60",
     green: "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 ring-emerald-200/60",
-    teal: "bg-slate-100 text-slate-700 hover:bg-slate-200 ring-slate-200/60",
-    slate: "bg-slate-50 text-slate-700 hover:bg-slate-100 ring-slate-200/60",
+    teal: "bg-stone-100 text-stone-700 hover:bg-stone-200 ring-stone-200/60",
+    slate: "bg-stone-100 text-stone-700 hover:bg-stone-100 ring-stone-200/60",
   }[tone];
 
   return (
