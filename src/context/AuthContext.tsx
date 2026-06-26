@@ -21,6 +21,7 @@ type AuthContextValue = {
   user: LabUser | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string) => Promise<void>;
   signOut: () => void;
 };
 
@@ -125,9 +126,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   }, []);
 
+  const signUp = useCallback(async (email: string, password: string) => {
+    if (isSupabaseEnabled && supabase) {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+      if (error) {
+        throw new Error(error.message);
+      }
+      // If email confirmation is disabled, user is signed in immediately.
+      // If enabled, they need to confirm via email before signing in.
+      if (data.session) {
+        // Signed in immediately
+      } else {
+        throw new Error("Check your email to confirm your account, then sign in.");
+      }
+      return;
+    }
+
+    // Mock auth fallback
+    await new Promise((r) => setTimeout(r, 450));
+    const local = email.split("@")[0] || "Researcher";
+    const name = local
+      .split(/[._-]+/)
+      .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+      .join(" ");
+    const u: LabUser = {
+      id: `user-${local}`,
+      email,
+      name,
+      role: "admin",
+    };
+    setCurrentUser(u);
+    setUser(u);
+  }, []);
+
   const value = useMemo(
-    () => ({ user, loading, signIn, signOut }),
-    [user, loading, signIn, signOut],
+    () => ({ user, loading, signIn, signUp, signOut }),
+    [user, loading, signIn, signUp, signOut],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

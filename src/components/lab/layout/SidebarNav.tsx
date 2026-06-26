@@ -8,6 +8,7 @@ import {
   ScanLine,
   FileBarChart2,
   FlaskRound,
+  LogOut,
   type LucideIcon,
 } from "lucide-react";
 import type { TabKey } from "./BottomNav";
@@ -39,7 +40,7 @@ type SidebarNavProps = {
  * Hidden on mobile/tablet (bottom nav takes over).
  */
 export function SidebarNav({ active, onChange }: SidebarNavProps) {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   return (
     <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-stone-200 bg-white lg:flex">
@@ -108,6 +109,13 @@ export function SidebarNav({ active, onChange }: SidebarNavProps) {
               {user?.email ?? ""}
             </p>
           </div>
+          <button
+            onClick={() => signOut()}
+            aria-label="Sign out"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-stone-600 transition-colors hover:bg-stone-100 hover:text-red-600"
+          >
+            <LogOut className="h-4 w-4" />
+          </button>
         </div>
       </div>
     </aside>

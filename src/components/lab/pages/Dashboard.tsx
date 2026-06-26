@@ -15,6 +15,7 @@ import {
   Trash2,
   Sun,
   Moon,
+  LogOut,
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -150,7 +151,7 @@ function KpiCard({
 }
 
 export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProps) {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -255,6 +256,18 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
             className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-stone-900 shadow-sm ring-1 ring-stone-200 transition-colors hover:bg-stone-100"
           >
             <Search className="h-4 w-4" />
+          </button>
+          {/* Sign out */}
+          <button
+            onClick={() => {
+              if (confirm("Sign out of LabVault?")) {
+                signOut();
+              }
+            }}
+            aria-label="Sign out"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-stone-900 shadow-sm ring-1 ring-stone-200 transition-colors hover:bg-red-50 hover:text-red-600 hover:ring-red-200"
+          >
+            <LogOut className="h-4 w-4" />
           </button>
         </div>
       </motion.header>

@@ -24,6 +24,10 @@ const KEYS = {
   apparatus: "labvault.apparatus",
   logs: "labvault.logs",
   user: "labvault.user",
+  cacheChemicals: "labvault.cache.chemicals",
+  cacheApparatus: "labvault.cache.apparatus",
+  cacheLogs: "labvault.cache.logs",
+  pendingWrites: "labvault.pendingWrites",
 } as const;
 
 function readLocal<T>(key: string, fallback: T): T {
@@ -39,6 +43,32 @@ function readLocal<T>(key: string, fallback: T): T {
 function writeLocal<T>(key: string, value: T): void {
   if (typeof window === "undefined") return;
   localStorage.setItem(key, JSON.stringify(value));
+}
+
+/** Check if we're online */
+function isOnline(): boolean {
+  return typeof navigator !== "undefined" ? navigator.onLine : true;
+}
+
+/** Cache data for offline reads */
+function cacheData<T>(key: string, data: T): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch {
+    // storage might be full — ignore
+  }
+}
+
+/** Read cached data for offline mode */
+function readCache<T>(key: string): T | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : null;
+  } catch {
+    return null;
+  }
 }
 
 /** Convert snake_case DB row → camelCase Chemical */
@@ -119,15 +149,24 @@ export function ensureSeed(): void {
 
 export async function getChemicals(): Promise<Chemical[]> {
   if (isSupabaseEnabled && supabase) {
+    if (!isOnline()) {
+      // Offline — read from cache
+      const cached = readCache<Chemical[]>(KEYS.cacheChemicals);
+      if (cached) return cached;
+    }
     const { data, error } = await supabase
       .from("chemicals")
       .select("*")
       .order("created_at", { ascending: false });
     if (error) {
       console.error("getChemicals error:", error);
-      return [];
+      // Fall back to cache on error
+      const cached = readCache<Chemical[]>(KEYS.cacheChemicals);
+      return cached ?? [];
     }
-    return (data ?? []).map(rowToChemical);
+    const chemicals = (data ?? []).map(rowToChemical);
+    cacheData(KEYS.cacheChemicals, chemicals); // cache for offline
+    return chemicals;
   }
   return readLocal<Chemical[]>(KEYS.chemicals, []).sort(
     (a, b) => +new Date(b.created_at) - +new Date(a.created_at),
@@ -165,15 +204,22 @@ export async function deleteChemical(id: string): Promise<void> {
 
 export async function getApparatus(): Promise<Apparatus[]> {
   if (isSupabaseEnabled && supabase) {
+    if (!isOnline()) {
+      const cached = readCache<Apparatus[]>(KEYS.cacheApparatus);
+      if (cached) return cached;
+    }
     const { data, error } = await supabase
       .from("apparatus")
       .select("*")
       .order("created_at", { ascending: false });
     if (error) {
       console.error("getApparatus error:", error);
-      return [];
+      const cached = readCache<Apparatus[]>(KEYS.cacheApparatus);
+      return cached ?? [];
     }
-    return (data ?? []).map(rowToApparatus);
+    const apparatus = (data ?? []).map(rowToApparatus);
+    cacheData(KEYS.cacheApparatus, apparatus);
+    return apparatus;
   }
   return readLocal<Apparatus[]>(KEYS.apparatus, []).sort(
     (a, b) => +new Date(b.created_at) - +new Date(a.created_at),
@@ -211,15 +257,22 @@ export async function deleteApparatus(id: string): Promise<void> {
 
 export async function getLogs(): Promise<ConsumptionLog[]> {
   if (isSupabaseEnabled && supabase) {
+    if (!isOnline()) {
+      const cached = readCache<ConsumptionLog[]>(KEYS.cacheLogs);
+      if (cached) return cached;
+    }
     const { data, error } = await supabase
       .from("consumption_logs")
       .select("*")
       .order("logged_at", { ascending: false });
     if (error) {
       console.error("getLogs error:", error);
-      return [];
+      const cached = readCache<ConsumptionLog[]>(KEYS.cacheLogs);
+      return cached ?? [];
     }
-    return (data ?? []).map(rowToLog);
+    const logs = (data ?? []).map(rowToLog);
+    cacheData(KEYS.cacheLogs, logs);
+    return logs;
   }
   return readLocal<ConsumptionLog[]>(KEYS.logs, []).sort(
     (a, b) => +new Date(b.logged_at) - +new Date(a.logged_at),
