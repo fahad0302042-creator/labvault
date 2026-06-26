@@ -97,7 +97,7 @@ export function GlobalSearch({
           >
             <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
               {/* Search input */}
-              <div className="flex items-center gap-3 border-b border-slate-200/70 px-4 py-3">
+              <div className="flex items-center gap-3 border-b border-slate-100 px-4 py-3">
                 <Search className="h-5 w-5 shrink-0 text-slate-400" />
                 <input
                   autoFocus
