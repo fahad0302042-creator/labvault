@@ -74,7 +74,7 @@ export function Login() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-xl border border-stone-200 bg-white py-3.5 pl-11 pr-4 text-sm text-stone-900 placeholder:text-stone-600 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-stone-200"
+                  className="w-full rounded-xl border border-stone-200 bg-white py-3.5 pl-11 pr-4 text-sm text-stone-900 placeholder:text-stone-600 outline-none transition-all focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
                   placeholder="you@lab.com"
                 />
               </div>
@@ -96,7 +96,7 @@ export function Login() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded-xl border border-stone-200 bg-white py-3.5 pl-11 pr-4 text-sm text-stone-900 placeholder:text-stone-600 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-stone-200"
+                  className="w-full rounded-xl border border-stone-200 bg-white py-3.5 pl-11 pr-4 text-sm text-stone-900 placeholder:text-stone-600 outline-none transition-all focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
                   placeholder="••••••••"
                 />
               </div>
@@ -115,7 +115,7 @@ export function Login() {
             <button
               type="submit"
               disabled={submitting}
-              className="group flex w-full items-center justify-center gap-2 rounded-xl bg-graphite py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-orange-500 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
+              className="group flex w-full items-center justify-center gap-2 rounded-xl bg-orange-600 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-orange-500 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
             >
               {submitting ? (
                 <>

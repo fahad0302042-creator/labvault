@@ -336,6 +336,7 @@ export async function findById(
 
 // ---------- Reset ----------
 
+/** Wipe ALL data — chemicals, apparatus, and logs. Use with caution. */
 export async function clearAllData(): Promise<void> {
   if (isSupabaseEnabled && supabase) {
     await supabase.from("consumption_logs").delete().neq("id", "00000000-0000-0000-0000-000000000000");
@@ -346,6 +347,18 @@ export async function clearAllData(): Promise<void> {
   if (typeof window === "undefined") return;
   localStorage.removeItem(KEYS.chemicals);
   localStorage.removeItem(KEYS.apparatus);
+  localStorage.removeItem(KEYS.logs);
+  localStorage.removeItem("labvault.recentlyScanned");
+}
+
+/** Clear only the activity logs (consumption/restock/breakage history).
+ *  Keeps all chemicals and apparatus — just resets the activity feed + reports. */
+export async function clearRecentData(): Promise<void> {
+  if (isSupabaseEnabled && supabase) {
+    await supabase.from("consumption_logs").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    return;
+  }
+  if (typeof window === "undefined") return;
   localStorage.removeItem(KEYS.logs);
   localStorage.removeItem("labvault.recentlyScanned");
 }

@@ -13,14 +13,17 @@ import {
   AlertCircle,
   Search,
   Trash2,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
+import { useTheme } from "next-themes";
 import { useAuth } from "@/context/AuthContext";
 import { useChemicals } from "@/hooks/lab/useChemicals";
 import { useApparatus } from "@/hooks/lab/useApparatus";
 import { useLogs } from "@/hooks/lab/useLogs";
-import { clearAllData } from "@/lib/lab/storage";
+import { clearRecentData } from "@/lib/lab/storage";
 import { GlassCard } from "@/components/lab/shared/GlassCard";
 import { Badge } from "@/components/lab/shared/Badge";
 import { Sparkline } from "@/components/lab/shared/Sparkline";
@@ -148,6 +151,13 @@ function KpiCard({
 
 export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProps) {
   const { user } = useAuth();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Avoid hydration mismatch — only show toggle after mount
+  useMemo(() => {
+    setMounted(true);
+  }, []);
   const { chemicals, refresh: refreshChemicals } = useChemicals();
   const { apparatus, refresh: refreshApparatus } = useApparatus();
   const { logs, refresh: refreshLogs } = useLogs();
@@ -223,13 +233,30 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
             {greeting()}, {user?.name?.split(" ")[0] ?? "Researcher"}
           </h1>
         </div>
-        <button
-          onClick={() => setSearchOpen(true)}
-          aria-label="Search"
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-stone-900 shadow-sm ring-1 ring-stone-200 transition-colors hover:bg-stone-100"
-        >
-          <Search className="h-4 w-4" />
-        </button>
+        <div className="flex shrink-0 items-center gap-2">
+          {/* Dark mode toggle */}
+          {mounted && (
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-stone-900 shadow-sm ring-1 ring-stone-200 transition-colors hover:bg-stone-100"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )}
+            </button>
+          )}
+          {/* Search */}
+          <button
+            onClick={() => setSearchOpen(true)}
+            aria-label="Search"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-stone-900 shadow-sm ring-1 ring-stone-200 transition-colors hover:bg-stone-100"
+          >
+            <Search className="h-4 w-4" />
+          </button>
+        </div>
       </motion.header>
 
       {/* Global search trigger bar (tap to open) */}
@@ -420,31 +447,20 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
         </motion.section>
       )}
 
-      {/* Clear all data — for testing / resetting */}
-      {chemicals.length === 0 && apparatus.length === 0 && logs.length === 0 ? (
-        <GlassCard className="p-4 text-center" enter={false}>
-          <p className="text-sm font-semibold text-stone-900">
-            Welcome to LabVault
-          </p>
-          <p className="mt-1 text-xs text-stone-700">
-            Your inventory is empty. Tap "Add Chemical" or "Add Apparatus" above to get started.
-          </p>
-        </GlassCard>
-      ) : (
+      {/* Reset recent data — clears activity logs, keeps all items */}
+      {logs.length > 0 && (
         <button
           onClick={async () => {
-            if (confirm("Clear ALL inventory data? This removes every chemical, apparatus, and log. This cannot be undone.")) {
-              await clearAllData();
-              await refreshChemicals();
-              await refreshApparatus();
+            if (confirm("Reset recent data? This clears all activity logs (consumption, restock, breakage history). Your chemicals and apparatus are kept. This cannot be undone.")) {
+              await clearRecentData();
               await refreshLogs();
-              toast("All inventory data cleared");
+              toast("Recent activity cleared — items kept");
             }
           }}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 py-2.5 text-xs font-semibold text-red-600 transition-colors hover:bg-red-100"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-stone-200 bg-white py-2.5 text-xs font-semibold text-stone-700 transition-colors hover:bg-stone-100"
         >
           <Trash2 className="h-3.5 w-3.5" />
-          Clear all inventory data
+          Reset recent data
         </button>
       )}
 

@@ -442,7 +442,7 @@ export function ChemicalDetail({
             </button>
             <button
               type="submit"
-              className="flex-1 rounded-xl bg-graphite py-3 text-sm font-semibold text-white shadow-lg shadow-orange-600/20 hover:bg-orange-500"
+              className="flex-1 rounded-xl bg-orange-600 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-600/20 hover:bg-orange-500"
             >
               Save changes
             </button>
@@ -465,7 +465,7 @@ export function ChemicalDetail({
           </div>
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-2 rounded-xl bg-graphite px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-orange-600/20 hover:bg-orange-500"
+            className="flex items-center gap-2 rounded-xl bg-orange-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-orange-600/20 hover:bg-orange-500"
           >
             Print label
           </button>

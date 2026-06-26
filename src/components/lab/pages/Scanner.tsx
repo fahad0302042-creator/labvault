@@ -437,7 +437,7 @@ export function Scanner({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Or search by name…"
-              className="w-full rounded-xl border border-stone-200 bg-white py-3 pl-10 pr-3 text-sm text-stone-900 placeholder:text-stone-600 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-stone-200"
+              className="w-full rounded-xl border border-stone-200 bg-white py-3 pl-10 pr-3 text-sm text-stone-900 placeholder:text-stone-600 outline-none transition-all focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
             />
           </div>
 

@@ -70,7 +70,7 @@ export function AddChemicalModal({
           <button
             type="submit"
             form="add-chemical-form"
-            className="flex-1 rounded-xl bg-graphite py-3 text-sm font-semibold text-white shadow-lg shadow-orange-600/20 hover:bg-orange-500"
+            className="flex-1 rounded-xl bg-orange-600 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-600/20 hover:bg-orange-500"
           >
             Add to inventory
           </button>

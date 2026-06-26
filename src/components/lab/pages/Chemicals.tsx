@@ -101,7 +101,7 @@ export function Chemicals({ addSignal, onAddSignalConsumed }: ChemicalsProps) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by name or formula…"
-          className="w-full rounded-xl border border-stone-200 bg-white py-3 pl-10 pr-3 text-sm text-stone-900 placeholder:text-stone-600 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-stone-200"
+          className="w-full rounded-xl border border-stone-200 bg-white py-3 pl-10 pr-3 text-sm text-stone-900 placeholder:text-stone-600 outline-none transition-all focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
         />
       </div>
 
@@ -250,7 +250,7 @@ export function Chemicals({ addSignal, onAddSignalConsumed }: ChemicalsProps) {
             className="fixed inset-x-4 z-30 mx-auto max-w-md"
             style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 96px)" }}
           >
-            <div className="flex items-center gap-2 rounded-2xl bg-graphite px-4 py-3 text-white shadow-2xl">
+            <div className="flex items-center gap-2 rounded-2xl bg-stone-900 px-4 py-3 text-white shadow-2xl">
               <span className="flex-1 text-sm">Quick consume 10 units?</span>
               <button
                 onClick={() => setSwipedId(null)}
