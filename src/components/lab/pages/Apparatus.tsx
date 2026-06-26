@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { useApparatus } from "@/hooks/lab/useApparatus";
 import { GlassCard } from "@/components/lab/shared/GlassCard";
 import { StockBar } from "@/components/lab/shared/StockBar";
+import { Badge } from "@/components/lab/shared/Badge";
 import { FAB } from "@/components/lab/shared/FAB";
 import { ApparatusDetail } from "./ApparatusDetail";
 import { AddApparatusModal } from "./AddApparatusModal";
@@ -157,6 +158,17 @@ export function ApparatusPage({
                           {CATEGORY_LABEL[a.category]}
                         </p>
                       </div>
+                      <div className="text-right">
+                        <p className="text-lg font-bold tabular-nums text-stone-900">
+                          {a.quantity}
+                          <span className="ml-0.5 text-xs font-normal text-stone-700">
+                            units
+                          </span>
+                        </p>
+                        <p className="text-[10px] text-stone-600">
+                          of {a.initialQuantity}
+                        </p>
+                      </div>
                     </div>
                     <div className="mt-3 flex items-center gap-2">
                       <StockBar
@@ -164,12 +176,12 @@ export function ApparatusPage({
                         max={a.initialQuantity}
                         className="flex-1"
                       />
-                      <span className="text-sm font-bold tabular-nums text-stone-900">
-                        {a.quantity}
-                        <span className="ml-1 text-xs font-normal text-stone-600">
-                          / {a.initialQuantity}
-                        </span>
-                      </span>
+                      <Badge
+                        tone={pct >= 50 ? "green" : pct >= 20 ? "amber" : "red"}
+                        dot
+                      >
+                        {Math.round(pct)}%
+                      </Badge>
                     </div>
                   </GlassCard>
                 </motion.li>
