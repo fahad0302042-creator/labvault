@@ -47,12 +47,12 @@
 
 :root {
   --radius: 0.875rem;
-  /* LabVault palette — warm graphite on warm white + frosted glass */
+  /* LabVault palette — clean white + warm graphite, high contrast */
   --graphite: #2A2520;            /* warm brown-black, reads as "lab equipment" */
   --graphite-foreground: #ffffff;
-  --background: #F5F5F7;
+  --background: #FFFFFF;          /* pure white for max readability */
   --foreground: #2A2520;
-  --card: rgba(255, 255, 255, 0.6);
+  --card: #FFFFFF;                /* solid white cards, no transparency */
   --card-foreground: #2A2520;
   --popover: #ffffff;
   --popover-foreground: #2A2520;
@@ -60,15 +60,15 @@
   --primary-foreground: #ffffff;
   --secondary: rgba(42, 37, 32, 0.06);
   --secondary-foreground: #2A2520;
-  --muted: #EFEFF2;
+  --muted: #F5F5F7;
   --muted-foreground: #6B7280;
   --accent: #2A2520;
   --accent-foreground: #ffffff;
   --destructive: #DC2626;
   --success: #16A34A;
   --warning: #F59E0B;
-  --border: rgba(255, 255, 255, 0.8);
-  --input: rgba(255, 255, 255, 0.7);
+  --border: #E5E7EB;              /* solid border, no transparency */
+  --input: #F5F5F7;
   --ring: #2A2520;
   --chart-1: #2A2520;
   --chart-2: #16A34A;
@@ -81,7 +81,7 @@
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #F5F5F7;
   --sidebar-accent-foreground: #2A2520;
-  --sidebar-border: rgba(0, 0, 0, 0.06);
+  --sidebar-border: #E5E7EB;
   --sidebar-ring: #2A2520;
 }
 

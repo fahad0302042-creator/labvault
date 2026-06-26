@@ -72,7 +72,7 @@ export function AddApparatusModal({
           <button
             type="submit"
             form="add-apparatus-form"
-            className="flex-1 rounded-xl bg-graphite py-3 text-sm font-semibold text-white shadow-lg shadow-graphite/30 hover:bg-graphite/90"
+            className="flex-1 rounded-xl bg-graphite py-3 text-sm font-semibold text-white shadow-lg shadow-graphite/20 hover:bg-graphite/90"
           >
             Add to inventory
           </button>
@@ -80,7 +80,7 @@ export function AddApparatusModal({
       }
     >
       <form id="add-apparatus-form" onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex items-center gap-3 rounded-xl bg-slate-50/80 p-3 ring-1 ring-inset ring-slate-100">
+        <div className="flex items-center gap-3 rounded-xl bg-slate-50 p-3 ring-1 ring-inset ring-slate-100">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
             <Beaker className="h-5 w-5" />
           </div>
@@ -100,7 +100,7 @@ export function AddApparatusModal({
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="e.g. 250 mL Erlenmeyer Flask"
-            className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
           />
         </Field>
 
@@ -111,7 +111,7 @@ export function AddApparatusModal({
               onChange={(e) =>
                 setCategory(e.target.value as ApparatusCategory)
               }
-              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm capitalize outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm capitalize outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             >
               {CATEGORIES.map((c) => (
                 <option key={c} value={c} className="capitalize">
@@ -127,7 +127,7 @@ export function AddApparatusModal({
               min={0}
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
-              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             />
           </Field>
         </div>
@@ -138,7 +138,7 @@ export function AddApparatusModal({
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
             placeholder="Location, calibration date, supplier…"
-            className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
           />
         </Field>
       </form>

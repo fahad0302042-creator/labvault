@@ -42,7 +42,7 @@ export function SidebarNav({ active, onChange }: SidebarNavProps) {
   const { user } = useAuth();
 
   return (
-    <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-graphite/10 bg-white/60 backdrop-blur-2xl lg:flex">
+    <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-slate-100 bg-white lg:flex">
       {/* Logo */}
       <div className="flex items-center gap-3 px-6 py-6">
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-graphite to-graphite/80 text-white shadow-md">
@@ -72,13 +72,13 @@ export function SidebarNav({ active, onChange }: SidebarNavProps) {
                     "relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors",
                     isActive
                       ? "text-graphite"
-                      : "text-slate-500 hover:bg-graphite/5 hover:text-graphite"
+                      : "text-slate-500 hover:bg-slate-100 hover:text-graphite"
                   )}
                 >
                   {isActive && (
                     <motion.span
                       layoutId="sidebar-active"
-                      className="absolute inset-0 rounded-xl bg-graphite/8"
+                      className="absolute inset-0 rounded-xl bg-slate-100"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -95,7 +95,7 @@ export function SidebarNav({ active, onChange }: SidebarNavProps) {
       </nav>
 
       {/* User at bottom */}
-      <div className="border-t border-graphite/10 px-4 py-4">
+      <div className="border-t border-slate-100 px-4 py-4">
         <div className="flex items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-graphite text-sm font-bold text-white">
             {user?.name?.charAt(0) ?? "R"}

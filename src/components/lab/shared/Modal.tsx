@@ -79,7 +79,7 @@ export function Modal({
             aria-modal="true"
             aria-label={title}
             className={cn(
-              "relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/80 bg-white/90 backdrop-blur-2xl shadow-2xl",
+              "relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-slate-200 bg-white shadow-2xl",
               SIZE_CLASSES[size]
             )}
             initial={{ y: "100%", opacity: 0.6, scale: 0.98 }}
@@ -135,7 +135,7 @@ export function Modal({
 
             {/* Sticky footer — actions always visible */}
             {footer && (
-              <div className="shrink-0 border-t border-slate-200/70 bg-white/80 px-6 py-4 backdrop-blur-md">
+              <div className="shrink-0 border-t border-slate-100 bg-white px-6 py-4">
                 {footer}
               </div>
             )}

@@ -144,7 +144,7 @@ export function ChemicalDetail({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center rounded-3xl bg-white/70 backdrop-blur-sm"
+          className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center rounded-3xl bg-white backdrop-blur-sm"
         >
           <motion.div
             initial={{ scale: 0 }}
@@ -179,7 +179,7 @@ export function ChemicalDetail({
 
           {/* Notes */}
           {chemical.notes && (
-            <div className="rounded-xl bg-slate-50/80 p-3">
+            <div className="rounded-xl bg-slate-50 p-3">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                 Notes
               </p>
@@ -226,7 +226,7 @@ export function ChemicalDetail({
               Activity log
             </div>
             {itemLogs.length === 0 ? (
-              <p className="rounded-xl bg-slate-50/80 p-3 text-sm text-slate-500">
+              <p className="rounded-xl bg-slate-50 p-3 text-sm text-slate-500">
                 No activity recorded yet.
               </p>
             ) : (
@@ -234,7 +234,7 @@ export function ChemicalDetail({
                 {itemLogs.map((l) => (
                   <li
                     key={l.id}
-                    className="flex items-center justify-between rounded-xl bg-slate-50/80 px-3 py-2 text-sm"
+                    className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2 text-sm"
                   >
                     <div>
                       <p className="font-semibold capitalize text-slate-800">
@@ -256,7 +256,7 @@ export function ChemicalDetail({
           {/* Delete */}
           <button
             onClick={handleDelete}
-            className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50/60 py-3 text-sm font-semibold text-red-700 transition-colors hover:bg-red-100"
+            className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 py-3 text-sm font-semibold text-red-700 transition-colors hover:bg-red-100"
           >
             <Trash2 className="h-4 w-4" />
             Delete chemical
@@ -267,7 +267,7 @@ export function ChemicalDetail({
       {/* Consume / Restock mode */}
       {(mode === "consume" || mode === "restock") && (
         <div className="space-y-5">
-          <div className="rounded-xl bg-slate-50/80 p-4">
+          <div className="rounded-xl bg-slate-50 p-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
               Current stock
             </p>
@@ -297,7 +297,7 @@ export function ChemicalDetail({
                 step={1}
                 value={amount}
                 onChange={(e) => setAmount(Math.max(0, Number(e.target.value)))}
-                className="flex-1 rounded-xl border border-slate-200 bg-white/80 py-3 text-center text-lg font-bold tabular-nums text-graphite outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="flex-1 rounded-xl border border-slate-200 bg-white py-3 text-center text-lg font-bold tabular-nums text-graphite outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
               />
               <button
                 type="button"
@@ -318,7 +318,7 @@ export function ChemicalDetail({
               value={date}
               max={new Date().toISOString().slice(0, 10)}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             />
             {date !== new Date().toISOString().slice(0, 10) && (
               <p className="text-[11px] font-medium text-amber-600">
@@ -340,7 +340,7 @@ export function ChemicalDetail({
                   ? "e.g. Used in titration prac"
                   : "e.g. New bottle from stores"
               }
-              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             />
           </div>
 
@@ -373,14 +373,14 @@ export function ChemicalDetail({
               required
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             />
           </Field>
           <Field label="Formula (optional)">
             <input
               value={form.formula ?? ""}
               onChange={(e) => setForm({ ...form, formula: e.target.value })}
-              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             />
           </Field>
           <div className="grid grid-cols-3 gap-3">
@@ -393,7 +393,7 @@ export function ChemicalDetail({
                 onChange={(e) =>
                   setForm({ ...form, quantity: Number(e.target.value) })
                 }
-                className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
               />
             </Field>
             <Field label="Initial Qty">
@@ -405,7 +405,7 @@ export function ChemicalDetail({
                 onChange={(e) =>
                   setForm({ ...form, initialQuantity: Number(e.target.value) })
                 }
-                className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
               />
             </Field>
             <Field label="Unit">
@@ -414,7 +414,7 @@ export function ChemicalDetail({
                 onChange={(e) =>
                   setForm({ ...form, unit: e.target.value as ChemicalUnit })
                 }
-                className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
               >
                 {UNITS.map((u) => (
                   <option key={u} value={u}>
@@ -429,7 +429,7 @@ export function ChemicalDetail({
               value={form.notes ?? ""}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
               rows={3}
-              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             />
           </Field>
           <div className="flex gap-3">
@@ -442,7 +442,7 @@ export function ChemicalDetail({
             </button>
             <button
               type="submit"
-              className="flex-1 rounded-xl bg-graphite py-3 text-sm font-semibold text-white shadow-lg shadow-graphite/30 hover:bg-graphite/90"
+              className="flex-1 rounded-xl bg-graphite py-3 text-sm font-semibold text-white shadow-lg shadow-graphite/20 hover:bg-graphite/90"
             >
               Save changes
             </button>
@@ -465,7 +465,7 @@ export function ChemicalDetail({
           </div>
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-2 rounded-xl bg-graphite px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-graphite/30 hover:bg-graphite/90"
+            className="flex items-center gap-2 rounded-xl bg-graphite px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-graphite/20 hover:bg-graphite/90"
           >
             Print label
           </button>

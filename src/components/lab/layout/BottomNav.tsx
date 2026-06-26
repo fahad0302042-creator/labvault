@@ -45,7 +45,7 @@ export function BottomNav({ active, onChange }: BottomNavProps) {
   return (
     <nav
       aria-label="Primary"
-      className="no-print safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-white/70 bg-white/75 backdrop-blur-2xl lg:hidden"
+      className="no-print safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-slate-100 bg-white lg:hidden"
     >
       <ul className="mx-auto flex max-w-md items-stretch justify-between px-2">
         {TABS.map((tab) => {

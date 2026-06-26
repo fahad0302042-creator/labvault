@@ -91,7 +91,7 @@ export function ApparatusPage({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by name or category…"
-          className="w-full rounded-xl border border-white/80 bg-white/70 py-3 pl-10 pr-3 text-sm text-graphite placeholder:text-slate-400 shadow-sm outline-none backdrop-blur focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+          className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-3 text-sm text-graphite placeholder:text-slate-400 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-slate-100"
         />
       </div>
 
@@ -104,7 +104,7 @@ export function ApparatusPage({
             className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold capitalize transition-colors ${
               filter === f
                 ? "bg-graphite text-white shadow-sm"
-                : "bg-white/70 text-slate-600 ring-1 ring-inset ring-white/80 backdrop-blur hover:bg-white"
+                : "bg-white text-slate-600 ring-1 ring-inset ring-slate-200 hover:bg-slate-50"
             }`}
           >
             {f === "all" ? "All" : CATEGORY_LABEL[f as ApparatusCategory]}

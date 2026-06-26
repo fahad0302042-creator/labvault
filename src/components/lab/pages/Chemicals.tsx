@@ -101,7 +101,7 @@ export function Chemicals({ addSignal, onAddSignalConsumed }: ChemicalsProps) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by name or formula…"
-          className="w-full rounded-xl border border-white/80 bg-white/70 py-3 pl-10 pr-3 text-sm text-graphite placeholder:text-slate-400 shadow-sm outline-none backdrop-blur focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+          className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-3 text-sm text-graphite placeholder:text-slate-400 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-slate-100"
         />
       </div>
 
@@ -114,7 +114,7 @@ export function Chemicals({ addSignal, onAddSignalConsumed }: ChemicalsProps) {
             className={`rounded-full px-3.5 py-1.5 text-xs font-semibold capitalize transition-colors ${
               filter === f
                 ? "bg-graphite text-white shadow-sm"
-                : "bg-white/70 text-slate-600 ring-1 ring-inset ring-white/80 backdrop-blur hover:bg-white"
+                : "bg-white text-slate-600 ring-1 ring-inset ring-slate-200 hover:bg-slate-50"
             }`}
           >
             {f === "all" ? "All" : f === "low" ? "Low (<50%)" : "Critical (<20%)"}
@@ -250,7 +250,7 @@ export function Chemicals({ addSignal, onAddSignalConsumed }: ChemicalsProps) {
             className="fixed inset-x-4 z-30 mx-auto max-w-md"
             style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 96px)" }}
           >
-            <div className="flex items-center gap-2 rounded-2xl bg-graphite/90 px-4 py-3 text-white shadow-2xl backdrop-blur">
+            <div className="flex items-center gap-2 rounded-2xl bg-graphite px-4 py-3 text-white shadow-2xl">
               <span className="flex-1 text-sm">Quick consume 10 units?</span>
               <button
                 onClick={() => setSwipedId(null)}

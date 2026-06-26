@@ -70,7 +70,7 @@ export function AddChemicalModal({
           <button
             type="submit"
             form="add-chemical-form"
-            className="flex-1 rounded-xl bg-graphite py-3 text-sm font-semibold text-white shadow-lg shadow-graphite/30 hover:bg-graphite/90"
+            className="flex-1 rounded-xl bg-graphite py-3 text-sm font-semibold text-white shadow-lg shadow-graphite/20 hover:bg-graphite/90"
           >
             Add to inventory
           </button>
@@ -78,7 +78,7 @@ export function AddChemicalModal({
       }
     >
       <form id="add-chemical-form" onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex items-center gap-3 rounded-xl bg-slate-50/80 p-3 ring-1 ring-inset ring-slate-100">
+        <div className="flex items-center gap-3 rounded-xl bg-slate-50 p-3 ring-1 ring-inset ring-slate-100">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
             <FlaskConical className="h-5 w-5" />
           </div>
@@ -98,7 +98,7 @@ export function AddChemicalModal({
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="e.g. Sodium Chloride"
-            className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
           />
         </Field>
 
@@ -107,7 +107,7 @@ export function AddChemicalModal({
             value={formula}
             onChange={(e) => setFormula(e.target.value)}
             placeholder="e.g. NaCl"
-            className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm font-mono outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-mono outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
           />
         </Field>
 
@@ -119,14 +119,14 @@ export function AddChemicalModal({
               min={0}
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
-              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm tabular-nums outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             />
           </Field>
           <Field label="Unit">
             <select
               value={unit}
               onChange={(e) => setUnit(e.target.value as ChemicalUnit)}
-              className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
             >
               {UNITS.map((u) => (
                 <option key={u} value={u}>
@@ -143,7 +143,7 @@ export function AddChemicalModal({
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
             placeholder="Storage location, hazards, supplier…"
-            className="w-full rounded-xl border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
           />
         </Field>
       </form>

@@ -261,7 +261,7 @@ export function Reports() {
                   {r.used > 0 && (
                     <div className="mt-3 h-1 overflow-hidden rounded-full bg-slate-100">
                       <motion.div
-                        className="h-full rounded-full bg-graphite/80"
+                        className="h-full rounded-full bg-slate-1000"
                         initial={{ width: 0 }}
                         animate={{ width: `${(r.used / maxUsed) * 100}%` }}
                         transition={{ duration: 0.5, delay: i * 0.03 }}

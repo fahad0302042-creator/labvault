@@ -95,7 +95,7 @@ export function GlobalSearch({
             exit={{ y: -20, opacity: 0, scale: 0.98 }}
             transition={{ type: "spring", stiffness: 320, damping: 28 }}
           >
-            <div className="overflow-hidden rounded-2xl border border-white/80 bg-white/90 shadow-2xl backdrop-blur-2xl">
+            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
               {/* Search input */}
               <div className="flex items-center gap-3 border-b border-slate-200/70 px-4 py-3">
                 <Search className="h-5 w-5 shrink-0 text-slate-400" />

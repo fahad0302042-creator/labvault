@@ -144,7 +144,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
       </header>
 
       {/* Camera viewport */}
-      <div className="relative mb-5 aspect-square w-full overflow-hidden rounded-3xl border border-white/80 bg-graphite shadow-lg">
+      <div className="relative mb-5 aspect-square w-full overflow-hidden rounded-3xl border border-slate-100 bg-graphite shadow-lg">
         {/* Mock camera background — animated gradient simulating low-light camera feed */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800" />
         <div className="blob-1 absolute -top-20 -left-20 h-60 w-60 rounded-full bg-white/5 blur-2xl" />
@@ -155,9 +155,9 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
           {mode === "scanning" ? (
             <div className="relative">
               {/* Pulse rings */}
-              <div className="qr-pulse-ring absolute inset-0 rounded-3xl border-2 border-white/70" />
+              <div className="qr-pulse-ring absolute inset-0 rounded-3xl border-2 border-slate-100" />
               <div
-                className="qr-pulse-ring absolute inset-0 rounded-3xl border-2 border-white/70"
+                className="qr-pulse-ring absolute inset-0 rounded-3xl border-2 border-slate-100"
                 style={{ animationDelay: "0.6s" }}
               />
               {/* Viewfinder */}
@@ -224,7 +224,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
           <div className="absolute inset-x-0 bottom-4 flex justify-center">
             <button
               onClick={startScan}
-              className="flex items-center gap-2 rounded-full bg-graphite px-6 py-3 text-sm font-bold text-white shadow-lg shadow-graphite/40 transition-all hover:bg-graphite/90 active:scale-95"
+              className="flex items-center gap-2 rounded-full bg-graphite px-6 py-3 text-sm font-bold text-white shadow-lg shadow-graphite/20 transition-all hover:bg-graphite/90 active:scale-95"
             >
               <ScanLine className="h-5 w-5" />
               Start scanning
@@ -285,7 +285,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
                       item,
                     } as { type: "chemical"; item: Chemical } | { type: "apparatus"; item: Apparatus })
                   }
-                  className="flex shrink-0 items-center gap-2 rounded-full border border-white/80 bg-white/70 px-3 py-1.5 text-xs font-semibold text-graphite shadow-sm backdrop-blur transition-colors hover:bg-white"
+                  className="flex shrink-0 items-center gap-2 rounded-full border border-slate-100 bg-white px-3 py-1.5 text-xs font-semibold text-graphite shadow-sm backdrop-blur transition-colors hover:bg-white"
                 >
                   <span className="text-slate-400">
                     {r.type === "chemical" ? "🧪" : "⚗️"}
@@ -307,14 +307,14 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Or search by name…"
-              className="w-full rounded-xl border border-white/80 bg-white/70 py-3 pl-10 pr-3 text-sm text-graphite placeholder:text-slate-400 shadow-sm outline-none backdrop-blur focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-3 text-sm text-graphite placeholder:text-slate-400 outline-none transition-all focus:border-graphite focus:ring-2 focus:ring-slate-100"
             />
           </div>
 
           {search.trim() && (
             <ul className="space-y-2">
               {filtered.length === 0 ? (
-                <li className="rounded-xl bg-white/60 p-4 text-center text-sm text-slate-500 backdrop-blur">
+                <li className="rounded-xl bg-white p-4 text-center text-sm text-slate-500 backdrop-blur">
                   No matches.
                 </li>
               ) : (
@@ -324,7 +324,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
                       onClick={() =>
                         handleManualSelect({ type, item })
                       }
-                      className="flex w-full items-center gap-3 rounded-xl border border-white/80 bg-white/70 p-3 text-left backdrop-blur transition-colors hover:bg-white/90"
+                      className="flex w-full items-center gap-3 rounded-xl border border-slate-100 bg-white p-3 text-left backdrop-blur transition-colors hover:bg-white"
                     >
                       <div
                         className={`flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-700`}
@@ -383,7 +383,7 @@ export function Scanner({ scanSignal, onScanSignalConsumed }: ScannerProps) {
 }
 
 function CornerBrackets() {
-  const corner = "absolute h-6 w-6 border-white/70";
+  const corner = "absolute h-6 w-6 border-slate-100";
   return (
     <>
       <span className={`${corner} -top-1 -left-1 rounded-tl-2xl border-l-2 border-t-2`} />
