@@ -25,6 +25,7 @@ import { useChemicals } from "@/hooks/lab/useChemicals";
 import { useApparatus } from "@/hooks/lab/useApparatus";
 import { useLogs } from "@/hooks/lab/useLogs";
 import { clearRecentData } from "@/lib/lab/storage";
+import { haptic } from "@/lib/lab/haptics";
 import { GlassCard } from "@/components/lab/shared/GlassCard";
 import { Badge } from "@/components/lab/shared/Badge";
 import { Sparkline } from "@/components/lab/shared/Sparkline";
@@ -238,7 +239,7 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
           {/* Dark mode toggle */}
           {mounted && (
             <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              onClick={() => { haptic("light"); setTheme(theme === "dark" ? "light" : "dark"); }}
               aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
               className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-stone-900 shadow-sm ring-1 ring-stone-200 transition-colors hover:bg-stone-100"
             >
@@ -261,6 +262,7 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
           <button
             onClick={() => {
               if (confirm("Sign out of LabVault?")) {
+                haptic("warning");
                 signOut();
               }
             }}
@@ -344,17 +346,17 @@ export function Dashboard({ onNavigate, onQuickAdd, onQuickScan }: DashboardProp
         <QuickAction
           icon={<ScanLine className="h-5 w-5" />}
           label="Scan QR"
-          onClick={onQuickScan}
+          onClick={() => { haptic("light"); onQuickScan(); }}
         />
         <QuickAction
           icon={<FlaskConical className="h-5 w-5" />}
           label="Add Chemical"
-          onClick={() => onQuickAdd("chemical")}
+          onClick={() => { haptic("light"); onQuickAdd("chemical"); }}
         />
         <QuickAction
           icon={<Beaker className="h-5 w-5" />}
           label="Add Apparatus"
-          onClick={() => onQuickAdd("apparatus")}
+          onClick={() => { haptic("light"); onQuickAdd("apparatus"); }}
         />
       </section>
 

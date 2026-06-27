@@ -10,6 +10,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { haptic } from "@/lib/lab/haptics";
 
 export type TabKey =
   | "dashboard"
@@ -55,7 +56,7 @@ export function BottomNav({ active, onChange }: BottomNavProps) {
             <li key={tab.key} className="flex-1">
               <button
                 type="button"
-                onClick={() => onChange(tab.key)}
+                onClick={() => { haptic("selection"); onChange(tab.key); }}
                 aria-current={isActive ? "page" : undefined}
                 aria-label={tab.label}
                 className={cn(

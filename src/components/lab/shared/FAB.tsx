@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import { type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { haptic } from "@/lib/lab/haptics";
 
 type FABProps = {
   onClick: () => void;
@@ -21,7 +22,7 @@ export function FAB({ onClick, icon, label = "Add", className }: FABProps) {
   return (
     <motion.button
       type="button"
-      onClick={onClick}
+      onClick={() => { haptic("light"); onClick(); }}
       aria-label={label}
       className={cn(
         "fixed right-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-orange-600 text-white shadow-[0_8px_24px_-4px_rgba(194,65,12,0.5)]",

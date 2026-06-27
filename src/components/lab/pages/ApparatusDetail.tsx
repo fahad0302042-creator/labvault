@@ -14,6 +14,7 @@ import {
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import type { Apparatus, ApparatusCategory } from "@/lib/lab/types";
 import { formatRelative } from "@/lib/lab/types";
+import { haptic } from "@/lib/lab/haptics";
 import { useLogs } from "@/hooks/lab/useLogs";
 import { Modal } from "@/components/lab/shared/Modal";
 import { Badge } from "@/components/lab/shared/Badge";
@@ -87,9 +88,11 @@ export function ApparatusDetail({
     if (mode === "breakage") {
       onLogBreakage(apparatus.id, note || undefined, loggedAt);
       flashTick();
+      haptic("warning");
     } else if (mode === "restock") {
       onRestock(apparatus.id, amount, note || undefined, loggedAt);
       flashTick();
+      haptic("success");
     }
     setMode("view");
     setNote("");
@@ -112,12 +115,14 @@ export function ApparatusDetail({
     if (!apparatus) return;
     if (confirm(`Delete "${apparatus.name}"? This cannot be undone.`)) {
       onDelete(apparatus.id);
+      haptic("error");
       onClose();
     }
   }
 
   function flashTick() {
     setTickShown(true);
+    haptic("success");
     setTimeout(() => setTickShown(false), 800);
   }
 

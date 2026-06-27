@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { FlaskConical, Loader2, Mail, Lock, ArrowRight, UserPlus } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { haptic } from "@/lib/lab/haptics";
 import { BlobBackground } from "@/components/lab/layout/BlobBackground";
 
 export function Login() {
@@ -35,8 +36,10 @@ export function Login() {
     setSubmitting(true);
     try {
       if (mode === "signin") {
+        haptic("medium");
         await signIn(email, password);
       } else {
+        haptic("medium");
         await signUp(email, password);
         setInfo("Account created! Check your email to confirm, then sign in.");
         setMode("signin");

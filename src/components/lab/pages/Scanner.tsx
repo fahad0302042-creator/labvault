@@ -18,6 +18,7 @@ import { useChemicals } from "@/hooks/lab/useChemicals";
 import { useApparatus } from "@/hooks/lab/useApparatus";
 import { useRecentlyScanned } from "@/hooks/lab/useRecentlyScanned";
 import { findByQr } from "@/lib/lab/storage";
+import { haptic } from "@/lib/lab/haptics";
 import type { Chemical, Apparatus } from "@/lib/lab/types";
 import { GlassCard } from "@/components/lab/shared/GlassCard";
 import { Badge } from "@/components/lab/shared/Badge";
@@ -150,8 +151,10 @@ export function Scanner({
           setResult(found);
           setMode("found");
           addScan({ id: found.item.id, type: found.type, name: found.item.name });
+          haptic("success");
         } else {
           setMode("notFound");
+          haptic("error");
         }
       };
 

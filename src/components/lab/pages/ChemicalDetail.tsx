@@ -15,6 +15,7 @@ import {
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import type { Chemical, ChemicalUnit } from "@/lib/lab/types";
 import { formatRelative } from "@/lib/lab/types";
+import { haptic } from "@/lib/lab/haptics";
 import { useLogs } from "@/hooks/lab/useLogs";
 import { Modal } from "@/components/lab/shared/Modal";
 import { Badge } from "@/components/lab/shared/Badge";
@@ -89,9 +90,11 @@ export function ChemicalDetail({
     if (mode === "consume") {
       onConsume(chemical.id, amount, note || undefined, loggedAt);
       flashTick();
+      haptic("success");
     } else if (mode === "restock") {
       onRestock(chemical.id, amount, note || undefined, loggedAt);
       flashTick();
+      haptic("success");
     }
     setMode("view");
     setNote("");
@@ -115,12 +118,14 @@ export function ChemicalDetail({
     if (!chemical) return;
     if (confirm(`Delete "${chemical.name}"? This cannot be undone.`)) {
       onDelete(chemical.id);
+      haptic("error");
       onClose();
     }
   }
 
   function flashTick() {
     setTickShown(true);
+    haptic("success");
     setTimeout(() => setTickShown(false), 800);
   }
 
