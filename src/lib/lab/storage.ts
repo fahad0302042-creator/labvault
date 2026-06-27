@@ -415,3 +415,27 @@ export async function clearRecentData(): Promise<void> {
   localStorage.removeItem(KEYS.logs);
   localStorage.removeItem("labvault.recentlyScanned");
 }
+
+/** Clear logs from a specific month (YYYY-MM format, e.g. "2026-06").
+ *  Only deletes logs where logged_at falls within that month. */
+export async function clearMonthData(yearMonth: string): Promise<void> {
+  if (isSupabaseEnabled && supabase) {
+    // Build date range for the month
+    const [year, month] = yearMonth.split("-").map(Number);
+    const start = new Date(year, month - 1, 1).toISOString();
+    const end = new Date(year, month, 1).toISOString();
+    await supabase
+      .from("consumption_logs")
+      .delete()
+      .gte("logged_at", start)
+      .lt("logged_at", end);
+    return;
+  }
+  if (typeof window === "undefined") return;
+  const logs = readLocal<ConsumptionLog[]>(KEYS.logs, []);
+  const filtered = logs.filter((l) => {
+    const logMonth = l.logged_at.slice(0, 7);
+    return logMonth !== yearMonth;
+  });
+  writeLocal(KEYS.logs, filtered);
+}
