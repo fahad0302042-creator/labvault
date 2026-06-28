@@ -73,7 +73,7 @@ export function Login() {
         >
           {/* Brand */}
           <div className="mb-8 flex flex-col items-center text-center">
-            <div className="relative mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-600 text-white shadow-lg">
+            <div className="relative mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-stone-900 text-white shadow-lg">
               <FlaskConical className="h-8 w-8" strokeWidth={2.2} />
             </div>
             <h1 className="text-3xl font-bold tracking-tight text-stone-900">
@@ -102,7 +102,7 @@ export function Login() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-xl border border-stone-200 bg-white py-3.5 pl-11 pr-4 text-sm text-stone-900 placeholder:text-stone-500 outline-none transition-all focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                  className="w-full rounded-xl border border-stone-200 bg-white py-3.5 pl-11 pr-4 text-sm text-stone-900 placeholder:text-stone-500 outline-none transition-all focus:border-stone-700 focus:ring-2 focus:ring-stone-200"
                   placeholder="you@lab.com"
                 />
               </div>
@@ -124,7 +124,7 @@ export function Login() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded-xl border border-stone-200 bg-white py-3.5 pl-11 pr-4 text-sm text-stone-900 placeholder:text-stone-500 outline-none transition-all focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                  className="w-full rounded-xl border border-stone-200 bg-white py-3.5 pl-11 pr-4 text-sm text-stone-900 placeholder:text-stone-500 outline-none transition-all focus:border-stone-700 focus:ring-2 focus:ring-stone-200"
                   placeholder="••••••••"
                 />
               </div>
@@ -151,7 +151,7 @@ export function Login() {
                     required
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full rounded-xl border border-stone-200 bg-white py-3.5 pl-11 pr-4 text-sm text-stone-900 placeholder:text-stone-500 outline-none transition-all focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                    className="w-full rounded-xl border border-stone-200 bg-white py-3.5 pl-11 pr-4 text-sm text-stone-900 placeholder:text-stone-500 outline-none transition-all focus:border-stone-700 focus:ring-2 focus:ring-stone-200"
                     placeholder="••••••••"
                   />
                 </div>
@@ -181,7 +181,7 @@ export function Login() {
             <button
               type="submit"
               disabled={submitting}
-              className="group flex w-full items-center justify-center gap-2 rounded-xl bg-orange-600 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-orange-500 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
+              className="group flex w-full items-center justify-center gap-2 rounded-xl bg-stone-900 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-stone-800 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
             >
               {submitting ? (
                 <>
@@ -214,7 +214,7 @@ export function Login() {
                   setInfo(null);
                   setConfirmPassword("");
                 }}
-                className="font-semibold text-orange-600 underline-offset-2 hover:underline"
+                className="font-semibold text-stone-900 underline-offset-2 hover:underline"
               >
                 {mode === "signin" ? "Create one" : "Sign in"}
               </button>

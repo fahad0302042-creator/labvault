@@ -72,7 +72,7 @@ export function AddApparatusModal({
           <button
             type="submit"
             form="add-apparatus-form"
-            className="flex-1 rounded-xl bg-orange-600 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-600/20 hover:bg-orange-500"
+            className="flex-1 rounded-xl bg-stone-900 py-3 text-sm font-semibold text-white shadow-lg shadow-stone-900/20 hover:bg-stone-800"
           >
             Add to inventory
           </button>

@@ -118,7 +118,7 @@ export function Reports() {
             setSelectedMonth(e.target.value);
             setGenerated(false);
           }}
-          className="w-full max-w-xs rounded-xl border border-stone-200 bg-white py-3 px-4 text-sm font-semibold text-stone-900 outline-none transition-all focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+          className="w-full max-w-xs rounded-xl border border-stone-200 bg-white py-3 px-4 text-sm font-semibold text-stone-900 outline-none transition-all focus:border-stone-700 focus:ring-2 focus:ring-stone-200"
         >
           {months.map((m) => (
             <option key={m.value} value={m.value}>
@@ -154,7 +154,7 @@ export function Reports() {
       <div className="no-print mb-6 flex flex-wrap gap-3">
         <button
           onClick={() => { haptic("medium"); setGenerated(true); }}
-          className="flex items-center gap-2 rounded-xl bg-orange-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-orange-600/20 transition-all hover:bg-orange-500 active:scale-95"
+          className="flex items-center gap-2 rounded-xl bg-stone-900 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-stone-900/20 transition-all hover:bg-stone-800 active:scale-95"
         >
           <span className="text-base">📊</span>
           Generate Report

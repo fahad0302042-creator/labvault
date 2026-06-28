@@ -62,14 +62,14 @@ export function BottomNav({ active, onChange }: BottomNavProps) {
                 className={cn(
                   "relative flex h-16 w-full flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition-colors",
                   isActive
-                    ? "text-orange-600"
-                    : "text-stone-700 hover:text-orange-600"
+                    ? "text-stone-900"
+                    : "text-stone-700 hover:text-stone-900"
                 )}
               >
                 {isActive && (
                   <motion.span
                     layoutId="nav-pill"
-                    className="absolute -top-px h-1 w-10 rounded-full bg-orange-500"
+                    className="absolute -top-px h-1 w-10 rounded-full bg-stone-1000"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}

@@ -47,8 +47,8 @@
 
 :root {
   --radius: 0.875rem;
-  /* LabVault — Warm Notebook palette */
-  --graphite: #C2410C;            /* burnt orange — primary accent */
+  /* LabVault — Warm Notebook with Soft Charcoal accent */
+  --graphite: #292524;            /* soft charcoal — primary accent */
   --graphite-foreground: #ffffff;
   --background: #FAF8F3;          /* warm cream — lab notebook paper */
   --foreground: #292524;          /* warm dark brown — stone-900 */
@@ -56,37 +56,37 @@
   --card-foreground: #292524;
   --popover: #ffffff;
   --popover-foreground: #292524;
-  --primary: #C2410C;             /* burnt orange */
+  --primary: #292524;             /* soft charcoal */
   --primary-foreground: #ffffff;
   --secondary: #F5F1EA;           /* warm light fill for subtle cards */
   --secondary-foreground: #292524;
   --muted: #F5F1EA;
   --muted-foreground: #57534E;    /* stone-600 — darker for readability */
-  --accent: #C2410C;
+  --accent: #292524;
   --accent-foreground: #ffffff;
   --destructive: #DC2626;
   --success: #16A34A;
   --warning: #F59E0B;
   --border: #E7E0D5;              /* warm border — stone-200ish */
   --input: #FFFFFF;
-  --ring: #C2410C;
-  --chart-1: #C2410C;             /* burnt orange */
+  --ring: #292524;
+  --chart-1: #292524;             /* charcoal */
   --chart-2: #16A34A;             /* green */
   --chart-3: #F59E0B;             /* amber */
   --chart-4: #DC2626;             /* red */
   --chart-5: #8B5CF6;             /* violet */
   --sidebar: #FFFFFF;
   --sidebar-foreground: #292524;
-  --sidebar-primary: #C2410C;
+  --sidebar-primary: #292524;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #F5F1EA;
   --sidebar-accent-foreground: #292524;
   --sidebar-border: #E7E0D5;
-  --sidebar-ring: #C2410C;
+  --sidebar-ring: #292524;
 }
 
 .dark {
-  --graphite: #FB923C;            /* lighter burnt orange for dark mode */
+  --graphite: #F5F1EA;            /* warm white for dark mode */
   --graphite-foreground: #1C1917;
   --background: #1C1917;          /* warm dark — stone-950 */
   --foreground: #F5F1EA;
@@ -94,33 +94,33 @@
   --card-foreground: #F5F1EA;
   --popover: #292524;
   --popover-foreground: #F5F1EA;
-  --primary: #FB923C;
+  --primary: #F5F1EA;
   --primary-foreground: #1C1917;
   --secondary: #44403C;
   --secondary-foreground: #F5F1EA;
   --muted: #292524;
   --muted-foreground: #A8A29E;
-  --accent: #FB923C;
+  --accent: #F5F1EA;
   --accent-foreground: #1C1917;
   --destructive: #EF4444;
   --success: #22C55E;
   --warning: #FBBF24;
   --border: #44403C;
   --input: #292524;
-  --ring: #FB923C;
-  --chart-1: #FB923C;
+  --ring: #F5F1EA;
+  --chart-1: #F5F1EA;
   --chart-2: #22C55E;
   --chart-3: #FBBF24;
   --chart-4: #EF4444;
   --chart-5: #A78BFA;
   --sidebar: #292524;
   --sidebar-foreground: #F5F1EA;
-  --sidebar-primary: #FB923C;
+  --sidebar-primary: #F5F1EA;
   --sidebar-primary-foreground: #1C1917;
   --sidebar-accent: #1C1917;
   --sidebar-accent-foreground: #F5F1EA;
   --sidebar-border: #44403C;
-  --sidebar-ring: #FB923C;
+  --sidebar-ring: #F5F1EA;
 }
 
 @layer base {

@@ -80,13 +80,13 @@ export function Chemicals({ addSignal, onAddSignalConsumed }: ChemicalsProps) {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 text-white shadow-md sm:hidden">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-stone-800 to-stone-950 text-white shadow-md sm:hidden">
             <FlaskConical className="h-5 w-5" />
           </div>
           {/* Desktop Add button */}
           <button
             onClick={() => setAddOpen(true)}
-            className="hidden items-center gap-2 rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-colors hover:bg-orange-500 sm:flex"
+            className="hidden items-center gap-2 rounded-xl bg-stone-900 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-colors hover:bg-stone-800 sm:flex"
           >
             <Plus className="h-4 w-4" />
             Add Chemical
@@ -101,7 +101,7 @@ export function Chemicals({ addSignal, onAddSignalConsumed }: ChemicalsProps) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by name or formula…"
-          className="w-full rounded-xl border border-stone-200 bg-white py-3 pl-10 pr-3 text-sm text-stone-900 placeholder:text-stone-600 outline-none transition-all focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+          className="w-full rounded-xl border border-stone-200 bg-white py-3 pl-10 pr-3 text-sm text-stone-900 placeholder:text-stone-600 outline-none transition-all focus:border-stone-700 focus:ring-2 focus:ring-stone-200"
         />
       </div>
 
@@ -113,7 +113,7 @@ export function Chemicals({ addSignal, onAddSignalConsumed }: ChemicalsProps) {
             onClick={() => setFilter(f)}
             className={`rounded-full px-3.5 py-1.5 text-xs font-semibold capitalize transition-colors ${
               filter === f
-                ? "bg-orange-600 text-white shadow-sm"
+                ? "bg-stone-900 text-white shadow-sm"
                 : "bg-white text-stone-800 ring-1 ring-inset ring-stone-200 hover:bg-stone-100"
             }`}
           >

@@ -14,7 +14,7 @@ type BadgeProps = {
 };
 
 const TONE_CLASSES: Record<Tone, string> = {
-  teal: "bg-orange-100 text-orange-700 ring-orange-200/60",
+  teal: "bg-stone-100 text-stone-900 ring-stone-300/60",
   green: "bg-emerald-100 text-emerald-700 ring-emerald-200/60",
   amber: "bg-amber-100 text-amber-700 ring-amber-200/60",
   red: "bg-red-100 text-red-700 ring-red-200/60",
@@ -23,7 +23,7 @@ const TONE_CLASSES: Record<Tone, string> = {
 };
 
 const DOT_CLASSES: Record<Tone, string> = {
-  teal: "bg-orange-600",
+  teal: "bg-stone-900",
   green: "bg-emerald-500",
   amber: "bg-amber-500",
   red: "bg-red-500",

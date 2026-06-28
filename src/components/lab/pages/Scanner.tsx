@@ -247,7 +247,7 @@ export function Scanner({
             Scan an item's QR to log activity
           </p>
         </div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 text-white shadow-md">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-stone-800 to-stone-950 text-white shadow-md">
           <ScanLine className="h-5 w-5" />
         </div>
       </header>
@@ -264,7 +264,7 @@ export function Scanner({
         {/* Dark overlay shown when NOT scanning (idle state) */}
         {mode !== "scanning" && (
           <div className="absolute inset-0 bg-gradient-to-br from-stone-800 via-stone-900 to-stone-800">
-            <div className="blob-1 absolute -top-20 -left-20 h-60 w-60 rounded-full bg-orange-500/10 blur-2xl" />
+            <div className="blob-1 absolute -top-20 -left-20 h-60 w-60 rounded-full bg-stone-1000/10 blur-2xl" />
             <div className="blob-2 absolute -bottom-20 -right-20 h-60 w-60 rounded-full bg-amber-400/10 blur-2xl" />
           </div>
         )}
@@ -279,7 +279,7 @@ export function Scanner({
               <CornerBrackets />
               {/* Moving scan line */}
               <motion.div
-                className="absolute inset-x-2 h-0.5 rounded-full bg-orange-400 shadow-[0_0_8px_2px_rgba(194,65,12,0.6)]"
+                className="absolute inset-x-2 h-0.5 rounded-full bg-stone-600 shadow-[0_0_8px_2px_rgba(41,37,36,0.6)]"
                 initial={{ top: "10%" }}
                 animate={{ top: ["10%", "90%", "10%"] }}
                 transition={{
@@ -357,7 +357,7 @@ export function Scanner({
           <div className="absolute inset-x-0 bottom-4 flex justify-center">
             <button
               onClick={startScan}
-              className="flex items-center gap-2 rounded-full bg-orange-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-orange-600/30 transition-all hover:bg-orange-500 active:scale-95"
+              className="flex items-center gap-2 rounded-full bg-stone-900 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-stone-900/30 transition-all hover:bg-stone-800 active:scale-95"
             >
               <ScanLine className="h-5 w-5" />
               Start scanning
@@ -440,7 +440,7 @@ export function Scanner({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Or search by name…"
-              className="w-full rounded-xl border border-stone-200 bg-white py-3 pl-10 pr-3 text-sm text-stone-900 placeholder:text-stone-600 outline-none transition-all focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+              className="w-full rounded-xl border border-stone-200 bg-white py-3 pl-10 pr-3 text-sm text-stone-900 placeholder:text-stone-600 outline-none transition-all focus:border-stone-700 focus:ring-2 focus:ring-stone-200"
             />
           </div>
 

@@ -46,7 +46,7 @@ export function SidebarNav({ active, onChange }: SidebarNavProps) {
     <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-stone-200 bg-white lg:flex">
       {/* Logo */}
       <div className="flex items-center gap-3 px-6 py-6">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 text-white shadow-md">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-stone-800 to-stone-950 text-white shadow-md">
           <FlaskRound className="h-5 w-5" strokeWidth={2.2} />
         </div>
         <div>
@@ -72,19 +72,19 @@ export function SidebarNav({ active, onChange }: SidebarNavProps) {
                   className={cn(
                     "relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors",
                     isActive
-                      ? "text-orange-600"
-                      : "text-stone-700 hover:bg-stone-100 hover:text-orange-600"
+                      ? "text-stone-900"
+                      : "text-stone-700 hover:bg-stone-100 hover:text-stone-900"
                   )}
                 >
                   {isActive && (
                     <motion.span
                       layoutId="sidebar-active"
-                      className="absolute inset-0 rounded-xl bg-orange-50"
+                      className="absolute inset-0 rounded-xl bg-stone-100"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
                   <Icon
-                    className={cn("relative h-5 w-5", isActive && "text-orange-600")}
+                    className={cn("relative h-5 w-5", isActive && "text-stone-900")}
                     strokeWidth={isActive ? 2.5 : 2}
                   />
                   <span className="relative">{tab.label}</span>
@@ -98,7 +98,7 @@ export function SidebarNav({ active, onChange }: SidebarNavProps) {
       {/* User at bottom */}
       <div className="border-t border-stone-200 px-4 py-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-orange-600 text-sm font-bold text-white">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-stone-900 text-sm font-bold text-white">
             {user?.name?.charAt(0) ?? "R"}
           </div>
           <div className="min-w-0 flex-1">

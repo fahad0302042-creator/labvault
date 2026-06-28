@@ -25,8 +25,8 @@ export function FAB({ onClick, icon, label = "Add", className }: FABProps) {
       onClick={() => { haptic("light"); onClick(); }}
       aria-label={label}
       className={cn(
-        "fixed right-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-orange-600 text-white shadow-[0_8px_24px_-4px_rgba(194,65,12,0.5)]",
-        "transition-colors hover:bg-orange-500 active:bg-orange-700",
+        "fixed right-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-stone-900 text-white shadow-[0_8px_24px_-4px_rgba(41,37,36,0.5)]",
+        "transition-colors hover:bg-stone-800 active:bg-stone-950",
         "lg:hidden",
         className
       )}

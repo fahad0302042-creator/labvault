@@ -115,10 +115,10 @@ function KpiCard({
   onClick?: () => void;
 }) {
   const toneClasses = {
-    teal: "from-orange-500 to-orange-700 shadow-[0_8px_20px_-6px_rgba(42,37,32,0.35)]",
+    teal: "from-stone-800 to-stone-950 shadow-[0_8px_20px_-6px_rgba(42,37,32,0.35)]",
     amber: "from-amber-400 to-orange-500 shadow-[0_8px_20px_-6px_rgba(245,158,11,0.4)]",
     red: "from-rose-400 to-red-500 shadow-[0_8px_20px_-6px_rgba(220,38,38,0.4)]",
-    violet: "from-orange-500 to-orange-700 shadow-[0_8px_20px_-6px_rgba(42,37,32,0.35)]",
+    violet: "from-stone-800 to-stone-950 shadow-[0_8px_20px_-6px_rgba(42,37,32,0.35)]",
   }[tone];
 
   return (
