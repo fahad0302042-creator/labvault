@@ -46,9 +46,7 @@ export function SidebarNav({ active, onChange }: SidebarNavProps) {
     <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-stone-200 bg-white lg:flex">
       {/* Logo */}
       <div className="flex items-center gap-3 px-6 py-6">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-stone-800 to-stone-950 text-white shadow-md">
-          <FlaskRound className="h-5 w-5" strokeWidth={2.2} />
-        </div>
+        <img src="/logo.svg" alt="LabVault" className="h-10 w-10 rounded-xl shadow-md" />
         <div>
           <p className="text-base font-bold text-stone-900">LabVault</p>
           <p className="text-[10px] font-semibold uppercase tracking-wide text-stone-600">

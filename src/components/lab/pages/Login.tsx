@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FlaskConical, Loader2, Mail, Lock, ArrowRight, UserPlus } from "lucide-react";
+import { Loader2, Mail, Lock, ArrowRight, UserPlus } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { haptic } from "@/lib/lab/haptics";
@@ -73,9 +73,7 @@ export function Login() {
         >
           {/* Brand */}
           <div className="mb-8 flex flex-col items-center text-center">
-            <div className="relative mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-stone-900 text-white shadow-lg">
-              <FlaskConical className="h-8 w-8" strokeWidth={2.2} />
-            </div>
+            <img src="/logo.svg" alt="LabVault" className="mb-4 h-16 w-16 rounded-2xl shadow-lg" />
             <h1 className="text-3xl font-bold tracking-tight text-stone-900">
               LabVault
             </h1>
